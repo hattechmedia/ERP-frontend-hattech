@@ -19,7 +19,7 @@ export default function FinanceIncome() {
     const [selectedSlip, setSelectedSlip] = useState(null);
     const [showSlipModal, setShowSlipModal] = useState(false);
 
-    const [currency, setCurrency] = useState("PKR");
+    const [currency, setCurrency] = useState("EUR");
     const [enteredAmount, setEnteredAmount] = useState("");
     const [usdRate, setUsdRate] = useState(278);
 
@@ -27,8 +27,8 @@ export default function FinanceIncome() {
         fetch('https://open.er-api.com/v6/latest/USD')
             .then(res => res.json())
             .then(data => {
-                if (data && data.rates && data.rates.PKR) {
-                    setUsdRate(data.rates.PKR);
+                if (data && data.rates && 1.08) {
+                    setUsdRate(1.08);
                 }
             })
             .catch(err => console.error("Failed to fetch USD rate", err));
@@ -90,8 +90,8 @@ export default function FinanceIncome() {
         const submitData = {
             ...formData,
             amount: finalAmount,
-            description: currency !== "PKR"
-                ? `${formData.description || ""}\n[Converted from ${enteredAmount} ${currency} at rate ${rate} PKR/${currency}]`.trim()
+            description: currency !== "EUR"
+                ? `${formData.description || ""}\n[Converted from ${enteredAmount} ${currency} at rate ${rate} EUR/${currency}]`.trim()
                 : formData.description
         };
         try {
@@ -123,7 +123,7 @@ export default function FinanceIncome() {
             clientEmail: "", monthlyDate: ""
         });
         setEnteredAmount("");
-        setCurrency("PKR");
+        setCurrency("EUR");
     };
 
     const handleDelete = async (id) => {
@@ -150,7 +150,7 @@ export default function FinanceIncome() {
             monthlyDate: rec.monthlyDate ? rec.monthlyDate.split('T')[0] : ""
         });
         setEnteredAmount(rec.amount.toString());
-        setCurrency("PKR");
+        setCurrency("EUR");
         setShowModal(true);
     };
 
@@ -201,17 +201,17 @@ export default function FinanceIncome() {
                 <div className="bg-[var(--bg-card)] p-6 rounded-3xl border border-[var(--bg-inner)] shadow-xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-primary/5 rounded-full blur-2xl -translate-y-12 translate-x-12 group-hover:bg-primary/10 transition-all duration-500" />
                     <p className="text-[10px] font-black uppercase text-[var(--text-secondary)] tracking-widest mb-2 opacity-60">Total Gross Revenue</p>
-                    <p className="text-3xl font-black text-[var(--text-primary)] tracking-tighter">PKR {statsData.total.toLocaleString()}</p>
+                    <p className="text-3xl font-black text-[var(--text-primary)] tracking-tighter">€{statsData.total.toLocaleString()}</p>
                 </div>
                 <div className="bg-[var(--bg-card)] p-6 rounded-3xl border border-[var(--bg-inner)] shadow-xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full blur-2xl -translate-y-12 translate-x-12 group-hover:bg-emerald-500/10 transition-all duration-500" />
                     <p className="text-[10px] font-black uppercase text-emerald-500 tracking-widest mb-2 opacity-60">Settled / Received</p>
-                    <p className="text-3xl font-black text-emerald-500 tracking-tighter">PKR {statsData.received.toLocaleString()}</p>
+                    <p className="text-3xl font-black text-emerald-500 tracking-tighter">€{statsData.received.toLocaleString()}</p>
                 </div>
                 <div className="bg-[var(--bg-card)] p-6 rounded-3xl border border-[var(--bg-inner)] shadow-xl relative overflow-hidden group">
                     <div className="absolute top-0 right-0 w-24 h-24 bg-amber-500/5 rounded-full blur-2xl -translate-y-12 translate-x-12 group-hover:bg-amber-500/10 transition-all duration-500" />
                     <p className="text-[10px] font-black uppercase text-amber-500 tracking-widest mb-2 opacity-60">Pending Settlement</p>
-                    <p className="text-3xl font-black text-amber-500 tracking-tighter">PKR {statsData.pending.toLocaleString()}</p>
+                    <p className="text-3xl font-black text-amber-500 tracking-tighter">€{statsData.pending.toLocaleString()}</p>
                 </div>
             </div>
 
@@ -260,7 +260,7 @@ export default function FinanceIncome() {
                                             </div>
                                         </td>
                                         <td className="px-8 py-6">
-                                            <p className="text-3xl font-black text-[var(--text-primary)] leading-none tracking-tighter">PKR {rec.amount.toLocaleString()}</p>
+                                            <p className="text-3xl font-black text-[var(--text-primary)] leading-none tracking-tighter">€{rec.amount.toLocaleString()}</p>
                                         </td>
                                         <td className="px-8 py-6">
                                             <div className="flex justify-center">
@@ -330,7 +330,7 @@ export default function FinanceIncome() {
                                         <div className="space-y-2">
                                             <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">Currency</label>
                                             <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black transition-all cursor-pointer shadow-inner">
-                                                <option value="PKR">PKR</option>
+                                                <option value="EUR">EUR (€)</option>
                                                 <option value="USD">USD ($)</option>
                                                 <option value="EUR">EUR (€)</option>
                                                 <option value="GBP">GBP (£)</option>
@@ -340,14 +340,14 @@ export default function FinanceIncome() {
                                         </div>
                                         <div className="space-y-2 text-emerald-500">
                                             <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">
-                                                {currency === 'PKR' ? 'Net Capital (PKR)' : `Amount in ${currency}`}
+                                                {currency === 'EUR' ? 'Net Capital (EUR)' : `Amount in ${currency}`}
                                             </label>
                                             <input required value={enteredAmount} onChange={e => setEnteredAmount(e.target.value)} type="number" step="0.01" placeholder="0.00" className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-emerald-500 font-black transition-all focus:ring-4 focus:ring-emerald-500/10 shadow-inner" />
                                             <p className="text-[10px] text-gray-400 mt-1 font-bold">
                                                  {enteredAmount
-                                                     ? (currency === 'PKR'
-                                                         ? `Direct PKR Amount (No Conversion)`
-                                                         : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} PKR (Rate: ${getRate(currency)})`)
+                                                     ? (currency === 'EUR'
+                                                         ? `Direct EUR Amount (No Conversion)`
+                                                         : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} EUR (Rate: ${getRate(currency)})`)
                                                      : '\u00A0'}
                                              </p>
                                         </div>

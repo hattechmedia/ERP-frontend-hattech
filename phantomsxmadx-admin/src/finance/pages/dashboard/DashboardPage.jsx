@@ -98,7 +98,7 @@ export const DashboardPage = () => {
   const filteredExpenseList = expenseList.filter((e) => isRecordInFilter(e.date));
   const filteredPayrollList = payrollList.filter((p) => isRecordInFilter(p.date));
 
-  // Active Calculated Metrics for Selected Period or Date Range (in PKR base)
+  // Active Calculated Metrics for Selected Period or Date Range (in EUR base)
   const isCustomRangeActive = Boolean(dateRange.start || dateRange.end);
   const isFiltered = isCustomRangeActive || selectedMonth !== 'ALL' || yearFilter !== 'ALL';
 

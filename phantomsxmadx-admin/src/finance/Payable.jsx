@@ -111,7 +111,7 @@ export default function FinancePayable() {
 
                 <div className="text-right border-l border-[var(--bg-inner)] pl-6">
                     <p className="text-[10px] font-black uppercase text-[var(--text-secondary)] opacity-50 tracking-[0.2em] mb-1">Total Outstanding Payable</p>
-                    <p className="text-3xl font-black text-rose-500 leading-none tracking-tighter font-mono">PKR {totalPayableAmount.toLocaleString()}</p>
+                    <p className="text-3xl font-black text-rose-500 leading-none tracking-tighter font-mono">€{totalPayableAmount.toLocaleString()}</p>
                 </div>
             </div>
 
@@ -141,7 +141,7 @@ export default function FinancePayable() {
                                 <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest">Category</th>
                                 <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest">Recipient / Vendor</th>
                                 <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest">Date</th>
-                                <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest text-right">Amount (PKR)</th>
+                                <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest text-right">Amount (EUR)</th>
                                 <th className="px-8 py-5 text-[9px] font-black uppercase text-[var(--text-secondary)] tracking-widest text-center">Action</th>
                             </tr>
                         </thead>
@@ -211,7 +211,7 @@ export default function FinancePayable() {
                                     <input value={editForm.recipient} onChange={e => setEditForm({ ...editForm, recipient: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-[var(--bg-inner)] outline-none text-xs font-bold uppercase text-[var(--text-primary)] mt-1" />
                                 </div>
                                 <div>
-                                    <label className="text-[10px] font-bold text-[var(--text-secondary)] uppercase">Amount (PKR)</label>
+                                    <label className="text-[10px] font-bold text-[var(--text-secondary)] uppercase">Amount (EUR)</label>
                                     <input required type="number" step="0.01" value={editForm.amount} onChange={e => setEditForm({ ...editForm, amount: e.target.value })} className="w-full px-4 py-3 rounded-xl bg-[var(--bg-inner)] outline-none text-xs font-bold text-rose-500 mt-1" />
                                 </div>
                                 <div>

@@ -288,11 +288,11 @@ export default function Payroll() {
                 <table style="width: 100%; border-collapse: collapse;">
                     <tr style="background: #f1f5f9;">
                         <th style="padding: 15px 20px; text-align: left; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Description</th>
-                        <th style="padding: 15px 20px; text-align: right; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Amount (PKR)</th>
+                        <th style="padding: 15px 20px; text-align: right; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Amount (EUR)</th>
                     </tr>
                     <tr>
                         <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #334155;">Basic Salary</td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #334155;">${(record.basicSalary || 0).toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #334155;">€${(record.basicSalary || 0).toLocaleString()}</td>
                     </tr>
                     ${(record.bonus > 0) ? `
                     <tr>
@@ -300,21 +300,21 @@ export default function Payroll() {
                             Bonus / Incentives ${record.bonusReason ? `(${record.bonusReason})` : ''}
                             ${record.bonusDate ? `<div style='font-size:10px; color:#64748b'>On ${new Date(record.bonusDate).toLocaleDateString()}</div>` : ''}
                         </td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #16a34a;">+ ${record.bonus.toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #16a34a;">+ €${record.bonus.toLocaleString()}</td>
                     </tr>` : ''}
                     ${(record.absentDeduction > 0 || (record.absentDays > 0 && !record.absentDeduction)) ? `
                     <tr>
                         <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #dc2626;">
                             Absent & Late Deduction (${record.absentDays || 0} days)
                         </td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- ${(record.absentDeduction || Math.round((record.absentDays || 0) * ((record.basicSalary || 0)/30))).toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- €${(record.absentDeduction || Math.round((record.absentDays || 0) * ((record.basicSalary || 0)/30))).toLocaleString()}</td>
                     </tr>` : ''}
                     ${(record.missingReports > 0 || record.missingReportDeduction > 0) ? `
                     <tr>
                         <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #dc2626;">
-                            Missing Daily Reports Penalty (${record.missingReports || 0} missing @ PKR 200)
+                            Missing Daily Reports Penalty (${record.missingReports || 0} missing @ €15)
                         </td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- ${(record.missingReportDeduction !== undefined ? record.missingReportDeduction : (record.missingReports * 200)).toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- €${(record.missingReportDeduction !== undefined ? record.missingReportDeduction : (record.missingReports * 15)).toLocaleString()}</td>
                     </tr>` : ''}
                     ${(record.deductions > 0 && !record.absentDeduction && !record.missingReportDeduction && !record.missingReports) ? `
                     <tr>
@@ -322,21 +322,21 @@ export default function Payroll() {
                             Deductions ${record.deductionReason ? `(${record.deductionReason})` : ''}
                             ${record.deductionDate ? `<div style='font-size:10px; color:#64748b'>On ${new Date(record.deductionDate).toLocaleDateString()}</div>` : ''}
                         </td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- ${record.deductions.toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- €${record.deductions.toLocaleString()}</td>
                     </tr>` : ''}
                     ${record.paidAmount > 0 ? `
                     <tr>
                         <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #334155;">Amount Paid</td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #334155;">${record.paidAmount.toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #334155;">€${record.paidAmount.toLocaleString()}</td>
                     </tr>
                     <tr>
                         <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #334155;">Balance Due</td>
-                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">${balance.toLocaleString()}</td>
+                        <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">€${balance.toLocaleString()}</td>
                     </tr>
                     ` : ''}
                     <tr style="background: #eff6ff;">
                         <td style="padding: 20px; font-weight: 700; font-size: 16px; color: #1e3a8a;">NET PAYABLE</td>
-                        <td style="padding: 20px; text-align: right; font-weight: 800; font-size: 24px; color: #2563eb;">PKR ${record.netSalary.toLocaleString()}</td>
+                        <td style="padding: 20px; text-align: right; font-weight: 800; font-size: 24px; color: #2563eb;">€${record.netSalary.toLocaleString()}</td>
                     </tr>
                 </table>
             </div>
@@ -556,7 +556,7 @@ export default function Payroll() {
                                                 {emp.name.replace(/ User$/i, '')}
                                             </td>
                                             <td className="px-6 py-4 text-gray-500">{emp.position}</td>
-                                            <td className="px-6 py-4 font-bold text-gray-800 dark:text-gray-200">PKR {(emp.salary || 0).toLocaleString()}</td>
+                                            <td className="px-6 py-4 font-bold text-gray-800 dark:text-gray-200">€{(emp.salary || 0).toLocaleString()}</td>
                                             <td className="px-6 py-4 text-xs text-gray-500">
                                                 {emp.bankDetails?.bankName ? (
                                                     <>{emp.bankDetails.bankName}<br />{emp.bankDetails.accountNumber}</>
@@ -579,20 +579,20 @@ export default function Payroll() {
                                                 {record.employee?.name ? record.employee.name.replace(/ User$/i, '') : <span className="text-red-500 italic font-bold">Deleted Employee ({record.employee?._id || 'Record ID: ' + record._id})</span>}
                                                 <div className="text-xs text-gray-400">{record.employee?.department || 'Orphaned Entry'}</div>
                                             </td>
-                                            <td className="px-6 py-4 text-gray-600 dark:text-gray-300">PKR {record.basicSalary.toLocaleString()}</td>
+                                            <td className="px-6 py-4 text-gray-600 dark:text-gray-300">€{record.basicSalary.toLocaleString()}</td>
                                             <td className="px-6 py-4">
                                                 <div className="space-y-1 text-xs">
-                                                    {record.bonus > 0 && <div className="text-green-600">+{record.bonus} {record.bonusDate && `(${new Date(record.bonusDate).toLocaleDateString().slice(0, 5)})`}</div>}
-                                                    {record.deductions > 0 && <div className="text-red-500">-{record.deductions} {record.deductionDate && `(${new Date(record.deductionDate).toLocaleDateString().slice(0, 5)})`}</div>}
+                                                    {record.bonus > 0 && <div className="text-green-600">+€{record.bonus} {record.bonusDate && `(${new Date(record.bonusDate).toLocaleDateString().slice(0, 5)})`}</div>}
+                                                    {record.deductions > 0 && <div className="text-red-500">-€{record.deductions} {record.deductionDate && `(${new Date(record.deductionDate).toLocaleDateString().slice(0, 5)})`}</div>}
                                                     {record.missingReports > 0 && (
                                                         <div className="text-amber-600 dark:text-amber-400 font-medium text-[11px]">
-                                                            {record.missingReports} missed rpt (-PKR {record.missingReportDeduction !== undefined ? record.missingReportDeduction : (record.missingReports * 200)})
+                                                            {record.missingReports} missed rpt (-€{record.missingReportDeduction !== undefined ? record.missingReportDeduction : (record.missingReports * 15)})
                                                         </div>
                                                     )}
                                                     {record.bonus === 0 && record.deductions === 0 && (!record.missingReports || record.missingReports === 0) && <span className="text-gray-400">-</span>}
                                                 </div>
                                             </td>
-                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-white">PKR {record.netSalary.toLocaleString()}</td>
+                                            <td className="px-6 py-4 font-bold text-gray-900 dark:text-white">€{record.netSalary.toLocaleString()}</td>
                                             <td className="px-6 py-4">
                                                 <span className={`px-2 py-1 rounded-full text-xs font-bold ${record.status === 'Paid' ? 'bg-green-100 text-green-800' :
                                                     record.status === 'Partial' ? 'bg-yellow-100 text-yellow-800' :
@@ -661,8 +661,8 @@ export default function Payroll() {
                                         <span className="text-gray-500">{manageModal.record.employee?.position}</span>
                                     </div>
                                     <div className="grid grid-cols-2 gap-2 text-[11px]">
-                                        <div><span className="font-bold text-gray-500">Base Salary:</span> PKR {(Number(manageValues.basicSalary) || 0).toLocaleString()}</div>
-                                        <div><span className="font-bold text-gray-500">Daily Salary (30 Days):</span> PKR {Math.round((Number(manageValues.basicSalary) || 0) / 30).toLocaleString()}</div>
+                                        <div><span className="font-bold text-gray-500">Base Salary:</span> €{(Number(manageValues.basicSalary) || 0).toLocaleString()}</div>
+                                        <div><span className="font-bold text-gray-500">Daily Salary (30 Days):</span> €{Math.round((Number(manageValues.basicSalary) || 0) / 30).toLocaleString()}</div>
                                         <div><span className="font-bold text-gray-500">Total Absents:</span> <span className="font-bold text-red-600 dark:text-red-400">{manageModal.record.absentDays || 0} days</span></div>
                                         <div><span className="font-bold text-gray-500">Approved Leaves:</span> <span className="font-bold text-green-600 dark:text-green-400">{manageModal.record.leaveDays || 0} days (Paid)</span></div>
                                         {manageModal.record.lateDays > 0 && (
@@ -673,15 +673,15 @@ export default function Payroll() {
                                     </div>
                                     <div className="border-t pt-2 mt-2 dark:border-gray-700 flex justify-between items-center text-[11px] font-bold">
                                         <span className="text-red-700 dark:text-red-400">Absent Deduction:</span>
-                                        <span className="text-red-700 dark:text-red-400">- PKR {Math.round((manageModal.record.absentDays || 0) * ((Number(manageValues.basicSalary) || 0) / 30)).toLocaleString()}</span>
+                                        <span className="text-red-700 dark:text-red-400">- €{Math.round((manageModal.record.absentDays || 0) * ((Number(manageValues.basicSalary) || 0) / 30)).toLocaleString()}</span>
                                     </div>
                                     {((manageModal.record.missingReports > 0) || (manageModal.record.missingReportDeduction > 0)) && (
                                         <div className="border-t pt-2 mt-2 dark:border-gray-700 flex justify-between items-center text-[11px] font-bold">
                                             <span className="text-amber-700 dark:text-amber-400">
-                                                Missing Daily Reports Penalty ({manageModal.record.missingReports || 0} missing @ PKR 200):
+                                                Missing Daily Reports Penalty ({manageModal.record.missingReports || 0} missing @ €15):
                                             </span>
                                             <span className="text-amber-700 dark:text-amber-400">
-                                                - PKR {(manageModal.record.missingReportDeduction !== undefined ? manageModal.record.missingReportDeduction : ((manageModal.record.missingReports || 0) * 200)).toLocaleString()}
+                                                - €{(manageModal.record.missingReportDeduction !== undefined ? manageModal.record.missingReportDeduction : ((manageModal.record.missingReports || 0) * 15)).toLocaleString()}
                                             </span>
                                         </div>
                                     )}
@@ -694,18 +694,18 @@ export default function Payroll() {
                                                         ? `Late Marks Deduction (${manageModal.record.lateDays} Late Days)` 
                                                         : 'Deduction')}:
                                             </span>
-                                            <span>- PKR {Number(manageValues.otherDeductions).toLocaleString()}</span>
+                                            <span>- €{Number(manageValues.otherDeductions).toLocaleString()}</span>
                                         </div>
                                     )}
                                     {Number(manageValues.bonus) > 0 && (
                                         <div className="flex justify-between items-center text-[11px] font-bold text-green-600 dark:text-green-400">
                                             <span>Bonus Incentive ({manageValues.bonusReason || 'Bonus'}):</span>
-                                            <span>+ PKR {Number(manageValues.bonus).toLocaleString()}</span>
+                                            <span>+ €{Number(manageValues.bonus).toLocaleString()}</span>
                                         </div>
                                     )}
                                     <div className="flex justify-between items-center text-xs font-black border-t border-dashed pt-2 dark:border-gray-700 text-blue-900 dark:text-blue-300">
                                         <span>Calculated Net Pay:</span>
-                                        <span>PKR {Math.max(0, (Number(manageValues.basicSalary) || 0) - Math.round((manageModal.record.absentDays || 0) * ((Number(manageValues.basicSalary) || 0) / 30)) - (manageModal.record.missingReportDeduction !== undefined ? Number(manageModal.record.missingReportDeduction) : ((Number(manageModal.record.missingReports) || 0) * 200)) + (Number(manageValues.bonus) || 0) - (Number(manageValues.otherDeductions) || 0)).toLocaleString()}</span>
+                                        <span>€{Math.max(0, (Number(manageValues.basicSalary) || 0) - Math.round((manageModal.record.absentDays || 0) * ((Number(manageValues.basicSalary) || 0) / 30)) - (manageModal.record.missingReportDeduction !== undefined ? Number(manageModal.record.missingReportDeduction) : ((Number(manageModal.record.missingReports) || 0) * 15)) + (Number(manageValues.bonus) || 0) - (Number(manageValues.otherDeductions) || 0)).toLocaleString()}</span>
                                     </div>
                                 </div>
                             )}
@@ -888,17 +888,17 @@ export default function Payroll() {
                                             ) : historyModal.records.map((record) => (
                                                 <tr key={record._id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50">
                                                     <td className="px-6 py-4 font-medium dark:text-white">{record.month}</td>
-                                                    <td className="px-6 py-4 dark:text-gray-300">PKR {record.basicSalary.toLocaleString()}</td>
-                                                    <td className="px-6 py-4 font-bold dark:text-white">PKR {record.netSalary.toLocaleString()}</td>
+                                                    <td className="px-6 py-4 dark:text-gray-300">€{record.basicSalary.toLocaleString()}</td>
+                                                    <td className="px-6 py-4 font-bold dark:text-white">€{record.netSalary.toLocaleString()}</td>
                                                     <td className="px-6 py-4 dark:text-gray-300">
-                                                        PKR {(record.paidAmount || 0).toLocaleString()}
+                                                        €{(record.paidAmount || 0).toLocaleString()}
                                                         {record.paymentDate && <div className="text-xs text-gray-400">{new Date(record.paymentDate).toLocaleDateString()}</div>}
                                                     </td>
                                                     <td className="px-6 py-4">
                                                         <span className={`px-2 py-1 rounded-full text-xs font-bold ${record.status === 'Paid' ? 'bg-green-100 text-green-800' :
                                                             record.status === 'Partial' ? 'bg-yellow-100 text-yellow-800' :
-                                                                'bg-gray-100 text-gray-600'
-                                                            }`}>{record.status}</span>
+                                                                 'bg-gray-100 text-gray-600'
+                                                             }`}>{record.status}</span>
                                                     </td>
                                                     <td className="px-6 py-4 flex items-center justify-center gap-2">
                                                         <button
@@ -948,11 +948,11 @@ export default function Payroll() {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 bg-gray-50 dark:bg-gray-700/50 p-4 rounded-xl">
                                     <div>
                                         <p className="text-xs text-gray-500 uppercase">Basic Salary</p>
-                                        <p className="font-bold text-gray-900 dark:text-white">PKR {payslipModal.record.basicSalary.toLocaleString()}</p>
+                                        <p className="font-bold text-gray-900 dark:text-white">€{payslipModal.record.basicSalary.toLocaleString()}</p>
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 uppercase">Net Salary</p>
-                                        <p className="font-bold text-blue-600 dark:text-blue-400">PKR {payslipModal.record.netSalary.toLocaleString()}</p>
+                                        <p className="font-bold text-blue-600 dark:text-blue-400">€{payslipModal.record.netSalary.toLocaleString()}</p>
                                     </div>
                                     <div>
                                         <p className="text-xs text-gray-500 uppercase">Status</p>

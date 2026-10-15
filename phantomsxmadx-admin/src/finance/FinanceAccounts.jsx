@@ -244,15 +244,15 @@ export default function FinanceAccounts() {
                                 <div className="mt-6 pt-6 border-t border-[var(--bg-inner)] space-y-2">
                                     <div className="flex justify-between text-xs">
                                         <span className="text-[9px] font-black text-[var(--text-secondary)] uppercase opacity-60">Period Income:</span>
-                                        <span className="font-mono font-bold text-emerald-400">+ PKR {totalInc.toLocaleString()}</span>
+                                        <span className="font-mono font-bold text-emerald-400">+ €{totalInc.toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between text-xs">
                                         <span className="text-[9px] font-black text-[var(--text-secondary)] uppercase opacity-60">Period Expenses:</span>
-                                        <span className="font-mono font-bold text-rose-500">- PKR {totalExp.toLocaleString()}</span>
+                                        <span className="font-mono font-bold text-rose-500">- €{totalExp.toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between text-xs pt-2 border-t border-white/5">
                                         <span className="text-[9px] font-black text-[#004AAD] uppercase tracking-widest">Net Available Balance:</span>
-                                        <span className="font-black text-[#004AAD] font-mono">PKR {netBal.toLocaleString()}</span>
+                                        <span className="font-black text-[#004AAD] font-mono">€{netBal.toLocaleString()}</span>
                                     </div>
                                 </div>
                             </motion.div>
@@ -316,7 +316,7 @@ export default function FinanceAccounts() {
                                     />
                                 </div>
                                 <div>
-                                    <label className="text-[9px] font-black uppercase text-[var(--text-secondary)] block mb-1">Opening Balance (PKR)</label>
+                                    <label className="text-[9px] font-black uppercase text-[var(--text-secondary)] block mb-1">Opening Balance (EUR)</label>
                                     <input 
                                         required 
                                         type="number"

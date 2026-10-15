@@ -10,7 +10,7 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
     name: '',
     designation: '',
     department: '',
-    currency: selectedCurrency || 'PKR',
+    currency: selectedCurrency || 'EUR',
     basicSalary: '',
     bankName: 'Meezan Bank Ltd',
     accountTitle: '',
@@ -20,9 +20,9 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
 
   useEffect(() => {
     if (initialData && isOpen) {
-      const activeCurr = initialData.currency || selectedCurrency || 'PKR';
+      const activeCurr = initialData.currency || selectedCurrency || 'EUR';
       const salaryInActiveCurr = initialData.basicSalary
-        ? Math.round(convertCurrency(initialData.basicSalary, 'PKR', activeCurr))
+        ? Math.round(convertCurrency(initialData.basicSalary, 'EUR', activeCurr))
         : '';
 
       setFormData({
@@ -41,7 +41,7 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
         name: '',
         designation: '',
         department: '',
-        currency: selectedCurrency || 'PKR',
+        currency: selectedCurrency || 'EUR',
         basicSalary: '',
         bankName: 'Meezan Bank Ltd',
         accountTitle: '',
@@ -57,7 +57,7 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
   const handleCurrencyChange = (newCurrency) => {
     if (formData.basicSalary && !isNaN(formData.basicSalary)) {
       const converted = convertCurrency(formData.basicSalary, formData.currency, newCurrency);
-      const formattedSalary = newCurrency === 'PKR' ? Math.round(converted) : Number(converted.toFixed(2));
+      const formattedSalary = newCurrency === 'EUR' ? Math.round(converted) : Number(converted.toFixed(2));
       setFormData({
         ...formData,
         currency: newCurrency,
@@ -101,9 +101,9 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
     onClose();
   };
 
-  // Live Equivalent in Base PKR
+  // Live Equivalent in Base EUR
   const basePkrEquivalent = formData.basicSalary && !isNaN(formData.basicSalary)
-    ? convertCurrency(formData.basicSalary, formData.currency, 'PKR')
+    ? convertCurrency(formData.basicSalary, formData.currency, 'EUR')
     : 0;
 
   return (
@@ -210,10 +210,10 @@ export const AddEmployeeModal = ({ isOpen, onClose, initialData = null }) => {
                 value={formData.basicSalary}
                 onChange={(e) => setFormData({ ...formData, basicSalary: e.target.value })}
               />
-              {formData.currency !== 'PKR' && formData.basicSalary > 0 && (
+              {formData.currency !== 'EUR' && formData.basicSalary > 0 && (
                 <div className="text-[10px] font-bold text-sky-600 mt-1 flex items-center justify-between">
                   <span>Base:</span>
-                  <span>{formatCurrency(basePkrEquivalent, 'PKR')}</span>
+                  <span>{formatCurrency(basePkrEquivalent, 'EUR')}</span>
                 </div>
               )}
             </div>

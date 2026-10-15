@@ -72,7 +72,7 @@ export default function FinanceCashflow() {
         documentTitle: `Finance_Slip_${selectedSlip?._id?.slice(-8)}`
     });
 
-    const [currency, setCurrency] = useState("PKR");
+    const [currency, setCurrency] = useState("EUR");
     const [enteredAmount, setEnteredAmount] = useState("");
     const [usdRate, setUsdRate] = useState(278.50);
 
@@ -105,7 +105,7 @@ export default function FinanceCashflow() {
         fetch('https://open.er-api.com/v6/latest/USD')
             .then(res => res.json())
             .then(data => {
-                if (data && data.rates && data.rates.PKR) setUsdRate(data.rates.PKR);
+                if (data && data.rates && 1.08) setUsdRate(1.08);
             })
             .catch(err => console.error("Failed to fetch USD rate", err));
     }, []);
@@ -194,8 +194,8 @@ export default function FinanceCashflow() {
             const endpoint = isInc ? '/finance/income' : '/finance/expense';
 
             const rawAmount = parseFloat(enteredAmount) || 0;
-            const rate = currency === "PKR" ? 1 : getRate(currency);
-            const finalAmount = currency === "PKR" ? rawAmount : Math.round(rawAmount * rate);
+            const rate = currency === "EUR" ? 1 : getRate(currency);
+            const finalAmount = currency === "EUR" ? rawAmount : Math.round(rawAmount * rate);
 
             const payload = isInc ? {
                 source: formData.source || (quickModalType === 'AR' ? 'Accounts Receivable' : 'Direct Income'),
@@ -209,7 +209,7 @@ export default function FinanceCashflow() {
                 receiverAccTitle: formData.receiverAccTitle || 'Meezan Bank (Main)',
                 receiverAccNo: formData.receiverAccNo || '010203040506',
                 paymentMethod: formData.paymentMethod || 'Transfer',
-                description: currency !== "PKR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
+                description: currency !== "EUR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
             } : {
                 item: formData.source || formData.item || (quickModalType === 'AP' ? 'Accounts Payable' : (quickModalType === 'Charity' ? 'Charity Payment' : 'Business Expense')),
                 amount: finalAmount,
@@ -220,7 +220,7 @@ export default function FinanceCashflow() {
                 recipient: formData.recipient || '',
                 performedBy: formData.performedBy || 'Meezan Bank (Main)',
                 debtorName: formData.debtorName || '',
-                description: currency !== "PKR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
+                description: currency !== "EUR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
             };
 
             const res = await api.post(endpoint, payload);
@@ -434,7 +434,7 @@ export default function FinanceCashflow() {
                     </div>
                     <div>
                         <h4 className="text-[var(--text-secondary)] text-[9px] font-black uppercase tracking-[0.15em] mb-1">Cash in Hand (Bank Vaults)</h4>
-                        <p className="text-2xl font-black text-[var(--text-primary)]">PKR {cashInHandTotal.toLocaleString()}</p>
+                        <p className="text-2xl font-black text-[var(--text-primary)]">€{cashInHandTotal.toLocaleString()}</p>
                         <p className="text-[8px] font-bold text-emerald-500 uppercase mt-1 flex items-center gap-1">
                             Click to view bank transactions →
                         </p>
@@ -458,7 +458,7 @@ export default function FinanceCashflow() {
                     </div>
                     <div>
                         <h4 className="text-[var(--text-secondary)] text-[9px] font-black uppercase tracking-[0.15em] mb-1">Account Payable (Unpaid)</h4>
-                        <p className="text-2xl font-black text-rose-500">PKR {totalUnpaidPayables.toLocaleString()}</p>
+                        <p className="text-2xl font-black text-rose-500">€{totalUnpaidPayables.toLocaleString()}</p>
                         <p className="text-[8px] font-bold text-rose-400 uppercase mt-1 flex items-center gap-1">
                             Click to view unpaid bills ↓
                         </p>
@@ -482,7 +482,7 @@ export default function FinanceCashflow() {
                     </div>
                     <div>
                         <h4 className="text-[var(--text-secondary)] text-[9px] font-black uppercase tracking-[0.15em] mb-1">Account Receivable (Pending)</h4>
-                        <p className="text-2xl font-black text-amber-500">PKR {totalPendingReceivables.toLocaleString()}</p>
+                        <p className="text-2xl font-black text-amber-500">€{totalPendingReceivables.toLocaleString()}</p>
                         <p className="text-[8px] font-bold text-amber-400 uppercase mt-1 flex items-center gap-1">
                             Click to view pending payments ↓
                         </p>
@@ -506,7 +506,7 @@ export default function FinanceCashflow() {
                     </div>
                     <div>
                         <h4 className="text-[var(--text-secondary)] text-[9px] font-black uppercase tracking-[0.15em] mb-1">Expenses (Paid Out)</h4>
-                        <p className="text-2xl font-black text-sky-400">PKR {totalPaidExpenses.toLocaleString()}</p>
+                        <p className="text-2xl font-black text-sky-400">€{totalPaidExpenses.toLocaleString()}</p>
                         <p className="text-[8px] font-bold text-sky-400 uppercase mt-1 flex items-center gap-1">
                             Click to view paid expenses ↓
                         </p>
@@ -521,21 +521,21 @@ export default function FinanceCashflow() {
                     <div className="bg-[#004AAD]/10 p-6 rounded-3xl border border-[#004AAD]/20 text-center">
                         <p className="text-4xl font-black text-[#004AAD]">35%</p>
                         <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase mt-2">Business Expenses</p>
-                        <p className="text-xs font-bold text-[var(--text-primary)] mt-1">PKR {Math.round(periodGrossRevenue * 0.35).toLocaleString()}</p>
+                        <p className="text-xs font-bold text-[var(--text-primary)] mt-1">€{Math.round(periodGrossRevenue * 0.35).toLocaleString()}</p>
                     </div>
                     <div className="bg-amber-500/10 p-6 rounded-3xl border border-amber-500/20 text-center">
                         <p className="text-4xl font-black text-amber-500">15%</p>
                         <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase mt-2">Company Reserve</p>
-                        <p className="text-xs font-bold text-[var(--text-primary)] mt-1">PKR {Math.round(periodGrossRevenue * 0.15).toLocaleString()}</p>
+                        <p className="text-xs font-bold text-[var(--text-primary)] mt-1">€{Math.round(periodGrossRevenue * 0.15).toLocaleString()}</p>
                     </div>
                     <div className="bg-pink-500/10 p-6 rounded-3xl border border-pink-500/20 text-center">
                         <p className="text-4xl font-black text-pink-500">4%</p>
                         <p className="text-[9px] font-black text-[var(--text-secondary)] uppercase mt-2">Charity Pool Remaining</p>
                         <p className="text-xs font-bold text-[var(--text-primary)] mt-1">
-                            PKR {periodCharityRemaining.toLocaleString()}
+                            €{periodCharityRemaining.toLocaleString()}
                         </p>
                         <p className="text-[8px] font-bold text-pink-400 mt-0.5">
-                            (Allocated: PKR {periodCharityAllocated.toLocaleString()})
+                            (Allocated: €{periodCharityAllocated.toLocaleString()})
                         </p>
                     </div>
                 </div>
@@ -575,7 +575,7 @@ export default function FinanceCashflow() {
                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70">Date</th>
                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70">Title / Entity</th>
                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70">Category</th>
-                                    <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70 text-right">Amount (PKR)</th>
+                                    <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70 text-right">Amount (EUR)</th>
                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-widest text-white/70 text-center">Status / Action</th>
                                 </tr>
                             </thead>
@@ -589,7 +589,7 @@ export default function FinanceCashflow() {
                                             <p className="text-[9px] text-[var(--text-secondary)]">{inc.payerName || 'Client Settlement'}</p>
                                         </td>
                                         <td className="px-6 py-4 text-xs font-bold text-[var(--text-secondary)]">{inc.category}</td>
-                                        <td className="px-6 py-4 text-right text-xs font-black text-emerald-500">+ PKR {inc.amount?.toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-right text-xs font-black text-emerald-500">+ €{inc.amount?.toLocaleString()}</td>
                                         <td className="px-6 py-4 text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 <button onClick={() => { setSelectedSlip(inc); setShowSlipModal(true); }} className="px-3 py-1 bg-emerald-500/10 text-emerald-500 rounded-full text-[9px] font-black uppercase hover:bg-emerald-500/20 transition-all">
@@ -615,7 +615,7 @@ export default function FinanceCashflow() {
                                             <p className="text-[9px] text-[var(--text-secondary)]">{exp.recipient || exp.performedBy || 'Vendor Bill'}</p>
                                         </td>
                                         <td className="px-6 py-4 text-xs font-bold text-[var(--text-secondary)]">{exp.category}</td>
-                                        <td className="px-6 py-4 text-right text-xs font-black text-rose-500">- PKR {exp.amount?.toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-right text-xs font-black text-rose-500">- €{exp.amount?.toLocaleString()}</td>
                                         <td className="px-6 py-4 text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 <button onClick={() => markPaidExpense(exp._id)} className="px-4 py-1.5 bg-[#004AAD] text-white rounded-xl text-[9px] font-bold uppercase transition-all shadow-md">
@@ -641,7 +641,7 @@ export default function FinanceCashflow() {
                                             <p className="text-[9px] text-[var(--text-secondary)]">Pending Client Income</p>
                                         </td>
                                         <td className="px-6 py-4 text-xs font-bold text-[var(--text-secondary)]">{rec.category || 'Receivable'}</td>
-                                        <td className="px-6 py-4 text-right text-xs font-black text-amber-500">PKR {(rec.amount || 0).toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-right text-xs font-black text-amber-500">€{(rec.amount || 0).toLocaleString()}</td>
                                         <td className="px-6 py-4 text-center">
                                             <div className="flex items-center justify-center gap-2">
                                                 <button onClick={() => markReceivedIncome(rec._id, rec.category === 'Loan')} className="px-4 py-1.5 bg-emerald-600 text-white rounded-xl text-[9px] font-bold uppercase transition-all shadow-md">
@@ -671,7 +671,7 @@ export default function FinanceCashflow() {
                                                     <p className="text-[9px] text-sky-400/80">Aggregated Total Staff Salary Payout from Payroll Module</p>
                                                 </td>
                                                 <td className="px-6 py-4 text-xs font-bold text-sky-400">Salary Expense</td>
-                                                <td className="px-6 py-4 text-right text-xs font-black text-rose-400">- PKR {totalPaidPayroll.toLocaleString()}</td>
+                                                <td className="px-6 py-4 text-right text-xs font-black text-rose-400">- €{totalPaidPayroll.toLocaleString()}</td>
                                                 <td className="px-6 py-4 text-center">
                                                     <span className="px-3 py-1 rounded-full bg-sky-500/20 text-sky-300 text-[9px] font-black uppercase border border-sky-400/30">
                                                         Payroll Settled
@@ -687,7 +687,7 @@ export default function FinanceCashflow() {
                                                     <p className="text-[9px] text-[var(--text-secondary)]">{exp.performedBy || 'Paid Outflow'}</p>
                                                 </td>
                                                 <td className="px-6 py-4 text-xs font-bold text-[var(--text-secondary)]">{exp.category}</td>
-                                                <td className="px-6 py-4 text-right text-xs font-black text-sky-400">- PKR {exp.amount?.toLocaleString()}</td>
+                                                <td className="px-6 py-4 text-right text-xs font-black text-sky-400">- €{exp.amount?.toLocaleString()}</td>
                                                 <td className="px-6 py-4 text-center">
                                                     <div className="flex items-center justify-center gap-2">
                                                         <span className="px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 text-[9px] font-black uppercase">Paid</span>
@@ -728,7 +728,7 @@ export default function FinanceCashflow() {
                                         {quickModalType === 'Income' ? 'REVENUE ENTRY' : 'EXPENSE DISBURSEMENT'}
                                     </h3>
                                     <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-[0.2em] mt-2 opacity-60">
-                                        {quickModalType === 'Income' ? 'INITIALIZE OFFICIAL PKR REVENUE FLOW' : 'RECORD OFFICIAL OUTFLOW & DISBURSEMENT'}
+                                        {quickModalType === 'Income' ? 'INITIALIZE OFFICIAL EUR REVENUE FLOW' : 'RECORD OFFICIAL OUTFLOW & DISBURSEMENT'}
                                     </p>
                                 </div>
                                 <button onClick={() => setShowQuickModal(false)} className="p-3 text-[var(--text-secondary)] bg-[var(--bg-inner)] hover:bg-red-500/10 hover:text-red-500 rounded-2xl transition-all">
@@ -764,17 +764,16 @@ export default function FinanceCashflow() {
                                                 onChange={e => setCurrency(e.target.value)} 
                                                 className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black transition-all cursor-pointer shadow-inner uppercase"
                                             >
-                                                <option value="PKR">PKR</option>
-                                                <option value="USD">USD ($)</option>
                                                 <option value="EUR">EUR (€)</option>
+                                                <option value="USD">USD ($)</option>
                                                 <option value="GBP">GBP (£)</option>
+                                                <option value="CHF">CHF (Fr)</option>
                                                 <option value="AUD">AUD (A$)</option>
-                                                <option value="SAR">SAR (﷼)</option>
                                             </select>
                                         </div>
                                         <div className="space-y-2 text-emerald-500">
                                             <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">
-                                                {currency === 'PKR' ? 'AMOUNT (PKR)' : `AMOUNT IN ${currency}`}
+                                                {currency === 'EUR' ? 'AMOUNT (EUR)' : `AMOUNT IN ${currency}`}
                                             </label>
                                             <input 
                                                 required 
@@ -787,9 +786,9 @@ export default function FinanceCashflow() {
                                             />
                                             <p className="text-[10px] text-emerald-400 mt-1 font-bold">
                                                  {enteredAmount
-                                                     ? (currency === 'PKR'
-                                                         ? `Direct PKR Amount`
-                                                         : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} PKR (Live Rate: 1 ${currency} = ${getRate(currency)} PKR)`)
+                                                     ? (currency === 'EUR'
+                                                         ? `Direct EUR Amount`
+                                                         : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} EUR (Rate: 1 ${currency} = ${getRate(currency)} EUR)`)
                                                      : '\u00A0'}
                                              </p>
                                         </div>
@@ -943,7 +942,7 @@ export default function FinanceCashflow() {
                                     <div className="flex justify-between"><span>Date:</span><span className="font-bold">{new Date(selectedSlip.date).toLocaleDateString()}</span></div>
                                     <div className="flex justify-between"><span>Source:</span><span className="font-bold">{selectedSlip.source || selectedSlip.item}</span></div>
                                     <div className="flex justify-between"><span>Category:</span><span className="font-bold">{selectedSlip.category}</span></div>
-                                    <div className="flex justify-between text-base font-black pt-2 border-t text-emerald-500"><span>Amount:</span><span>PKR {selectedSlip.amount?.toLocaleString()}</span></div>
+                                    <div className="flex justify-between text-base font-black pt-2 border-t text-emerald-500"><span>Amount:</span><span>€{selectedSlip.amount?.toLocaleString()}</span></div>
                                 </div>
                             </div>
 
@@ -992,7 +991,7 @@ export default function FinanceCashflow() {
                                         <input value={editForm.entity} onChange={e => setEditForm({ ...editForm, entity: e.target.value })} className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black text-xs uppercase" placeholder="Person / Vendor / Client" />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black uppercase text-emerald-500 ml-1">AMOUNT (PKR)</label>
+                                        <label className="text-[10px] font-black uppercase text-emerald-500 ml-1">AMOUNT (EUR)</label>
                                         <input required type="number" step="0.01" value={editForm.amount} onChange={e => setEditForm({ ...editForm, amount: e.target.value })} className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-emerald-500 font-black text-xs" />
                                     </div>
                                     <div className="space-y-2 col-span-2">

@@ -97,7 +97,7 @@ export default function FinanceBalanceSheet() {
                                     <tr className="border-b-2 border-slate-200">
                                         <th className="py-4 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest">Entry Item</th>
                                         <th className="py-4 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest px-8">Category</th>
-                                        <th className="py-4 text-right text-[10px] font-black uppercase text-slate-400 tracking-widest">Amount (PKR)</th>
+                                        <th className="py-4 text-right text-[10px] font-black uppercase text-slate-400 tracking-widest">Amount (EUR)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,7 +110,7 @@ export default function FinanceBalanceSheet() {
                                     ))}
                                     <tr className="bg-emerald-50 bg-opacity-50">
                                         <td colSpan={2} className="py-5 px-6 font-black uppercase text-sm">Total Revenue Capital</td>
-                                        <td className="py-5 px-6 text-right font-black text-xl text-emerald-700 underline decoration-double decoration-2 underline-offset-8">PKR {totalIncome.toLocaleString()}</td>
+                                        <td className="py-5 px-6 text-right font-black text-xl text-emerald-700 underline decoration-double decoration-2 underline-offset-8">€{totalIncome.toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -124,7 +124,7 @@ export default function FinanceBalanceSheet() {
                                     <tr className="border-b-2 border-slate-200">
                                         <th className="py-4 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest">Expense Identifier</th>
                                         <th className="py-4 text-left text-[10px] font-black uppercase text-slate-400 tracking-widest px-8">Category</th>
-                                        <th className="py-4 text-right text-[10px] font-black uppercase text-slate-400 tracking-widest">Amount (PKR)</th>
+                                        <th className="py-4 text-right text-[10px] font-black uppercase text-slate-400 tracking-widest">Amount (EUR)</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -144,7 +144,7 @@ export default function FinanceBalanceSheet() {
                                     ))}
                                     <tr className="bg-rose-50 bg-opacity-50">
                                         <td colSpan={2} className="py-5 px-6 font-black uppercase text-sm">Total Expenditure Flow</td>
-                                        <td className="py-5 px-6 text-right font-black text-xl text-rose-700 underline decoration-double decoration-2 underline-offset-8">PKR {(totalExpenses + totalPayroll).toLocaleString()}</td>
+                                        <td className="py-5 px-6 text-right font-black text-xl text-rose-700 underline decoration-double decoration-2 underline-offset-8">€{(totalExpenses + totalPayroll).toLocaleString()}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -158,7 +158,7 @@ export default function FinanceBalanceSheet() {
                             </div>
                             <div className="text-right">
                                 <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1">Total Net Balance</p>
-                                <p className={`text-6xl font-black tracking-tighter ${netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>PKR {netProfit.toLocaleString()}</p>
+                                <p className={`text-6xl font-black tracking-tighter ${netProfit >= 0 ? 'text-blue-600' : 'text-red-600'}`}>€{netProfit.toLocaleString()}</p>
                             </div>
                         </div>
 
@@ -198,7 +198,7 @@ function SummaryCard({ title, amount, color, icon, isTotal }) {
                     {icon}
                 </div>
             </div>
-            <p className={`text-2xl font-black tracking-tighter ${isTotal ? 'text-3xl' : ''}`}>PKR {amount.toLocaleString()}</p>
+            <p className={`text-2xl font-black tracking-tighter ${isTotal ? 'text-3xl' : ''}`}>€{amount.toLocaleString()}</p>
         </div>
     );
 }

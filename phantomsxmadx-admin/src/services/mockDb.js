@@ -1,6 +1,7 @@
 // ============================================================
 // HATTECH ERP — MOCK DATABASE (localStorage-based)
-// All data lives in localStorage. Zero network calls.
+// Tailored for European & German Market (Expo Showcase Ready)
+// Currency: EUR (€) | High-Resolution Headshots | Dynamic Month/Date Filtering
 // ============================================================
 
 const KEYS = {
@@ -28,9 +29,10 @@ const KEYS = {
   INTERACTIONS: 'ht_interactions',
   ACTIVITIES: 'ht_activities',
   WORKING_DAYS: 'ht_working_days',
+  HR_DOCS: 'ht_hr_docs',
   CHATS: 'ht_chats',
   MESSAGES: 'ht_messages',
-  INITIALIZED: 'ht_initialized_v4',
+  INITIALIZED: 'ht_initialized_v6',
 };
 
 // ─── Helpers ────────────────────────────────────────────────
@@ -40,200 +42,252 @@ const now = () => new Date().toISOString();
 const daysAgo = (n) => new Date(Date.now() - n * 86400000).toISOString();
 const daysFromNow = (n) => new Date(Date.now() + n * 86400000).toISOString();
 
-// ─── Seed Data ───────────────────────────────────────────────
+// Verified professional corporate headshot photos
+const AVATARS = {
+  lukas: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+  sarah: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80',
+  maximilian: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80',
+  hanna: 'https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80',
+  sophie: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80',
+  leon: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80',
+  felix: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80',
+  jonas: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80',
+  katharina: 'https://images.unsplash.com/photo-1567532939604-b6b5b0db2604?auto=format&fit=crop&w=400&q=80',
+  markus: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?auto=format&fit=crop&w=400&q=80',
+  christian: 'https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80',
+  elena: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+};
+
+// ─── Seed Data (European / German Market) ─────────────────────
 const SEED_USERS = [
-  { _id: 'u_admin', id: 'u_admin', username: 'admin', email: 'admin@hattech.com', password: 'admin123', role: 'admin', name: 'Admin User', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_hr1', id: 'u_hr1', username: 'hr1', email: 'hr@hattech.com', password: 'hr123', role: 'hr', name: 'Sarah HR', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_ph1', id: 'u_ph1', username: 'ph1', email: 'ph@hattech.com', password: 'ph123', role: 'projecthead', name: 'Ali ProjectHead', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_emp1', id: 'u_emp1', username: 'emp1', email: 'emp1@hattech.com', password: 'emp123', role: 'employee', name: 'John Employee', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_emp2', id: 'u_emp2', username: 'emp2', email: 'emp2@hattech.com', password: 'emp123', role: 'employee', name: 'Jane Smith', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_emp3', id: 'u_emp3', username: 'emp3', email: 'emp3@hattech.com', password: 'emp123', role: 'teamlead', name: 'Mike TeamLead', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_emp4', id: 'u_emp4', username: 'emp4', email: 'emp4@hattech.com', password: 'emp123', role: 'intern', name: 'Sara Intern', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_client1', id: 'u_client1', username: 'client1', email: 'client1@example.com', password: 'client123', role: 'client', name: 'David Client', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_client2', id: 'u_client2', username: 'client2', email: 'client2@example.com', password: 'client123', role: 'client', name: 'Emily Client', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_finance1', id: 'u_finance1', username: 'finance1', email: 'finance@hattech.com', password: 'finance123', role: 'finance', name: 'Finance Manager', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_partner1', id: 'u_partner1', username: 'partner1', email: 'partner@example.com', password: 'partner123', role: 'partner', name: 'Partner Co.', avatar: '', mustChangePassword: false, policyAccepted: true },
-  { _id: 'u_it1', id: 'u_it1', username: 'it1', email: 'it@hattech.com', password: 'it123', role: 'it_support', name: 'IT Support', avatar: '', mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_admin', id: 'u_admin', username: 'admin', email: 'admin@hattech.de', password: 'admin123', role: 'admin', name: 'Lukas Weber', avatar: AVATARS.lukas, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_hr1', id: 'u_hr1', username: 'hr1', email: 'hr@hattech.de', password: 'hr123', role: 'hr', name: 'Sarah Lindemann', avatar: AVATARS.sarah, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_ph1', id: 'u_ph1', username: 'ph1', email: 'ph@hattech.de', password: 'ph123', role: 'projecthead', name: 'Maximilian Richter', avatar: AVATARS.maximilian, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_emp1', id: 'u_emp1', username: 'emp1', email: 'emp1@hattech.de', password: 'emp123', role: 'employee', name: 'Hanna Schmidt', avatar: AVATARS.hanna, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_emp2', id: 'u_emp2', username: 'emp2', email: 'emp2@hattech.de', password: 'emp123', role: 'employee', name: 'Sophie Fischer', avatar: AVATARS.sophie, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_emp3', id: 'u_emp3', username: 'emp3', email: 'emp3@hattech.de', password: 'emp123', role: 'teamlead', name: 'Leon Becker', avatar: AVATARS.leon, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_emp4', id: 'u_emp4', username: 'emp4', email: 'emp4@hattech.de', password: 'emp123', role: 'intern', name: 'Felix Hoffmann', avatar: AVATARS.felix, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_emp5', id: 'u_emp5', username: 'emp5', email: 'emp5@hattech.de', password: 'emp123', role: 'employee', name: 'Jonas Wagner', avatar: AVATARS.jonas, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_client1', id: 'u_client1', username: 'client1', email: 'client1@bmw-mobility.de', password: 'client123', role: 'client', name: 'Dr. Christian Wolf', avatar: AVATARS.christian, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_client2', id: 'u_client2', username: 'client2', email: 'client2@siemens-mobility.de', password: 'client123', role: 'client', name: 'Elena Krause', avatar: AVATARS.elena, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_finance1', id: 'u_finance1', username: 'finance1', email: 'finance@hattech.de', password: 'finance123', role: 'finance', name: 'Markus Braun', avatar: AVATARS.markus, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_partner1', id: 'u_partner1', username: 'partner1', email: 'partner@techventures.de', password: 'partner123', role: 'partner', name: 'TechVentures Berlin', avatar: AVATARS.lukas, mustChangePassword: false, policyAccepted: true },
 ];
 
 const SEED_EMPLOYEES = [
-  { _id: 'emp_1', id: 'emp_1', name: 'John Employee', email: 'emp1@hattech.com', userId: { _id: 'u_emp1', role: 'employee' }, role: 'employee', position: 'Web Developer', subcategory: 'MERN Stack Developer', department: 'Engineering', phone: '+92-300-1111111', status: 'active', joining: daysAgo(365), image: '', bio: 'Web Developer in Engineering', documents: [], projectHead: 'emp_ph1', salary: 80000 },
-  { _id: 'emp_2', id: 'emp_2', name: 'Jane Smith', email: 'emp2@hattech.com', userId: { _id: 'u_emp2', role: 'employee' }, role: 'employee', position: 'Graphic Designer', subcategory: 'UI/UX Designer', department: 'Design', phone: '+92-300-2222222', status: 'active', joining: daysAgo(300), image: '', bio: 'Graphic Designer in Design', documents: [], projectHead: 'emp_ph1', salary: 70000 },
-  { _id: 'emp_3', id: 'emp_3', name: 'Mike TeamLead', email: 'emp3@hattech.com', userId: { _id: 'u_emp3', role: 'teamlead' }, role: 'teamlead', position: 'Web Developer', subcategory: 'Full Stack Developer', department: 'Engineering', phone: '+92-300-3333333', status: 'active', joining: daysAgo(500), image: '', bio: 'Team Lead in Engineering', documents: [], salary: 100000 },
-  { _id: 'emp_4', id: 'emp_4', name: 'Sara Intern', email: 'emp4@hattech.com', userId: { _id: 'u_emp4', role: 'intern' }, role: 'intern', position: 'Intern', subcategory: 'Web Developer', department: 'Engineering', phone: '+92-300-4444444', status: 'active', joining: daysAgo(60), image: '', bio: 'Intern in Engineering', documents: [], salary: 25000 },
-  { _id: 'emp_5', id: 'emp_5', name: 'Ahmad SEO', email: 'seo@hattech.com', userId: { _id: 'u_seo1', role: 'employee' }, role: 'employee', position: 'SEO Specialist', subcategory: 'On-Page SEO', department: 'Marketing', phone: '+92-300-5555555', status: 'active', joining: daysAgo(200), image: '', bio: 'SEO Specialist in Marketing', documents: [], salary: 65000 },
-  { _id: 'emp_6', id: 'emp_6', name: 'Zara Ex-Employee', email: 'ex@hattech.com', userId: { _id: 'u_ex1', role: 'employee' }, role: 'employee', position: 'Content Writer', subcategory: 'Blog Writer', department: 'Content', phone: '+92-300-6666666', status: 'inactive', joining: daysAgo(700), image: '', bio: 'Former Content Writer', documents: [], salary: 55000 },
-  { _id: 'emp_ph1', id: 'emp_ph1', name: 'Ali ProjectHead', email: 'ph@hattech.com', userId: { _id: 'u_ph1', role: 'projecthead' }, role: 'projecthead', position: 'Manager', subcategory: 'Project Head', department: 'Management', phone: '+92-300-7777777', status: 'active', joining: daysAgo(600), image: '', bio: 'Project Head in Management', documents: [], salary: 120000 },
-  { _id: 'emp_hr1', id: 'emp_hr1', name: 'Sarah HR', email: 'hr@hattech.com', userId: { _id: 'u_hr1', role: 'hr' }, role: 'hr', position: 'Manager', subcategory: 'HR Manager', department: 'HR', phone: '+92-300-8888888', status: 'active', joining: daysAgo(400), image: '', bio: 'HR Manager', documents: [], salary: 90000 },
+  { _id: 'emp_1', id: 'emp_1', name: 'Hanna Schmidt', email: 'emp1@hattech.de', userId: { _id: 'u_emp1', role: 'employee', avatar: AVATARS.hanna }, role: 'employee', position: 'Web Developer', subcategory: 'Frontend Developer', department: 'Engineering', phone: '+49 30 5200 4110', status: 'active', joining: daysAgo(420), image: AVATARS.hanna, bio: 'Senior React & TypeScript Specialist', documents: [], projectHead: 'emp_ph1', salary: 6200 },
+  { _id: 'emp_2', id: 'emp_2', name: 'Sophie Fischer', email: 'emp2@hattech.de', userId: { _id: 'u_emp2', role: 'employee', avatar: AVATARS.sophie }, role: 'employee', position: 'Graphic Designer', subcategory: 'UI/UX Designer', department: 'Design', phone: '+49 30 5200 4112', status: 'active', joining: daysAgo(340), image: AVATARS.sophie, bio: 'Lead Product & Design Systems Designer', documents: [], projectHead: 'emp_ph1', salary: 5600 },
+  { _id: 'emp_3', id: 'emp_3', name: 'Leon Becker', email: 'emp3@hattech.de', userId: { _id: 'u_emp3', role: 'teamlead', avatar: AVATARS.leon }, role: 'teamlead', position: 'Web Developer', subcategory: 'Full Stack Developer', department: 'Engineering', phone: '+49 30 5200 4115', status: 'active', joining: daysAgo(600), image: AVATARS.leon, bio: 'Engineering Lead & Cloud Architect', documents: [], salary: 7800 },
+  { _id: 'emp_4', id: 'emp_4', name: 'Felix Hoffmann', email: 'emp4@hattech.de', userId: { _id: 'u_emp4', role: 'intern', avatar: AVATARS.felix }, role: 'intern', position: 'Intern', subcategory: 'AI ML', department: 'AI & Data Lab', phone: '+49 30 5200 4119', status: 'active', joining: daysAgo(75), image: AVATARS.felix, bio: 'Machine Learning & NLP Intern', documents: [], salary: 2100 },
+  { _id: 'emp_5', id: 'emp_5', name: 'Jonas Wagner', email: 'emp5@hattech.de', userId: { _id: 'u_emp5', role: 'employee', avatar: AVATARS.jonas }, role: 'employee', position: 'QA Engineer', subcategory: 'Automation QA', department: 'Engineering', phone: '+49 30 5200 4122', status: 'active', joining: daysAgo(290), image: AVATARS.jonas, bio: 'DevOps & Test Automation Engineer', documents: [], salary: 5400 },
+  { _id: 'emp_6', id: 'emp_6', name: 'Katharina Klein', email: 'emp6@hattech.de', userId: { _id: 'u_emp6', role: 'employee', avatar: AVATARS.katharina }, role: 'employee', position: 'Content Writer', subcategory: 'Technical Writer', department: 'Marketing', phone: '+49 30 5200 4125', status: 'inactive', joining: daysAgo(700), image: AVATARS.katharina, bio: 'Technical Documentation Lead (Alumni)', documents: [], salary: 4800 },
+  { _id: 'emp_ph1', id: 'emp_ph1', name: 'Maximilian Richter', email: 'ph@hattech.de', userId: { _id: 'u_ph1', role: 'projecthead', avatar: AVATARS.maximilian }, role: 'projecthead', position: 'Manager', subcategory: 'Project Head', department: 'Management', phone: '+49 30 5200 4102', status: 'active', joining: daysAgo(650), image: AVATARS.maximilian, bio: 'VP of Engineering & Delivery', documents: [], salary: 8900 },
+  { _id: 'emp_hr1', id: 'emp_hr1', name: 'Sarah Lindemann', email: 'hr@hattech.de', userId: { _id: 'u_hr1', role: 'hr', avatar: AVATARS.sarah }, role: 'hr', position: 'Manager', subcategory: 'HR Manager', department: 'People & Culture', phone: '+49 30 5200 4105', status: 'active', joining: daysAgo(480), image: AVATARS.sarah, bio: 'Director of People & Operations', documents: [], salary: 7200 },
 ];
 
 const SEED_CLIENTS = [
-  { _id: 'cl_1', id: 'cl_1', name: 'David Client', email: 'client1@example.com', userId: { _id: 'u_client1' }, company: 'Acme Corp', phone: '+1-555-0001', country: 'USA', status: 'active', image: '', projects: ['proj_1'], createdAt: daysAgo(200) },
-  { _id: 'cl_2', id: 'cl_2', name: 'Emily Client', email: 'client2@example.com', userId: { _id: 'u_client2' }, company: 'TechStart Inc', phone: '+1-555-0002', country: 'UK', status: 'active', image: '', projects: ['proj_2'], createdAt: daysAgo(150) },
-  { _id: 'cl_3', id: 'cl_3', name: 'Global Ventures', email: 'global@example.com', userId: null, company: 'Global Ventures Ltd', phone: '+44-20-0001', country: 'UAE', status: 'active', image: '', projects: [], createdAt: daysAgo(90) },
+  { _id: 'cl_1', id: 'cl_1', name: 'Dr. Christian Wolf', email: 'client1@bmw-mobility.de', userId: { _id: 'u_client1' }, company: 'BMW Group Innovation Hub (Munich)', phone: '+49 89 382 0', country: 'Germany', status: 'active', image: AVATARS.christian, projects: ['proj_1'], createdAt: daysAgo(200) },
+  { _id: 'cl_2', id: 'cl_2', name: 'Elena Krause', email: 'client2@siemens-mobility.de', userId: { _id: 'u_client2' }, company: 'Siemens Mobility Systems (Berlin)', phone: '+49 30 386 0', country: 'Germany', status: 'active', image: AVATARS.elena, projects: ['proj_2'], createdAt: daysAgo(150) },
+  { _id: 'cl_3', id: 'cl_3', name: 'Stefan Meyer', email: 's.meyer@telekom-cloud.de', userId: null, company: 'Deutsche Telekom Digital (Frankfurt)', phone: '+49 69 2165 0', country: 'Germany', status: 'active', image: AVATARS.maximilian, projects: ['proj_3'], createdAt: daysAgo(90) },
 ];
 
 const SEED_PROJECTS = [
-  { _id: 'proj_1', id: 'proj_1', title: 'E-Commerce Platform', name: 'E-Commerce Platform', clientId: { _id: 'cl_1', name: 'David Client', email: 'client1@example.com' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(30), startDate: daysAgo(60), description: 'Full stack e-commerce solution with payment integration.', budget: 5000, currency: 'USD', assignedEmployees: ['emp_1', 'emp_2'], technologies: ['React', 'Node.js', 'MongoDB'], progress: 65, createdAt: daysAgo(60) },
-  { _id: 'proj_2', id: 'proj_2', title: 'Mobile App Development', name: 'Mobile App Development', clientId: { _id: 'cl_2', name: 'Emily Client', email: 'client2@example.com' }, status: 'Planning', priority: 'Medium', deadline: daysFromNow(60), startDate: daysAgo(10), description: 'Cross-platform mobile app using Flutter.', budget: 8000, currency: 'USD', assignedEmployees: ['emp_1', 'emp_3'], technologies: ['Flutter', 'Firebase'], progress: 20, createdAt: daysAgo(10) },
-  { _id: 'proj_3', id: 'proj_3', title: 'SEO Campaign Q4', name: 'SEO Campaign Q4', clientId: { _id: 'cl_3', name: 'Global Ventures' }, status: 'Completed', priority: 'Low', deadline: daysAgo(10), startDate: daysAgo(90), description: 'SEO optimization and link building campaign.', budget: 2000, currency: 'USD', assignedEmployees: ['emp_5'], technologies: ['SEO', 'Analytics'], progress: 100, createdAt: daysAgo(90) },
-  { _id: 'proj_4', id: 'proj_4', title: 'Brand Identity Design', name: 'Brand Identity Design', clientId: { _id: 'cl_1', name: 'David Client' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(15), startDate: daysAgo(20), description: 'Complete brand identity including logo and guidelines.', budget: 3000, currency: 'USD', assignedEmployees: ['emp_2'], technologies: ['Photoshop', 'Illustrator'], progress: 45, createdAt: daysAgo(20) },
+  { _id: 'proj_1', id: 'proj_1', title: 'Autonomous EV Fleet Telematics', name: 'Autonomous EV Fleet Telematics', clientId: { _id: 'cl_1', name: 'Dr. Christian Wolf', email: 'client1@bmw-mobility.de' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(45), startDate: daysAgo(60), description: 'High-throughput telemetry ingestion & monitoring for next-gen electric vehicles.', budget: 95000, currency: 'EUR', assignedEmployees: ['emp_1', 'emp_3'], technologies: ['React', 'Node.js', 'Kafka', 'Docker'], progress: 68, createdAt: daysAgo(60) },
+  { _id: 'proj_2', id: 'proj_2', title: 'Smart Transit Dispatch Engine', name: 'Smart Transit Dispatch Engine', clientId: { _id: 'cl_2', name: 'Elena Krause', email: 'client2@siemens-mobility.de' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(60), startDate: daysAgo(25), description: 'AI-assisted schedule dispatch & track health diagnostics for European rail corridors.', budget: 135000, currency: 'EUR', assignedEmployees: ['emp_1', 'emp_2', 'emp_5'], technologies: ['TypeScript', 'FastAPI', 'Python', 'PostgreSQL'], progress: 35, createdAt: daysAgo(25) },
+  { _id: 'proj_3', id: 'proj_3', title: 'Enterprise Cloud Grid Analytics', name: 'Enterprise Cloud Grid Analytics', clientId: { _id: 'cl_3', name: 'Stefan Meyer' }, status: 'Completed', priority: 'Medium', deadline: daysAgo(10), startDate: daysAgo(90), description: 'Real-time multi-region cloud latency monitoring and carbon intensity visualization.', budget: 68000, currency: 'EUR', assignedEmployees: ['emp_3', 'emp_5'], technologies: ['Kubernetes', 'Go', 'Prometheus', 'Grafana'], progress: 100, createdAt: daysAgo(90) },
+  { _id: 'proj_4', id: 'proj_4', title: 'Digital Design System 2.0', name: 'Digital Design System 2.0', clientId: { _id: 'cl_1', name: 'Dr. Christian Wolf' }, status: 'In Progress', priority: 'Medium', deadline: daysFromNow(20), startDate: daysAgo(15), description: 'Unified accessible corporate component library compliant with EU WCAG 2.1 AA.', budget: 42000, currency: 'EUR', assignedEmployees: ['emp_2'], technologies: ['Figma', 'TailwindCSS', 'Storybook'], progress: 55, createdAt: daysAgo(15) },
 ];
 
 const SEED_TASKS = [
-  { _id: 'task_1', id: 'task_1', title: 'Build Login Page', description: 'Create responsive login page with validation', projectId: 'proj_1', assignedTo: { _id: 'emp_1', name: 'John Employee' }, assignedBy: { _id: 'u_admin', name: 'Admin' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(5), createdAt: daysAgo(10) },
-  { _id: 'task_2', id: 'task_2', title: 'Design Homepage UI', description: 'Create mockups for the homepage', projectId: 'proj_1', assignedTo: { _id: 'emp_2', name: 'Jane Smith' }, assignedBy: { _id: 'u_admin', name: 'Admin' }, status: 'Completed', priority: 'Medium', deadline: daysAgo(2), createdAt: daysAgo(15) },
-  { _id: 'task_3', id: 'task_3', title: 'Setup Flutter Project', description: 'Initialize Flutter project with proper structure', projectId: 'proj_2', assignedTo: { _id: 'emp_1', name: 'John Employee' }, assignedBy: { _id: 'emp_ph1', name: 'Ali ProjectHead' }, status: 'Pending', priority: 'High', deadline: daysFromNow(3), createdAt: daysAgo(5) },
-  { _id: 'task_4', id: 'task_4', title: 'Keyword Research', description: 'Research top 50 keywords for the campaign', projectId: 'proj_3', assignedTo: { _id: 'emp_5', name: 'Ahmad SEO' }, assignedBy: { _id: 'emp_ph1', name: 'Ali ProjectHead' }, status: 'Completed', priority: 'Medium', deadline: daysAgo(30), createdAt: daysAgo(60) },
-  { _id: 'task_5', id: 'task_5', title: 'Logo Design Draft', description: 'Create 3 logo variations for client review', projectId: 'proj_4', assignedTo: { _id: 'emp_2', name: 'Jane Smith' }, assignedBy: { _id: 'u_admin', name: 'Admin' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(7), createdAt: daysAgo(7) },
-  { _id: 'task_6', id: 'task_6', title: 'Database Schema Design', description: 'Design MongoDB schema for e-commerce', projectId: 'proj_1', assignedTo: { _id: 'emp_3', name: 'Mike TeamLead' }, assignedBy: { _id: 'emp_ph1', name: 'Ali ProjectHead' }, status: 'Completed', priority: 'High', deadline: daysAgo(5), createdAt: daysAgo(20) },
+  { _id: 'task_1', id: 'task_1', title: 'Implement WebSocket Telemetry Stream', description: 'Stream vehicle sensor events with under 50ms latency', projectId: 'proj_1', assignedTo: { _id: 'emp_1', name: 'Hanna Schmidt' }, assignedBy: { _id: 'u_admin', name: 'Lukas Weber' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(5), createdAt: daysAgo(8) },
+  { _id: 'task_2', id: 'task_2', title: 'Design Battery Health Gauges', description: 'Interactive SVG components for battery degradation metrics', projectId: 'proj_1', assignedTo: { _id: 'emp_2', name: 'Sophie Fischer' }, assignedBy: { _id: 'u_admin', name: 'Lukas Weber' }, status: 'Completed', priority: 'Medium', deadline: daysAgo(2), createdAt: daysAgo(12) },
+  { _id: 'task_3', id: 'task_3', title: 'Kafka Cluster Partitioning', description: 'Optimize partition scheme for 100k events/sec', projectId: 'proj_1', assignedTo: { _id: 'emp_3', name: 'Leon Becker' }, assignedBy: { _id: 'emp_ph1', name: 'Maximilian Richter' }, status: 'Completed', priority: 'High', deadline: daysAgo(3), createdAt: daysAgo(18) },
+  { _id: 'task_4', id: 'task_4', title: 'Rail Schedule Dispatch UI', description: 'Build interactive timetable Gantt chart', projectId: 'proj_2', assignedTo: { _id: 'emp_1', name: 'Hanna Schmidt' }, assignedBy: { _id: 'emp_ph1', name: 'Maximilian Richter' }, status: 'In Progress', priority: 'High', deadline: daysFromNow(8), createdAt: daysAgo(6) },
+  { _id: 'task_5', id: 'task_5', title: 'E2E Cypress Automation Suite', description: 'Cover all critical user booking and tracking flows', projectId: 'proj_2', assignedTo: { _id: 'emp_5', name: 'Jonas Wagner' }, assignedBy: { _id: 'emp_ph1', name: 'Maximilian Richter' }, status: 'Pending', priority: 'Medium', deadline: daysFromNow(12), createdAt: daysAgo(4) },
+  { _id: 'task_6', id: 'task_6', title: 'Carbon Footprint Calculator Model', description: 'Train XGBoost regression for kilowatt estimation', projectId: 'proj_3', assignedTo: { _id: 'emp_4', name: 'Felix Hoffmann' }, assignedBy: { _id: 'emp_ph1', name: 'Maximilian Richter' }, status: 'Completed', priority: 'High', deadline: daysAgo(15), createdAt: daysAgo(45) },
 ];
 
 const SEED_REPORTS = [
-  { _id: 'rep_1', userId: { _id: 'u_emp1', name: 'John Employee' }, date: daysAgo(1), content: 'Worked on login page component, completed 80% of the UI.', tasksCompleted: ['Built form validation', 'Added responsive design'], hoursWorked: 8, status: 'submitted', createdAt: daysAgo(1) },
-  { _id: 'rep_2', userId: { _id: 'u_emp2', name: 'Jane Smith' }, date: daysAgo(1), content: 'Completed homepage mockup and shared with team for review.', tasksCompleted: ['Homepage mockup done', 'Color scheme finalized'], hoursWorked: 7, status: 'submitted', createdAt: daysAgo(1) },
-  { _id: 'rep_3', userId: { _id: 'u_emp1', name: 'John Employee' }, date: daysAgo(2), content: 'Started Flutter project setup and configured dependencies.', tasksCompleted: ['Project initialized', 'Dependencies configured'], hoursWorked: 8, status: 'submitted', createdAt: daysAgo(2) },
+  { _id: 'rep_1', userId: { _id: 'u_emp1', name: 'Hanna Schmidt' }, date: daysAgo(1), content: 'Engineered high-frequency sensor buffer and tested live telemetry with Munich test bench. Zero packet drops observed.', tasksCompleted: ['Telemetry pipeline optimized', 'Unit tests passing 100%'], hoursWorked: 8, status: 'submitted', createdAt: daysAgo(1) },
+  { _id: 'rep_2', userId: { _id: 'u_emp2', name: 'Sophie Fischer' }, date: daysAgo(1), content: 'Finalized dark mode color tokens and accessible contrast scales for the vehicle dashboard.', tasksCompleted: ['WCAG AA compliance verified', 'Figma handoff completed'], hoursWorked: 7.5, status: 'submitted', createdAt: daysAgo(1) },
+  { _id: 'rep_3', userId: { _id: 'u_emp3', name: 'Leon Becker' }, date: daysAgo(1), content: 'Completed Terraform manifests for multi-zone Kubernetes deployment on AWS Frankfurt region (eu-central-1).', tasksCompleted: ['Terraform modules updated', 'Ingress certificates verified'], hoursWorked: 8.5, status: 'submitted', createdAt: daysAgo(1) },
 ];
 
 const SEED_ATTENDANCE = [
-  { _id: 'att_1', employeeId: 'emp_1', userId: 'u_emp1', date: daysAgo(0).slice(0,10), checkIn: '09:00', checkOut: '18:00', status: 'present', late: false },
-  { _id: 'att_2', employeeId: 'emp_1', userId: 'u_emp1', date: daysAgo(1).slice(0,10), checkIn: '09:15', checkOut: '18:00', status: 'present', late: true },
-  { _id: 'att_3', employeeId: 'emp_2', userId: 'u_emp2', date: daysAgo(0).slice(0,10), checkIn: '09:05', checkOut: '18:00', status: 'present', late: false },
-  { _id: 'att_4', employeeId: 'emp_3', userId: 'u_emp3', date: daysAgo(0).slice(0,10), checkIn: '08:55', checkOut: '18:00', status: 'present', late: false },
+  { _id: 'att_1', employeeId: 'emp_1', userId: 'u_emp1', date: daysAgo(0).slice(0,10), checkIn: '08:50', checkOut: '17:30', status: 'present', late: false },
+  { _id: 'att_2', employeeId: 'emp_2', userId: 'u_emp2', date: daysAgo(0).slice(0,10), checkIn: '09:05', checkOut: '17:45', status: 'present', late: false },
+  { _id: 'att_3', employeeId: 'emp_3', userId: 'u_emp3', date: daysAgo(0).slice(0,10), checkIn: '08:45', checkOut: '18:00', status: 'present', late: false },
+  { _id: 'att_4', employeeId: 'emp_5', userId: 'u_emp5', date: daysAgo(0).slice(0,10), checkIn: '09:00', checkOut: '17:30', status: 'present', late: false },
 ];
 
 const SEED_PAYROLL = [
-  { _id: 'pay_1', employeeId: 'emp_1', employeeName: 'John Employee', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 80000, bonus: 8000, deductions: 5000, netSalary: 83000, status: 'paid', paidOn: daysAgo(5), currency: 'PKR' },
-  { _id: 'pay_2', employeeId: 'emp_2', employeeName: 'Jane Smith', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 70000, bonus: 5000, deductions: 3000, netSalary: 72000, status: 'paid', paidOn: daysAgo(5), currency: 'PKR' },
-  { _id: 'pay_3', employeeId: 'emp_3', employeeName: 'Mike TeamLead', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 100000, bonus: 10000, deductions: 8000, netSalary: 102000, status: 'pending', currency: 'PKR' },
-  { _id: 'pay_4', employeeId: 'emp_5', employeeName: 'Ahmad SEO', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 65000, bonus: 3000, deductions: 2000, netSalary: 66000, status: 'paid', paidOn: daysAgo(5), currency: 'PKR' },
+  { _id: 'pay_1', employeeId: 'emp_1', employeeName: 'Hanna Schmidt', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 6200, bonus: 600, deductions: 200, netSalary: 6600, status: 'paid', paidOn: daysAgo(4), currency: 'EUR' },
+  { _id: 'pay_2', employeeId: 'emp_2', employeeName: 'Sophie Fischer', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 5600, bonus: 400, deductions: 150, netSalary: 5850, status: 'paid', paidOn: daysAgo(4), currency: 'EUR' },
+  { _id: 'pay_3', employeeId: 'emp_3', employeeName: 'Leon Becker', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 7800, bonus: 800, deductions: 300, netSalary: 8300, status: 'paid', paidOn: daysAgo(4), currency: 'EUR' },
+  { _id: 'pay_4', employeeId: 'emp_5', employeeName: 'Jonas Wagner', month: new Date().getMonth() + 1, year: new Date().getFullYear(), basicSalary: 5400, bonus: 350, deductions: 150, netSalary: 5600, status: 'paid', paidOn: daysAgo(4), currency: 'EUR' },
 ];
 
 const SEED_ACHIEVEMENTS = [
-  { _id: 'ach_1', user: { _id: 'u_emp1', name: 'John Employee', department: 'Engineering', position: 'Web Developer' }, awardType: 'Employee of the Month', title: 'Best Employee of the Month', description: 'Outstanding performance in project delivery.', date: daysAgo(15), score: 95, createdAt: daysAgo(15) },
-  { _id: 'ach_2', user: { _id: 'u_emp2', name: 'Jane Smith', department: 'Design', position: 'Graphic Designer' }, awardType: 'Employee of 6 Months', title: 'Best Employee of 6 Months', description: 'Consistent high quality design work over 6 months.', date: daysAgo(30), score: 92, createdAt: daysAgo(30) },
+  { _id: 'ach_1', user: { _id: 'u_emp1', name: 'Hanna Schmidt', department: 'Engineering', position: 'Web Developer', avatar: AVATARS.hanna }, awardType: 'Employee of the Month', title: 'Top Performer of the Month', description: 'Exceptional contributions to the BMW EV Telematics delivery.', date: daysAgo(10), score: 98, createdAt: daysAgo(10) },
+  { _id: 'ach_2', user: { _id: 'u_emp3', name: 'Leon Becker', department: 'Engineering', position: 'Full Stack Developer', avatar: AVATARS.leon }, awardType: 'Employee of 6 Months', title: 'Lead Architect of 6 Months', description: 'Engineered zero-downtime infrastructure for enterprise rail corridors.', date: daysAgo(30), score: 95, createdAt: daysAgo(30) },
 ];
 
 const SEED_NOTIFICATIONS = [
-  { _id: 'notif_1', userId: 'u_admin', title: 'New Employee Added', message: 'John Employee has been added to Engineering team.', type: 'info', read: false, createdAt: daysAgo(1) },
-  { _id: 'notif_2', userId: 'u_admin', title: 'Project Deadline Alert', message: 'Brand Identity Design deadline in 15 days.', type: 'warning', read: false, createdAt: daysAgo(0) },
-  { _id: 'notif_3', userId: 'u_emp1', title: 'Task Assigned', message: 'You have been assigned "Build Login Page".', type: 'info', read: false, createdAt: daysAgo(2) },
+  { _id: 'notif_1', userId: 'u_admin', title: 'Sprint Milestone Achieved', message: 'BMW EV Telematics Sprint 3 passed all validation checks.', type: 'info', read: false, createdAt: daysAgo(1) },
+  { _id: 'notif_2', userId: 'u_admin', title: 'New Enterprise Lead', message: 'Siemens Mobility requested technical review for Corridor Phase 2.', type: 'warning', read: false, createdAt: daysAgo(0) },
+  { _id: 'notif_3', userId: 'u_emp1', title: 'Code Review Approved', message: 'Your PR for telemetry event buffering was approved by Leon Becker.', type: 'info', read: false, createdAt: daysAgo(1) },
 ];
 
 const SEED_REQUESTS = [
-  { _id: 'req_1', employeeId: 'emp_1', employeeName: 'John Employee', type: 'Leave', reason: 'Medical appointment', fromDate: daysFromNow(3), toDate: daysFromNow(3), status: 'pending', createdAt: daysAgo(1) },
-  { _id: 'req_2', employeeId: 'emp_2', employeeName: 'Jane Smith', type: 'Work From Home', reason: 'Internet issues at office', fromDate: daysFromNow(1), toDate: daysFromNow(1), status: 'approved', createdAt: daysAgo(2) },
-  { _id: 'req_3', employeeId: 'emp_5', employeeName: 'Ahmad SEO', type: 'Leave', reason: 'Family event', fromDate: daysFromNow(7), toDate: daysFromNow(8), status: 'pending', createdAt: daysAgo(1) },
+  { _id: 'req_1', employeeId: 'emp_1', employeeName: 'Hanna Schmidt', type: 'Leave', reason: 'European Tech Summit Conference (Munich)', fromDate: daysFromNow(5), toDate: daysFromNow(7), status: 'approved', createdAt: daysAgo(2) },
+  { _id: 'req_2', employeeId: 'emp_2', employeeName: 'Sophie Fischer', type: 'Work From Home', reason: 'Design Sprint Deep Work Day', fromDate: daysFromNow(1), toDate: daysFromNow(1), status: 'approved', createdAt: daysAgo(1) },
+  { _id: 'req_3', employeeId: 'emp_5', employeeName: 'Jonas Wagner', type: 'Leave', reason: 'Personal Leave', fromDate: daysFromNow(10), toDate: daysFromNow(12), status: 'pending', createdAt: daysAgo(1) },
 ];
 
 const SEED_BOOKINGS = [
-  { _id: 'book_1', clientName: 'David Client', clientEmail: 'client1@example.com', service: 'Web Development Consultation', date: daysFromNow(2), time: '14:00', status: 'confirmed', notes: 'Discuss project requirements', createdAt: daysAgo(3) },
-  { _id: 'book_2', clientName: 'Emily Client', clientEmail: 'client2@example.com', service: 'Mobile App Strategy', date: daysFromNow(5), time: '10:00', status: 'pending', notes: 'Initial meeting', createdAt: daysAgo(1) },
+  { _id: 'book_1', clientName: 'Dr. Christian Wolf', clientEmail: 'client1@bmw-mobility.de', service: 'IoT Telematics Architecture Review', date: daysFromNow(2), time: '14:00 CET', status: 'confirmed', notes: 'Quarterly review with BMW engineering directors', createdAt: daysAgo(2) },
+  { _id: 'book_2', clientName: 'Elena Krause', clientEmail: 'client2@siemens-mobility.de', service: 'Transit Cloud Architecture Consultation', date: daysFromNow(4), time: '10:30 CET', status: 'pending', notes: 'Discuss Phase 2 corridor deployment', createdAt: daysAgo(1) },
 ];
 
 const SEED_ANNOUNCEMENTS = [
-  { _id: 'ann_1', title: 'Office Holiday - October 25', message: 'The office will be closed on October 25 for a national holiday. Enjoy the day off!', postedBy: 'Admin', type: 'holiday', createdAt: daysAgo(2), expiresAt: daysFromNow(15) },
-  { _id: 'ann_2', title: 'Team Lunch This Friday', message: 'All hands team lunch this Friday at 1 PM in the conference room. Please RSVP.', postedBy: 'HR Manager', type: 'event', createdAt: daysAgo(1), expiresAt: daysFromNow(5) },
+  { _id: 'ann_1', title: 'Berlin Innovation Hub All-Hands', message: 'Quarterly all-hands presentation this Thursday at 15:00 CET. Hybrid attendance via Berlin office & stream.', postedBy: 'Lukas Weber (CEO)', type: 'event', createdAt: daysAgo(1), expiresAt: daysFromNow(7) },
+  { _id: 'ann_2', title: 'German Unity Day Office Schedule', message: 'The Berlin office will observe the official national holiday on October 3. Support rotations remain active.', postedBy: 'Sarah Lindemann (HR)', type: 'holiday', createdAt: daysAgo(3), expiresAt: daysFromNow(20) },
 ];
 
 const SEED_POLICIES = [
-  { _id: 'pol_1', title: 'Remote Work Policy', content: '## Remote Work Policy\n\nEmployees may work remotely up to 2 days per week with prior approval from their project head.\n\n### Guidelines\n- Maintain core hours 10 AM - 4 PM PKT\n- Must be reachable on Slack/Teams\n- Submit daily report as usual\n- Home internet is employee responsibility', category: 'Work', version: '1.2', effectiveDate: daysAgo(90), createdAt: daysAgo(90) },
-  { _id: 'pol_2', title: 'Leave Policy', content: '## Leave Policy\n\n### Annual Leave\nAll employees are entitled to 12 days of annual leave per year.\n\n### Sick Leave\n6 days of sick leave per year.\n\n### Process\n- Apply at least 3 days in advance\n- Medical certificate required for sick leave > 2 days', category: 'HR', version: '2.0', effectiveDate: daysAgo(180), createdAt: daysAgo(180) },
-  { _id: 'pol_3', title: 'Code of Conduct', content: '## Code of Conduct\n\nAll team members are expected to maintain professional standards at all times.\n\n### Key Points\n- Respect all colleagues\n- Maintain confidentiality\n- No harassment or discrimination\n- Report violations to HR', category: 'General', version: '1.0', effectiveDate: daysAgo(365), createdAt: daysAgo(365) },
+  { _id: 'pol_1', title: 'Flexible Hybrid Work Policy (Germany)', content: '## Flexible Work Guidelines\n\nAll permanent team members can work remotely up to 3 days per week with core collaboration hours between 10:00 - 15:00 CET.\n\n### Work from EU/EEA\nEmployees may work from any EU member state for up to 30 days per calendar year with prior notification.', category: 'Workplace', version: '2.1', effectiveDate: daysAgo(90), createdAt: daysAgo(90) },
+  { _id: 'pol_2', title: 'Annual Leave & Wellness (Federal Holidays)', content: '## Paid Leave Provisions\n\nFull-time contracts include 30 days of paid annual vacation plus official Berlin public holidays.\n\n### Application Procedure\n- Submit requests via ERP at least 5 business days in advance.\n- Medical absence certificates (AU-Bescheinigung) required after day 3.', category: 'HR & Benefits', version: '2.0', effectiveDate: daysAgo(180), createdAt: daysAgo(180) },
+  { _id: 'pol_3', title: 'GDPR & Corporate IT Security Standards', content: '## Data Protection & Security\n\nStrict compliance with EU General Data Protection Regulation (GDPR) and ISO 27001.\n\n- Zero customer telemetry stored unencrypted.\n- Multi-factor authentication (MFA) mandatory on all enterprise tools.\n- Report any potential data incident immediately to security@hattech.de.', category: 'Compliance', version: '3.0', effectiveDate: daysAgo(365), createdAt: daysAgo(365) },
 ];
 
 const SEED_PARTNERS = [
-  { _id: 'part_1', id: 'part_1', name: 'Partner Co.', email: 'partner@example.com', userId: { _id: 'u_partner1' }, company: 'Partner Consulting LLC', phone: '+1-555-9001', country: 'USA', status: 'active', partnerType: 'Technology', commissionRate: 10, projects: ['proj_1'], createdAt: daysAgo(120) },
-  { _id: 'part_2', id: 'part_2', name: 'Design Studio', email: 'studio@example.com', userId: null, company: 'Creative Design Studio', phone: '+44-20-9002', country: 'UK', status: 'active', partnerType: 'Design', commissionRate: 8, projects: [], createdAt: daysAgo(60) },
+  { _id: 'part_1', id: 'part_1', name: 'TechVentures Berlin GmbH', email: 'partner@techventures.de', userId: { _id: 'u_partner1' }, company: 'TechVentures Capital & Consulting', phone: '+49 30 2000 8800', country: 'Germany', status: 'active', partnerType: 'Venture & Strategy', commissionRate: 8, projects: ['proj_1', 'proj_2'], createdAt: daysAgo(180) },
+  { _id: 'part_2', id: 'part_2', name: 'Munich Digital Cloud Labs', email: 'hello@munich-cloud.de', userId: null, company: 'Munich Cloud Systems UG', phone: '+49 89 4400 9900', country: 'Germany', status: 'active', partnerType: 'Cloud Infrastructure', commissionRate: 6, projects: ['proj_3'], createdAt: daysAgo(120) },
 ];
 
 const SEED_FINANCE_INCOME = [
-  { _id: 'inc_1', source: 'E-Commerce Platform', amount: 2500, currency: 'USD', date: daysAgo(5), category: 'Project Payment', client: 'David Client', description: '50% milestone payment', status: 'received' },
-  { _id: 'inc_2', source: 'Mobile App Development', amount: 4000, currency: 'USD', date: daysAgo(10), category: 'Project Payment', client: 'Emily Client', description: 'Initial payment', status: 'received' },
-  { _id: 'inc_3', source: 'SEO Campaign Q4', amount: 2000, currency: 'USD', date: daysAgo(20), category: 'Project Payment', client: 'Global Ventures', description: 'Final payment', status: 'received' },
-  { _id: 'inc_4', source: 'Brand Identity Design', amount: 1500, currency: 'USD', date: daysAgo(3), category: 'Project Payment', client: 'David Client', description: '50% advance', status: 'received' },
+  { _id: 'inc_1', source: 'BMW Connected Mobility', amount: 47500, currency: 'EUR', date: daysAgo(4), category: 'Milestone Payment', client: 'BMW Group', description: 'Milestone 2 - Telemetry ingestion engine completion', status: 'received' },
+  { _id: 'inc_2', source: 'Siemens Mobility Tech', amount: 45000, currency: 'EUR', date: daysAgo(12), category: 'Project Payment', client: 'Siemens Mobility', description: 'Initial corridor architecture delivery', status: 'received' },
+  { _id: 'inc_3', source: 'Deutsche Telekom Digital', amount: 34000, currency: 'EUR', date: daysAgo(22), category: 'Project Payment', client: 'Deutsche Telekom', description: 'Final cloud analytics deployment & acceptance', status: 'received' },
+  { _id: 'inc_4', source: 'BMW Connected Mobility', amount: 21000, currency: 'EUR', date: daysAgo(2), category: 'Maintainence Support Payment', client: 'BMW Group', description: 'Q3 Enterprise SLA & Dedicated Support', status: 'received' },
 ];
 
 const SEED_FINANCE_EXPENSE = [
-  { _id: 'exp_1', title: 'Office Rent', amount: 150000, currency: 'PKR', date: daysAgo(5), category: 'Rent', description: 'Monthly office rent - October', status: 'paid' },
-  { _id: 'exp_2', title: 'Team Salaries', amount: 485000, currency: 'PKR', date: daysAgo(5), category: 'Salaries', description: 'October payroll', status: 'paid' },
-  { _id: 'exp_3', title: 'AWS Hosting', amount: 35000, currency: 'PKR', date: daysAgo(1), category: 'Software', description: 'Monthly AWS bill', status: 'paid' },
-  { _id: 'exp_4', title: 'Office Supplies', amount: 12000, currency: 'PKR', date: daysAgo(7), category: 'Supplies', description: 'Stationery and supplies', status: 'paid' },
+  { _id: 'exp_1', title: 'Berlin Office Lease (Leipziger Platz)', amount: 8500, currency: 'EUR', date: daysAgo(5), category: 'Rent', description: 'Monthly workspace lease - Berlin Innovation Center', status: 'paid' },
+  { _id: 'exp_2', title: 'Core Engineering Payroll', amount: 33500, currency: 'EUR', date: daysAgo(5), category: 'Salary Expense', description: 'Monthly engineering, design, and management compensation', status: 'paid' },
+  { _id: 'exp_3', title: 'AWS Cloud Infrastructure (Frankfurt)', amount: 3400, currency: 'EUR', date: daysAgo(2), category: 'Software', description: 'AWS eu-central-1 dedicated clusters, RDS & bandwidth', status: 'paid' },
+  { _id: 'exp_4', title: 'Enterprise Software & Security Licenses', amount: 1850, currency: 'EUR', date: daysAgo(8), category: 'Software', description: 'GitHub Enterprise, Figma Org, JetBrains, Datadog', status: 'paid' },
 ];
 
 const SEED_SUBSCRIPTIONS = [
-  { _id: 'sub_1', clientId: 'cl_1', clientName: 'David Client', plan: 'Professional', amount: 500, currency: 'USD', billingCycle: 'monthly', startDate: daysAgo(60), nextBillingDate: daysFromNow(30), status: 'active', services: ['SEO Monitoring', 'Monthly Reports', 'Priority Support'] },
-  { _id: 'sub_2', clientId: 'cl_2', clientName: 'Emily Client', plan: 'Basic', amount: 200, currency: 'USD', billingCycle: 'monthly', startDate: daysAgo(30), nextBillingDate: daysFromNow(1), status: 'active', services: ['Monthly Reports', 'Email Support'] },
+  { _id: 'sub_1', clientId: 'cl_1', clientName: 'BMW Group Innovation Hub', plan: 'Enterprise SLA', amount: 7500, currency: 'EUR', billingCycle: 'monthly', startDate: daysAgo(90), nextBillingDate: daysFromNow(20), status: 'active', services: ['24/7 Priority Support', 'Dedicated DevOps Lead', 'Multi-Region Ingestion'] },
+  { _id: 'sub_2', clientId: 'cl_2', clientName: 'Siemens Mobility Systems', plan: 'Professional Rail Support', amount: 4800, currency: 'EUR', billingCycle: 'monthly', startDate: daysAgo(45), nextBillingDate: daysFromNow(15), status: 'active', services: ['Automated Health Probes', 'Quarterly Security Audit'] },
 ];
 
 const SEED_INTERACTIONS = [
-  { _id: 'int_1', clientId: 'cl_1', clientName: 'David Client', interactionType: 'meeting', title: 'Project Review Meeting', date: daysFromNow(2), time: '14:00', notes: 'Quarterly project progress review', status: 'scheduled', createdAt: daysAgo(3) },
-  { _id: 'int_2', clientId: 'cl_2', clientName: 'Emily Client', interactionType: 'call', title: 'Requirements Gathering Call', date: daysFromNow(1), time: '10:00', notes: 'Initial call to gather mobile app requirements', status: 'scheduled', createdAt: daysAgo(1) },
+  { _id: 'int_1', clientId: 'cl_1', clientName: 'Dr. Christian Wolf', interactionType: 'meeting', title: 'Telemetry Fleet Review (Munich / Virtual)', date: daysFromNow(2), time: '14:00 CET', notes: 'Review latency metrics under high traffic simulation', status: 'scheduled', createdAt: daysAgo(2) },
+  { _id: 'int_2', clientId: 'cl_2', clientName: 'Elena Krause', interactionType: 'call', title: 'Siemens Transit Integration Sync', date: daysFromNow(3), time: '11:00 CET', notes: 'Verify telemetry endpoints on rail test corridor', status: 'scheduled', createdAt: daysAgo(1) },
 ];
 
 const SEED_ACTIVITIES = [
-  { _id: 'act_1', userId: { _id: 'u_emp1' }, employeeId: 'emp_1', date: new Date().toISOString().slice(0,10), checkIn: '09:00', lastHeartbeat: new Date().toISOString(), duration: 480, status: 'online' },
-  { _id: 'act_2', userId: { _id: 'u_emp2' }, employeeId: 'emp_2', date: new Date().toISOString().slice(0,10), checkIn: '09:05', lastHeartbeat: new Date(Date.now() - 600000).toISOString(), duration: 420, status: 'offline' },
+  { _id: 'act_1', userId: { _id: 'u_emp1' }, employeeId: 'emp_1', date: new Date().toISOString().slice(0,10), checkIn: '08:50', lastHeartbeat: new Date().toISOString(), duration: 490, status: 'online' },
+  { _id: 'act_2', userId: { _id: 'u_emp2' }, employeeId: 'emp_2', date: new Date().toISOString().slice(0,10), checkIn: '09:05', lastHeartbeat: new Date().toISOString(), duration: 460, status: 'online' },
+  { _id: 'act_3', userId: { _id: 'u_emp3' }, employeeId: 'emp_3', date: new Date().toISOString().slice(0,10), checkIn: '08:45', lastHeartbeat: new Date().toISOString(), duration: 510, status: 'online' },
+  { _id: 'act_4', userId: { _id: 'u_emp5' }, employeeId: 'emp_5', date: new Date().toISOString().slice(0,10), checkIn: '09:00', lastHeartbeat: new Date(Date.now() - 3600000).toISOString(), duration: 420, status: 'offline' },
 ];
 
 const SEED_WORKING_DAYS = {
   sunday: false, monday: true, tuesday: true, wednesday: true,
-  thursday: true, friday: true, saturday: true,
+  thursday: true, friday: true, saturday: false,
   nonWorkingDates: [], holidayDescriptions: {}
 };
 
 const SEED_HR_DOCS = [
-  { _id: 'doc_1', title: 'Employee Handbook 2024', description: 'Complete guide for new and existing employees', category: 'Policy', fileUrl: '', uploadedBy: 'Admin', uploadedAt: daysAgo(30) },
-  { _id: 'doc_2', title: 'Payroll Guide', description: 'How payroll is calculated and disbursed', category: 'Finance', fileUrl: '', uploadedBy: 'HR Manager', uploadedAt: daysAgo(60) },
-  { _id: 'doc_3', title: 'Leave Application Form', description: 'Template for leave requests', category: 'Forms', fileUrl: '', uploadedBy: 'HR Manager', uploadedAt: daysAgo(90) },
+  { _id: 'doc_1', title: 'Employee Handbook (German Labor Compliant)', description: 'Comprehensive guide covering German employment standards, benefits, and workplace norms.', category: 'Policy', fileUrl: '', uploadedBy: 'Sarah Lindemann', uploadedAt: daysAgo(30) },
+  { _id: 'doc_2', title: 'Corporate Compensation & Bonus Guidelines', description: 'Transparent salary bands, bonus matrix, and equity participation framework.', category: 'Finance', fileUrl: '', uploadedBy: 'Sarah Lindemann', uploadedAt: daysAgo(60) },
+  { _id: 'doc_3', title: 'Annual Leave Application Form (EU)', description: 'Standard form for requesting vacation or educational leaves.', category: 'Forms', fileUrl: '', uploadedBy: 'Sarah Lindemann', uploadedAt: daysAgo(90) },
 ];
 
 const SEED_CHATS = [
-  { _id: 'chat_general', id: 'chat_general', type: 'general', name: 'General Hub', members: ['u_admin', 'u_emp1', 'u_emp2', 'u_hr1'] },
-  { _id: 'proj_1', id: 'proj_1', type: 'project', name: 'E-Commerce Platform', members: ['u_admin', 'u_emp1', 'u_emp2'] },
-  { _id: 'proj_2', id: 'proj_2', type: 'project', name: 'Mobile App Development', members: ['u_admin', 'u_emp1', 'u_emp3'] },
+  { _id: 'chat_general', id: 'chat_general', type: 'general', name: 'General Hub (Berlin)', members: ['u_admin', 'u_emp1', 'u_emp2', 'u_emp3', 'u_hr1'] },
+  { _id: 'proj_1', id: 'proj_1', type: 'project', name: 'BMW Fleet Telematics', members: ['u_admin', 'u_emp1', 'u_emp3'] },
+  { _id: 'proj_2', id: 'proj_2', type: 'project', name: 'Siemens Smart Transit', members: ['u_admin', 'u_emp1', 'u_emp2', 'u_emp5'] },
 ];
 
 const SEED_MESSAGES = [
-  { _id: 'msg_1', chatId: 'chat_general', sender: { _id: 'u_admin', name: 'Admin User', role: 'admin' }, content: 'Welcome to the Hattech ERP team hub! All announcements and queries can be posted here.', readBy: ['u_admin'], createdAt: daysAgo(2) },
-  { _id: 'msg_2', chatId: 'chat_general', sender: { _id: 'u_emp1', name: 'John Employee', role: 'employee' }, content: 'Hello everyone! Excited to work on the upcoming releases.', readBy: ['u_admin', 'u_emp1'], createdAt: daysAgo(1) },
-  { _id: 'msg_3', chatId: 'proj_1', sender: { _id: 'u_admin', name: 'Admin User', role: 'admin' }, content: 'Sprint 1 tasks have been assigned. Please check the Tasks tab.', readBy: ['u_admin'], createdAt: daysAgo(2) },
+  { _id: 'msg_1', chatId: 'chat_general', sender: { _id: 'u_admin', name: 'Lukas Weber', role: 'admin', avatar: AVATARS.lukas }, content: 'Welcome to the Hattech Engineering Hub! All project updates, sprint milestones, and queries can be posted here.', readBy: ['u_admin'], createdAt: daysAgo(2) },
+  { _id: 'msg_2', chatId: 'chat_general', sender: { _id: 'u_emp1', name: 'Hanna Schmidt', role: 'employee', avatar: AVATARS.hanna }, content: 'Telemetry pipeline for BMW fleet just passed performance benchmarking. Super smooth run today!', readBy: ['u_admin', 'u_emp1'], createdAt: daysAgo(1) },
+  { _id: 'msg_3', chatId: 'proj_1', sender: { _id: 'u_admin', name: 'Lukas Weber', role: 'admin', avatar: AVATARS.lukas }, content: 'Next sprint review with BMW mobility directors is set for Wednesday 14:00 CET.', readBy: ['u_admin'], createdAt: daysAgo(1) },
 ];
 
-// ─── Scoring data helper ─────────────────────────────────────
-const generateScoringData = (employees) => {
-  const month = new Date().getMonth();
-  const year = new Date().getFullYear();
-  const mStr = String(month + 1).padStart(2,'0');
-  const monthQuery = `${year}-${mStr}`;
-  
-  return employees
-    .filter(e => e.status === 'active' && !['admin','hr','hr_hattech'].includes(e.role))
-    .map((emp, i) => ({
+// ─── Dynamic Scoring Generator per Month ────────────────────
+// Generates varying, realistic metrics based on the selected month
+export const generateScoringData = (employees, monthQuery) => {
+  let monthNum = 10; // Default October
+  let yearNum = 2026;
+  if (monthQuery && typeof monthQuery === 'string') {
+    const parts = monthQuery.split('-');
+    if (parts.length >= 2) {
+      yearNum = parseInt(parts[0]) || 2026;
+      monthNum = parseInt(parts[1]) || 10;
+    }
+  }
+
+  // Calculate working days in that month (Mon-Fri)
+  const daysInMonth = new Date(yearNum, monthNum, 0).getDate();
+  const totalWorkingDays = Math.round(daysInMonth * (5 / 7));
+
+  const eligibleEmps = employees.filter(e => e.status === 'active' && !['admin', 'hr', 'it_support'].includes(e.role));
+  const count = eligibleEmps.length || 1;
+
+  // Rotate top winner deterministically per month so expo presentations show dynamic change!
+  const winnerIndex = (monthNum + yearNum) % count;
+  const runnerUpIndex = (winnerIndex + 1) % count;
+
+  return eligibleEmps.map((emp, i) => {
+    // Relative rank offset for this specific month
+    const rankOffset = (i - winnerIndex + count) % count;
+    const isWinner = rankOffset === 0;
+    const isRunnerUp = rankOffset === 1;
+
+    // Realistic monthly numbers
+    const presentDays = Math.max(16, totalWorkingDays - rankOffset - (monthNum % 2));
+    const lateDays = Math.min(3, Math.max(0, rankOffset - 1));
+    const reportsSubmitted = Math.max(15, presentDays - (rankOffset % 2));
+
+    // Base score calculations
+    const attendanceScore = Math.min(75, Math.round((presentDays / totalWorkingDays) * 75));
+    const punctualityScore = Math.max(10, 20 - (lateDays * 4));
+    const reportScore = Math.min(45, Math.round((reportsSubmitted / totalWorkingDays) * 45));
+    const milestoneScore = Math.max(15, 30 - (rankOffset * 3));
+    const totalScore = attendanceScore + punctualityScore + reportScore + milestoneScore;
+
+    return {
       employeeId: emp._id,
       id: emp._id,
       name: emp.name,
       department: emp.department,
       avatar: emp.image || null,
       month: monthQuery,
-      presentDays: 18 - i,
-      totalWorkingDays: 22,
-      lateDays: i,
-      reportsSubmitted: 17 - i,
-      isEmployeeOfTheMonth: i === 0,
-      isEmployeeOf6Months: i === 1,
-      bonusPercentage: i === 0 ? 5 : i === 1 ? 10 : 0,
+      presentDays,
+      totalWorkingDays,
+      lateDays,
+      reportsSubmitted,
+      isEmployeeOfTheMonth: isWinner,
+      isEmployeeOf6Months: isRunnerUp,
+      bonusPercentage: isWinner ? 10 : (isRunnerUp ? 5 : 0),
       scores: {
-        attendance: Math.max(40, 70 - i * 5),
-        reports: Math.max(20, 40 - i * 3),
-        milestones: 25,
-        punctuality: Math.max(10, 20 - i * 2),
-        total: Math.max(80, 155 - i * 10),
+        attendance: attendanceScore,
+        reports: reportScore,
+        milestones: milestoneScore,
+        punctuality: punctualityScore,
+        total: totalScore,
       }
-    }));
+    };
+  });
 };
 
-// ─── Initialize ──────────────────────────────────────────────
+// ─── Initialize Database ─────────────────────────────────────
 export const initDb = (force = false) => {
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
   const usersExist = localStorage.getItem(KEYS.USERS);
@@ -276,7 +330,7 @@ export const initDb = (force = false) => {
 // Auto-run on script import
 initDb();
 
-// ─── CRUD helpers ────────────────────────────────────────────
+// ─── CRUD Helpers ────────────────────────────────────────────
 const getAll = (key) => {
   try {
     initDb();
@@ -480,10 +534,29 @@ export const db = {
     update: (id, data) => update(KEYS.INTERACTIONS, id, data),
     remove: (id) => remove(KEYS.INTERACTIONS, id),
   },
-  // Activities
+  // Activities (Dynamically reacts to selected date!)
   activities: {
     getAll: () => getAll(KEYS.ACTIVITIES),
-    forDate: (date) => getAll(KEYS.ACTIVITIES).filter(a => a.date === date),
+    forDate: (selectedDate) => {
+      const emps = getAll(KEYS.EMPLOYEES).filter(e => e.status === 'active');
+      const seed = selectedDate ? selectedDate.split('-').reduce((acc, part) => acc + (parseInt(part, 10) || 0), 0) : 42;
+      return emps.map((emp, idx) => {
+        const isOnline = (seed + idx) % 4 !== 0;
+        const duration = Math.min(540, Math.max(160, ((seed * 19 + idx * 47) % 460) + 120));
+        const checkInHour = 8 + ((seed + idx) % 2);
+        const checkInMin = String((seed * 7 + idx * 11) % 55).padStart(2, '0');
+        return {
+          _id: `act_${emp._id}_${selectedDate}`,
+          userId: emp.userId || { _id: `u_${emp._id}` },
+          employeeId: emp._id,
+          date: selectedDate,
+          checkIn: `0${checkInHour}:${checkInMin}`,
+          lastHeartbeat: isOnline ? new Date().toISOString() : new Date(Date.now() - 3600000 * ((idx % 3) + 1)).toISOString(),
+          duration,
+          status: isOnline ? 'online' : 'offline'
+        };
+      });
+    },
     create: (data) => create(KEYS.ACTIVITIES, data),
     update: (id, data) => update(KEYS.ACTIVITIES, id, data),
   },
@@ -499,11 +572,11 @@ export const db = {
     update: (id, data) => update(KEYS.HR_DOCS, id, data),
     remove: (id) => remove(KEYS.HR_DOCS, id),
   },
-  // Scoring
+  // Scoring: dynamically recalculates per selected month!
   scoring: {
-    get: (month) => {
+    get: (monthQuery) => {
       const emps = getAll(KEYS.EMPLOYEES);
-      return generateScoringData(emps);
+      return generateScoringData(emps, monthQuery);
     }
   },
   // Project Heads
@@ -514,7 +587,7 @@ export const db = {
   chats: {
     getAll: () => getAll(KEYS.CHATS),
     findById: (id) => findById(KEYS.CHATS, id),
-    getGeneral: () => findById(KEYS.CHATS, 'chat_general') || { _id: 'chat_general', id: 'chat_general', name: 'General Hub' },
+    getGeneral: () => findById(KEYS.CHATS, 'chat_general') || { _id: 'chat_general', id: 'chat_general', name: 'General Hub (Berlin)' },
     getProject: (projId) => findById(KEYS.CHATS, projId) || { _id: projId, id: projId, name: 'Project Chat' },
   },
   messages: {

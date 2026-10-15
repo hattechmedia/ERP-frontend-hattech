@@ -55,7 +55,7 @@ export const AddAPModal = ({ isOpen, onClose, initialData = null }) => {
 
     if (form.amount && !isNaN(form.amount) && Number(form.amount) > 0) {
       const converted = convertCurrency(form.amount, oldCurrency, newCurrency);
-      const formattedAmount = newCurrency === 'PKR' ? Math.round(converted).toString() : Number(converted.toFixed(2)).toString();
+      const formattedAmount = newCurrency === 'EUR' ? Math.round(converted).toString() : Number(converted.toFixed(2)).toString();
       setForm({ ...form, currency: newCurrency, amount: formattedAmount });
     } else {
       setForm({ ...form, currency: newCurrency });
@@ -146,7 +146,7 @@ export const AddAPModal = ({ isOpen, onClose, initialData = null }) => {
                 value={form.currency}
                 onChange={(e) => handleCurrencyChange(e.target.value)}
               >
-                <option value="PKR">PKR (Rs)</option>
+                <option value="EUR">EUR (€)</option>
                 <option value="USD">USD ($)</option>
                 <option value="EUR">EUR (€)</option>
                 <option value="GBP">GBP (£)</option>

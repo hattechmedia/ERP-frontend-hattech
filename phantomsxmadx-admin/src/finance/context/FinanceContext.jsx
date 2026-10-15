@@ -50,8 +50,8 @@ export const FinanceProvider = ({ children }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Global Currency Selection (PKR default, supports USD, EUR, GBP, AUD, SAR)
-  const [selectedCurrency, setSelectedCurrency] = useState('PKR');
+  // Global Currency Selection (EUR default, supports USD, EUR, GBP, CHF)
+  const [selectedCurrency, setSelectedCurrency] = useState('EUR');
 
   // Backend sync status
   const [backendLoading, setBackendLoading] = useState(false);
@@ -333,8 +333,8 @@ export const FinanceProvider = ({ children }) => {
     localStorage.setItem('hattech_ap_list', JSON.stringify(apList));
   }, [apList]);
 
-  // Convert input amount to PKR
-  const convertToBasePKR = (amountInCurrency, currencyCode = selectedCurrency) => {
+  // Convert input amount to EUR
+  const convertToBaseEUR = (amountInCurrency, currencyCode = selectedCurrency) => {
     const rate = exchangeRates[currencyCode] || 1.0;
     return Number(amountInCurrency) / rate;
   };
@@ -448,14 +448,14 @@ export const FinanceProvider = ({ children }) => {
     fetchBackendData();
   }, [fetchBackendData]);
 
-  // Base Auto Calculations (in PKR)
+  // Base Auto Calculations (in EUR)
   const totalIncome = incomeList.reduce((acc, i) => acc + Number(i.amount || 0), 0);
   const totalPayroll = payrollList.reduce((acc, p) => acc + Number(p.basicSalary || 0), 0);
   const totalExpenses = expenseList.reduce((acc, e) => acc + Number(e.amount || 0), 0);
   const totalAR = arList.filter((a) => a.status !== 'Collected').reduce((acc, a) => acc + Number(a.amount || 0), 0);
   const totalAP = apList.filter((a) => a.status !== 'Paid').reduce((acc, a) => acc + Number(a.amount || 0), 0);
 
-  // Agency Revenue Distribution Splits (in PKR)
+  // Agency Revenue Distribution Splits (in EUR)
   const businessExpensesAllocation = totalIncome * (distributionSplits.businessExpenses / 100);
   const companyReserveAllocation = totalIncome * (distributionSplits.companyReserve / 100);
   const charityPoolAllocation = totalIncome * (distributionSplits.charityPool / 100);
@@ -466,12 +466,12 @@ export const FinanceProvider = ({ children }) => {
   // --- CRUD: INCOME (Connected to Backend) ---
   const addIncome = async (incomeData) => {
     const inputCurrency = incomeData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(incomeData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(incomeData.amount, inputCurrency);
     const id = `INC-${Date.now().toString().slice(-4)}`;
 
     const backendPayload = {
       source: incomeData.clearingEntity || incomeData.clientName || incomeData.source || 'Direct Client',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: incomeData.settlementDate || incomeData.date || new Date().toISOString(),
       category: mapToBackendIncomeCategory(incomeData.projectPayment || incomeData.category),
       payerName: incomeData.clearingEntity || incomeData.clientName || '',
@@ -488,7 +488,7 @@ export const FinanceProvider = ({ children }) => {
         id: savedItem._id || id,
         _id: savedItem._id || id,
         date: savedItem.date ? savedItem.date.slice(0, 10) : backendPayload.date.slice(0, 10),
-        amount: amountInPKR,
+        amount: amountInEUR,
         source: backendPayload.source,
         clearingEntity: backendPayload.payerName || backendPayload.source,
         category: backendPayload.category,
@@ -505,13 +505,13 @@ export const FinanceProvider = ({ children }) => {
         setAccountsList((prev) =>
           prev.map((acc) =>
             acc.id === incomeData.bankAccountId
-              ? { ...acc, balance: acc.balance + amountInPKR }
+              ? { ...acc, balance: acc.balance + amountInEUR }
               : acc
           )
         );
       }
 
-      const currencyPrefix = currencyPrefixes[inputCurrency] || 'PKR ';
+      const currencyPrefix = currencyPrefixes[inputCurrency] || '€';
       showToast(`Recorded Income: ${backendPayload.source} (${currencyPrefix}${incomeData.amount})`, 'success');
       return newInc;
     } catch (err) {
@@ -520,7 +520,7 @@ export const FinanceProvider = ({ children }) => {
         id,
         date: backendPayload.date.slice(0, 10),
         ...incomeData,
-        amount: amountInPKR,
+        amount: amountInEUR,
         source: backendPayload.source,
         category: backendPayload.category,
       };
@@ -532,11 +532,11 @@ export const FinanceProvider = ({ children }) => {
 
   const updateIncome = async (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(updatedData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(updatedData.amount, inputCurrency);
 
     const backendPayload = {
       source: updatedData.clearingEntity || updatedData.source || 'Direct Client',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: updatedData.settlementDate || updatedData.date || new Date().toISOString(),
       category: mapToBackendIncomeCategory(updatedData.projectPayment || updatedData.category),
       payerName: updatedData.clearingEntity || updatedData.clientName || '',
@@ -559,7 +559,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...item,
               ...updatedData,
-              amount: amountInPKR,
+              amount: amountInEUR,
               source: backendPayload.source,
               clearingEntity: backendPayload.payerName || backendPayload.source,
               category: backendPayload.category,
@@ -586,17 +586,17 @@ export const FinanceProvider = ({ children }) => {
   // --- CRUD: EXPENSES (Connected to Backend) ---
   const addExpense = async (expenseData) => {
     const inputCurrency = expenseData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(expenseData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(expenseData.amount, inputCurrency);
     const id = `EXP-${Date.now().toString().slice(-4)}`;
 
     const backendPayload = {
       item: expenseData.expenseReason || expenseData.notes || expenseData.vendor || 'Operational Expense',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: expenseData.paymentDate || expenseData.settlementDate || expenseData.date || new Date().toISOString(),
       category: mapToBackendExpenseCategory(expenseData.expenseCategory || expenseData.category),
       paymentMethod: expenseData.paymentMethod || 'Cash',
       status: expenseData.status || 'Paid',
-      paidAmount: (expenseData.status || 'Paid') === 'Paid' ? amountInPKR : 0,
+      paidAmount: (expenseData.status || 'Paid') === 'Paid' ? amountInEUR : 0,
       recipient: expenseData.vendor || '',
       description: expenseData.notes || expenseData.expenseReason || '',
     };
@@ -608,7 +608,7 @@ export const FinanceProvider = ({ children }) => {
         id: savedItem._id || id,
         _id: savedItem._id || id,
         date: savedItem.date ? savedItem.date.slice(0, 10) : backendPayload.date.slice(0, 10),
-        amount: amountInPKR,
+        amount: amountInEUR,
         vendor: backendPayload.recipient || backendPayload.item,
         category: backendPayload.category,
         notes: backendPayload.description || backendPayload.item,
@@ -622,13 +622,13 @@ export const FinanceProvider = ({ children }) => {
         setAccountsList((prev) =>
           prev.map((acc) =>
             acc.id === expenseData.bankAccountId
-              ? { ...acc, balance: Math.max(0, acc.balance - amountInPKR) }
+              ? { ...acc, balance: Math.max(0, acc.balance - amountInEUR) }
               : acc
           )
         );
       }
 
-      const currencyPrefix = currencyPrefixes[inputCurrency] || 'PKR ';
+      const currencyPrefix = currencyPrefixes[inputCurrency] || '€';
       showToast(`Recorded Expense: ${backendPayload.category} (${currencyPrefix}${expenseData.amount})`, 'success');
       return newExp;
     } catch (err) {
@@ -637,7 +637,7 @@ export const FinanceProvider = ({ children }) => {
         id,
         date: backendPayload.date.slice(0, 10),
         ...expenseData,
-        amount: amountInPKR,
+        amount: amountInEUR,
         vendor: backendPayload.recipient || 'General Vendor',
       };
       setExpenseList((prev) => [localExp, ...prev]);
@@ -648,11 +648,11 @@ export const FinanceProvider = ({ children }) => {
 
   const updateExpense = async (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(updatedData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(updatedData.amount, inputCurrency);
 
     const backendPayload = {
       item: updatedData.expenseReason || updatedData.notes || updatedData.vendor || 'Operational Expense',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: updatedData.paymentDate || updatedData.settlementDate || updatedData.date || new Date().toISOString(),
       category: mapToBackendExpenseCategory(updatedData.expenseCategory || updatedData.category),
       recipient: updatedData.vendor || '',
@@ -674,7 +674,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...item,
               ...updatedData,
-              amount: amountInPKR,
+              amount: amountInEUR,
               date: backendPayload.date.slice(0, 10),
               vendor: backendPayload.recipient || item.vendor,
               category: backendPayload.category,
@@ -701,14 +701,14 @@ export const FinanceProvider = ({ children }) => {
   const addPayroll = async (payrollData) => {
     const id = `EMP-${Date.now().toString().slice(-4)}`;
     const inputCurrency = payrollData.currency || selectedCurrency;
-    const salaryInPKR = convertToBasePKR(payrollData.basicSalary, inputCurrency);
+    const salaryInEUR = convertToBaseEUR(payrollData.basicSalary, inputCurrency);
 
     const newPay = {
       id,
       date: payrollData.date || new Date().toISOString().slice(0, 10),
       status: 'Paid',
       ...payrollData,
-      basicSalary: salaryInPKR,
+      basicSalary: salaryInEUR,
     };
     setPayrollList((prev) => [newPay, ...prev]);
     showToast(`Staff member ${payrollData.name} added to roster!`, 'success');
@@ -716,13 +716,13 @@ export const FinanceProvider = ({ children }) => {
 
   const updatePayroll = async (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
-    const salaryInPKR = convertToBasePKR(updatedData.basicSalary, inputCurrency);
+    const salaryInEUR = convertToBaseEUR(updatedData.basicSalary, inputCurrency);
 
     // If it's a real employee mongo ID, update backend employee
     if (id && id.length === 24) {
       try {
         await api.put(`/employees/${id}`, {
-          salary: salaryInPKR,
+          salary: salaryInEUR,
           bankDetails: {
             bankName: updatedData.bankName || '',
             accountNumber: updatedData.accountNumber || '',
@@ -740,7 +740,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...item,
               ...updatedData,
-              basicSalary: salaryInPKR,
+              basicSalary: salaryInEUR,
             }
           : item
       )
@@ -757,13 +757,13 @@ export const FinanceProvider = ({ children }) => {
   const addAccount = (accountData) => {
     const id = `ACC-${Date.now().toString().slice(-4)}`;
     const inputCurrency = accountData.currency || selectedCurrency;
-    const balanceInPKR = convertToBasePKR(accountData.balance || 0, inputCurrency);
+    const balanceInEUR = convertToBaseEUR(accountData.balance || 0, inputCurrency);
 
     const newAcc = {
       id,
       status: 'Active',
       ...accountData,
-      balance: balanceInPKR,
+      balance: balanceInEUR,
     };
     setAccountsList((prev) => [...prev, newAcc]);
     showToast(`Account ${accountData.bankName} added successfully!`, 'success');
@@ -771,7 +771,7 @@ export const FinanceProvider = ({ children }) => {
 
   const updateAccount = (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
-    const balanceInPKR = convertToBasePKR(updatedData.balance || 0, inputCurrency);
+    const balanceInEUR = convertToBaseEUR(updatedData.balance || 0, inputCurrency);
 
     setAccountsList((prev) =>
       prev.map((acc) =>
@@ -779,7 +779,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...acc,
               ...updatedData,
-              balance: balanceInPKR,
+              balance: balanceInEUR,
             }
           : acc
       )
@@ -829,12 +829,12 @@ export const FinanceProvider = ({ children }) => {
   // --- CRUD: ACCOUNTS RECEIVABLE (AR) ---
   const addAR = async (arData) => {
     const inputCurrency = arData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(arData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(arData.amount, inputCurrency);
     const id = `AR-${Date.now().toString().slice(-4)}`;
 
     const backendPayload = {
       source: arData.clientName || 'Client Invoice',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: arData.date || new Date().toISOString(),
       category: 'Client',
       status: arData.status || 'Pending',
@@ -854,7 +854,7 @@ export const FinanceProvider = ({ children }) => {
         clientName: arData.clientName,
         invoiceNo: arData.invoiceNo || `INV-${(saved._id || id).slice(-4)}`,
         notes: arData.notes,
-        amount: amountInPKR,
+        amount: amountInEUR,
         originalAmount: arData.amount,
         currency: inputCurrency,
       };
@@ -875,7 +875,7 @@ export const FinanceProvider = ({ children }) => {
         dueDate: arData.dueDate || new Date().toISOString().slice(0, 10),
         status: arData.status || 'Pending',
         ...arData,
-        amount: amountInPKR,
+        amount: amountInEUR,
         originalAmount: arData.amount,
       };
       setArList((prev) => [localAr, ...prev]);
@@ -886,7 +886,7 @@ export const FinanceProvider = ({ children }) => {
   const updateAR = async (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
     const rawNum = updatedData.originalAmount !== undefined ? updatedData.originalAmount : updatedData.amount;
-    const amountInPKR = convertToBasePKR(rawNum, inputCurrency);
+    const amountInEUR = convertToBaseEUR(rawNum, inputCurrency);
     const origAmountVal = rawNum;
     const newStatus = updatedData.status;
 
@@ -894,7 +894,7 @@ export const FinanceProvider = ({ children }) => {
       if (id && !id.startsWith('AR-')) {
         await api.put(`/finance/income/${id}`, {
           status: newStatus === 'Collected' ? 'Received' : 'Pending',
-          amount: amountInPKR,
+          amount: amountInEUR,
           source: updatedData.clientName,
           payerName: updatedData.clientName,
         });
@@ -909,7 +909,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...item,
               ...updatedData,
-              amount: amountInPKR,
+              amount: amountInEUR,
               originalAmount: origAmountVal,
             }
           : item
@@ -939,12 +939,12 @@ export const FinanceProvider = ({ children }) => {
   // --- CRUD: ACCOUNTS PAYABLE (AP) ---
   const addAP = async (apData) => {
     const inputCurrency = apData.currency || selectedCurrency;
-    const amountInPKR = convertToBasePKR(apData.amount, inputCurrency);
+    const amountInEUR = convertToBaseEUR(apData.amount, inputCurrency);
     const id = `AP-${Date.now().toString().slice(-4)}`;
 
     const backendPayload = {
       item: apData.vendorName || apData.reason || 'Payable Debt',
-      amount: amountInPKR,
+      amount: amountInEUR,
       date: apData.date || new Date().toISOString(),
       category: mapToBackendExpenseCategory(apData.reason),
       status: apData.status || 'Unpaid',
@@ -965,7 +965,7 @@ export const FinanceProvider = ({ children }) => {
         reason: apData.reason,
         billNo: apData.billNo || `BILL-${(saved._id || id).slice(-4)}`,
         notes: apData.notes,
-        amount: amountInPKR,
+        amount: amountInEUR,
         originalAmount: apData.amount,
         currency: inputCurrency,
       };
@@ -986,7 +986,7 @@ export const FinanceProvider = ({ children }) => {
         dueDate: apData.dueDate || new Date().toISOString().slice(0, 10),
         status: apData.status || 'Unpaid',
         ...apData,
-        amount: amountInPKR,
+        amount: amountInEUR,
         originalAmount: apData.amount,
       };
       setApList((prev) => [localAp, ...prev]);
@@ -997,7 +997,7 @@ export const FinanceProvider = ({ children }) => {
   const updateAP = async (id, updatedData) => {
     const inputCurrency = updatedData.currency || selectedCurrency;
     const rawNum = updatedData.originalAmount !== undefined ? updatedData.originalAmount : updatedData.amount;
-    const amountInPKR = convertToBasePKR(rawNum, inputCurrency);
+    const amountInEUR = convertToBaseEUR(rawNum, inputCurrency);
     const origAmountVal = rawNum;
     const newStatus = updatedData.status;
 
@@ -1005,8 +1005,8 @@ export const FinanceProvider = ({ children }) => {
       if (id && !id.startsWith('AP-')) {
         await api.put(`/finance/expense/${id}`, {
           status: newStatus === 'Paid' ? 'Paid' : 'Unpaid',
-          paidAmount: newStatus === 'Paid' ? amountInPKR : 0,
-          amount: amountInPKR,
+          paidAmount: newStatus === 'Paid' ? amountInEUR : 0,
+          amount: amountInEUR,
           item: updatedData.vendorName || updatedData.reason,
           recipient: updatedData.vendorName,
         });
@@ -1021,7 +1021,7 @@ export const FinanceProvider = ({ children }) => {
           ? {
               ...item,
               ...updatedData,
-              amount: amountInPKR,
+              amount: amountInEUR,
               originalAmount: origAmountVal,
             }
           : item

@@ -15,7 +15,8 @@ export const Header = ({ setMobileOpen }) => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const formatted = new Intl.DateTimeFormat('en-US', {
+      const formatted = new Intl.DateTimeFormat('en-GB', {
+        timeZone: 'Europe/Berlin',
         weekday: 'short',
         month: 'short',
         day: '2-digit',
@@ -23,9 +24,9 @@ export const Header = ({ setMobileOpen }) => {
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: true,
+        hour12: false,
       }).format(now);
-      setTimeStr(`${formatted} PKT`);
+      setTimeStr(`${formatted} CET`);
     };
 
     updateTime();
@@ -46,16 +47,16 @@ export const Header = ({ setMobileOpen }) => {
             <Menu className="w-5 h-5" />
           </button>
 
-          {/* Live PKT Time Badge */}
+          {/* Live CET Time Badge */}
           <div className="flex items-center gap-2 text-xs font-mono font-medium text-slate-700 bg-slate-100 border border-slate-200 px-3 py-1.5 rounded-full shadow-inner">
             <Clock className="w-3.5 h-3.5 text-blue-600 animate-pulse" />
-            <span>{timeStr || 'Wed, Sep 02, 2026, 03:13:00 PM PKT'}</span>
+            <span>{timeStr || 'Wed, 02 Sep 2026, 15:13:00 CET'}</span>
           </div>
         </div>
 
         {/* Right: Currency Selector, User Avatar, Sign Out */}
         <div className="flex items-center gap-3">
-          {/* Currency Selector (PKR, USD, EUR, GBP, AUD, SAR) */}
+          {/* Currency Selector (EUR, USD, EUR, GBP, AUD, SAR) */}
           <div className="relative">
             <select
               value={selectedCurrency}

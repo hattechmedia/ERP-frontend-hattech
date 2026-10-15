@@ -48,7 +48,7 @@ export const AccountsPage = () => {
   const [apModalOpen, setApModalOpen] = useState(false);
   const [editingAP, setEditingAP] = useState(null);
 
-  // Total Liquid Capital Reserves (in PKR)
+  // Total Liquid Capital Reserves (in EUR)
   const totalLiquidReserves = accountsList.reduce((acc, a) => acc + Number(a.balance || 0), 0);
 
   // Filtered Bank Accounts List by Search

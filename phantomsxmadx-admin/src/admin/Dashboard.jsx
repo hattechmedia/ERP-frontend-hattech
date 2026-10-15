@@ -209,15 +209,15 @@ export default function Dashboard() {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-      const timeStr = now.toLocaleTimeString('en-US', {
-        timeZone: 'Asia/Karachi',
+      const timeStr = now.toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/Berlin',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',
-        hour12: true
+        hour12: false
       });
-      const dateStr = now.toLocaleDateString('en-PK', {
-        timeZone: 'Asia/Karachi',
+      const dateStr = now.toLocaleDateString('en-GB', {
+        timeZone: 'Europe/Berlin',
         weekday: 'short',
         day: 'numeric',
         month: 'short',
@@ -349,12 +349,12 @@ export default function Dashboard() {
         let formattedTime = item.time || "";
         if (!formattedTime && item.nextMeetingDate) {
           try {
-            formattedTime = new Date(item.nextMeetingDate).toLocaleTimeString('en-US', {
-              timeZone: 'Asia/Karachi',
+            formattedTime = new Date(item.nextMeetingDate).toLocaleTimeString('en-GB', {
+              timeZone: 'Europe/Berlin',
               hour: '2-digit',
               minute: '2-digit',
-              hour12: true
-            }) + ' (PKT)';
+              hour12: false
+            }) + ' (CET)';
           } catch (e) {
             formattedTime = "Scheduled";
           }
@@ -809,7 +809,7 @@ export default function Dashboard() {
             {pakistanTime && (
               <div className="px-4 py-2 bg-white/10 backdrop-blur-md rounded-xl border !border-white/20 !text-white text-xs md:text-sm font-mono font-bold flex items-center gap-2 shadow-sm animate-in fade-in duration-300">
                 <span className="w-2.5 h-2.5 rounded-full bg-green-400 animate-ping"></span>
-                <span>{pakistanTime} PKT</span>
+                <span>{pakistanTime} CET</span>
               </div>
             )}
             <div className="px-3 py-1 bg-white/10 backdrop-blur-md rounded-xl border !border-white/20 !text-white text-[9px] font-black flex items-center gap-2 shadow-sm">

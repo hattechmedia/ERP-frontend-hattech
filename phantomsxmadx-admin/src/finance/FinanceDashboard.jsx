@@ -41,7 +41,7 @@ const FinanceDashboard = () => {
     const [customStartDate, setCustomStartDate] = useState(() => localStorage.getItem('finance_dashboard_startDate') || '');
     const [customEndDate, setCustomEndDate] = useState(() => localStorage.getItem('finance_dashboard_endDate') || '');
 
-    const [quickCurrency, setQuickCurrency] = useState("PKR");
+    const [quickCurrency, setQuickCurrency] = useState("EUR");
     const [usdRate, setUsdRate] = useState(278);
 
     useEffect(() => {
@@ -63,9 +63,9 @@ const FinanceDashboard = () => {
             fetch('https://open.er-api.com/v6/latest/USD')
                 .then(res => res.json())
                 .then(data => {
-                    if (data && data.rates && data.rates.PKR) {
-                        sessionStorage.setItem('cached_usd_rate', data.rates.PKR);
-                        setUsdRate(data.rates.PKR);
+                    if (data && data.rates && 1.08) {
+                        sessionStorage.setItem('cached_usd_rate', 1.08);
+                        setUsdRate(1.08);
                     }
                 })
                 .catch(err => console.error("Failed to fetch USD rate", err));
@@ -109,7 +109,7 @@ const FinanceDashboard = () => {
             [stats.totalIncome, stats.totalExpense, stats.totalPayroll, stats.netProfit],
             [],
             ["II. TRANSACTION LEDGER DETAILS"],
-            ["DATE", "DESCRIPTION", "CATEGORY", "ENTITY/CLIENT", "IN (PKR)", "OUT (PKR)", "TYPE"]
+            ["DATE", "DESCRIPTION", "CATEGORY", "ENTITY/CLIENT", "IN (EUR)", "OUT (EUR)", "TYPE"]
         ];
 
         // Add detailed rows
@@ -262,7 +262,7 @@ const FinanceDashboard = () => {
     }, [selectedMonth, selectedYear, customStartDate, customEndDate]);
 
     const formatAmount = (amount) => {
-        return `PKR ${amount.toLocaleString()}`;
+        return `€${amount.toLocaleString()}`;
     };
 
     const handleQuickSubmit = async (e) => {
@@ -275,7 +275,7 @@ const FinanceDashboard = () => {
             const enteredAmt = parseFloat(quickFormData.amount);
             const finalAmount = quickCurrency === 'USD' ? enteredAmt * usdRate : enteredAmt;
             const finalDesc = quickCurrency === 'USD'
-                ? `${quickFormData.description || ""}\n[Converted from $${quickFormData.amount} USD at rate ${usdRate} PKR/USD]`.trim()
+                ? `${quickFormData.description || ""}\n[Converted from $${quickFormData.amount} USD at rate ${usdRate} EUR/USD]`.trim()
                 : quickFormData.description;
 
             // Map generic form to specific model fields
@@ -324,7 +324,7 @@ const FinanceDashboard = () => {
                     clientEmail: '',
                     monthlyDate: ''
                 });
-                setQuickCurrency('PKR');
+                setQuickCurrency('EUR');
                 fetchStats(); // Refresh dashboard
             }
         } catch (err) {
@@ -557,7 +557,7 @@ const FinanceDashboard = () => {
                         <p className="text-4xl font-black text-[#004AAD] tracking-tight">35%</p>
                         <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase mt-2 tracking-widest">Business Expenses</p>
                         <p className="text-xs font-bold text-[var(--text-primary)] mt-1">
-                            PKR {((stats?.totalIncome || 0) * 0.35).toLocaleString()}
+                            €{((stats?.totalIncome || 0) * 0.35).toLocaleString()}
                         </p>
                     </div>
 
@@ -565,7 +565,7 @@ const FinanceDashboard = () => {
                         <p className="text-4xl font-black text-amber-500 tracking-tight">15%</p>
                         <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase mt-2 tracking-widest">Company Reserve</p>
                         <p className="text-xs font-bold text-[var(--text-primary)] mt-1">
-                            PKR {((stats?.totalIncome || 0) * 0.15).toLocaleString()}
+                            €{((stats?.totalIncome || 0) * 0.15).toLocaleString()}
                         </p>
                     </div>
 
@@ -573,10 +573,10 @@ const FinanceDashboard = () => {
                         <p className="text-4xl font-black text-pink-500 tracking-tight">4%</p>
                         <p className="text-[9px] font-black text-[var(--text-secondary)] uppercase mt-2 tracking-widest">Charity Pool Remaining</p>
                         <p className="text-xs font-bold text-[var(--text-primary)] mt-1">
-                            PKR {(stats?.charityPoolRemaining ?? ((stats?.totalIncome || 0) * 0.04)).toLocaleString()}
+                            €{(stats?.charityPoolRemaining ?? ((stats?.totalIncome || 0) * 0.04)).toLocaleString()}
                         </p>
                         <p className="text-[8px] font-bold text-pink-400 mt-0.5">
-                            (Allocated: PKR {((stats?.totalIncome || 0) * 0.04).toLocaleString()})
+                            (Allocated: €{((stats?.totalIncome || 0) * 0.04).toLocaleString()})
                         </p>
                     </div>
                 </div>
@@ -668,7 +668,7 @@ const FinanceDashboard = () => {
                                     <div className="w-2.5 h-2.5 rounded-full shadow-lg" style={{ backgroundColor: item.color }} />
                                     <span className="text-[10px] font-black text-[var(--text-secondary)] uppercase truncate tracking-widest">{item.name}</span>
                                 </div>
-                                <span className="text-[10px] font-black text-[var(--text-primary)]">PKR {item.value.toLocaleString()}</span>
+                                <span className="text-[10px] font-black text-[var(--text-primary)]">€{item.value.toLocaleString()}</span>
                             </div>
                         ))}
                     </div>

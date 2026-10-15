@@ -91,7 +91,7 @@ export default function FinanceLedger() {
                 ["HAT TECH MEDIA - GENERAL LEDGER REPORT"],
                 [`GENERATED ON: ${new Date().toLocaleString()}`],
                 [],
-                ["DATE", "TYPE", "IDENTIFIER", "CATEGORY", "ENTITY/CONTACT", "DEBIT (PKR)", "CREDIT (PKR)", "STATUS"]
+                ["DATE", "TYPE", "IDENTIFIER", "CATEGORY", "ENTITY/CONTACT", "DEBIT (EUR)", "CREDIT (EUR)", "STATUS"]
             ];
             filtered.forEach(t => {
                 data.push([
@@ -246,7 +246,7 @@ export default function FinanceLedger() {
 
                             <div className={`p-6 rounded-[32px] border shadow-2xl ${netProfit >= 0 ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-500' : 'bg-rose-500/10 border-rose-500/20 text-rose-500'}`}>
                                 <p className="text-[9px] font-black uppercase tracking-[0.2em] opacity-60 mb-1">Ledger Net Position</p>
-                                <p className="text-2xl font-black tracking-tighter uppercase">{netProfit < 0 ? '-' : '+'} PKR {Math.abs(netProfit).toLocaleString()}</p>
+                                <p className="text-2xl font-black tracking-tighter uppercase">{netProfit < 0 ? '-' : '+'} €{Math.abs(netProfit).toLocaleString()}</p>
                                 <p className="text-[8px] font-bold uppercase mt-1 opacity-40">Total Revenue Minus Disbursals</p>
                             </div>
                         </div>
@@ -279,8 +279,8 @@ export default function FinanceLedger() {
                                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-white/50">Description</th>
                                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-white/50">Category</th>
                                                     <th className="px-6 py-4 text-[9px] font-black uppercase tracking-[0.2em] text-white/50">Contact / Entity</th>
-                                                    <th className="px-6 py-4 text-right text-[9px] font-black uppercase tracking-[0.2em] text-rose-400">Debit (PKR)</th>
-                                                    <th className="px-6 py-4 text-right text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400">Credit (PKR)</th>
+                                                    <th className="px-6 py-4 text-right text-[9px] font-black uppercase tracking-[0.2em] text-rose-400">Debit (EUR)</th>
+                                                    <th className="px-6 py-4 text-right text-[9px] font-black uppercase tracking-[0.2em] text-emerald-400">Credit (EUR)</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="divide-y divide-[var(--bg-inner)]">
@@ -299,10 +299,10 @@ export default function FinanceLedger() {
                                                             {t.entity}
                                                         </td>
                                                         <td className="px-6 py-4 text-right font-black text-xs text-rose-500">
-                                                            {t.type === 'Expense' ? `PKR ${t.amount.toLocaleString()}` : '-'}
+                                                            {t.type === 'Expense' ? `€${t.amount.toLocaleString()}` : '-'}
                                                         </td>
                                                         <td className="px-6 py-4 text-right font-black text-xs text-emerald-500">
-                                                            {t.type === 'Income' ? `PKR ${t.amount.toLocaleString()}` : '-'}
+                                                            {t.type === 'Income' ? `€${t.amount.toLocaleString()}` : '-'}
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -337,7 +337,7 @@ export default function FinanceLedger() {
                         <div className="space-y-4">
                             <div className="flex justify-between items-center border-b border-emerald-500/20 pb-2">
                                 <h4 className="text-xs font-black uppercase tracking-widest text-emerald-500">1. Operating Revenue & Income By Category</h4>
-                                <span className="text-[10px] font-black text-emerald-500 uppercase">Amount (PKR)</span>
+                                <span className="text-[10px] font-black text-emerald-500 uppercase">Amount (EUR)</span>
                             </div>
 
                             <div className="space-y-3 pl-4">
@@ -353,20 +353,20 @@ export default function FinanceLedger() {
                                     }, {})).map(([catName, amt]) => (
                                         <div key={catName} className="flex justify-between items-center text-xs font-bold text-[var(--text-secondary)] py-1.5 border-b border-white/5">
                                             <span className="font-black text-[var(--text-primary)]">{catName}</span>
-                                            <span className="text-emerald-400 font-mono font-black text-sm">PKR {amt.toLocaleString()}</span>
+                                            <span className="text-emerald-400 font-mono font-black text-sm">€{amt.toLocaleString()}</span>
                                         </div>
                                     ))
                                 ) : (
                                     <div className="flex justify-between text-xs text-[var(--text-secondary)]">
                                         <span>General Client Revenue</span>
-                                        <span className="text-emerald-400 font-mono font-black">PKR {totalIncome.toLocaleString()}</span>
+                                        <span className="text-emerald-400 font-mono font-black">€{totalIncome.toLocaleString()}</span>
                                     </div>
                                 )}
                             </div>
 
                             <div className="flex justify-between items-center pt-3 border-t border-white/10 font-black text-sm text-[var(--text-primary)]">
                                 <span>TOTAL OPERATING REVENUE</span>
-                                <span className="text-emerald-500 font-mono text-base">PKR {totalIncome.toLocaleString()}</span>
+                                <span className="text-emerald-500 font-mono text-base">€{totalIncome.toLocaleString()}</span>
                             </div>
                         </div>
 
@@ -374,7 +374,7 @@ export default function FinanceLedger() {
                         <div className="space-y-4 pt-6">
                             <div className="flex justify-between items-center border-b border-rose-500/20 pb-2">
                                 <h4 className="text-xs font-black uppercase tracking-widest text-rose-500">2. Operating & Administrative Expenses By Category</h4>
-                                <span className="text-[10px] font-black text-rose-500 uppercase">Amount (PKR)</span>
+                                <span className="text-[10px] font-black text-rose-500 uppercase">Amount (EUR)</span>
                             </div>
 
                             <div className="space-y-3 pl-4">
@@ -390,20 +390,20 @@ export default function FinanceLedger() {
                                     }, {})).map(([catName, amt]) => (
                                         <div key={catName} className="flex justify-between items-center text-xs font-bold text-[var(--text-secondary)] py-1.5 border-b border-white/5">
                                             <span className="font-black text-[var(--text-primary)]">{catName}</span>
-                                            <span className="text-rose-400 font-mono font-black text-sm">PKR {amt.toLocaleString()}</span>
+                                            <span className="text-rose-400 font-mono font-black text-sm">€{amt.toLocaleString()}</span>
                                         </div>
                                     ))
                                 ) : (
                                     <div className="flex justify-between text-xs text-[var(--text-secondary)]">
                                         <span>No Expenses Recorded</span>
-                                        <span className="text-rose-400 font-mono font-black">PKR 0</span>
+                                        <span className="text-rose-400 font-mono font-black">€0</span>
                                     </div>
                                 )}
                             </div>
 
                             <div className="flex justify-between items-center pt-3 border-t border-white/10 font-black text-sm text-[var(--text-primary)]">
                                 <span>TOTAL OPERATING EXPENSES</span>
-                                <span className="text-rose-500 font-mono text-base">PKR {totalExpenses.toLocaleString()}</span>
+                                <span className="text-rose-500 font-mono text-base">€{totalExpenses.toLocaleString()}</span>
                             </div>
                         </div>
 
@@ -414,7 +414,7 @@ export default function FinanceLedger() {
                                 <p className="text-xs text-white/60">Net Earnings after all direct disbursements & expenses</p>
                             </div>
                             <p className={`text-3xl font-black tracking-tight ${netProfit >= 0 ? 'text-emerald-400' : 'text-rose-400'}`}>
-                                PKR {netProfit.toLocaleString()}
+                                €{netProfit.toLocaleString()}
                             </p>
                         </div>
                     </div>
@@ -437,21 +437,21 @@ export default function FinanceLedger() {
                             <div className="space-y-3">
                                 <div className="flex justify-between border-b border-emerald-500/30 pb-2 font-black text-emerald-500 text-sm tracking-widest">
                                     <span>I. ASSETS</span>
-                                    <span>AMOUNT (PKR)</span>
+                                    <span>AMOUNT (EUR)</span>
                                 </div>
                                 <div className="space-y-2 pl-4 text-xs font-bold text-[var(--text-secondary)]">
                                     <div className="flex justify-between">
                                         <span>Cash & Company Bank Account Balances</span>
-                                        <span>PKR {(stats?.netProfit || Math.max(0, netProfit)).toLocaleString()}</span>
+                                        <span>€{(stats?.netProfit || Math.max(0, netProfit)).toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Accounts Receivable (AR - Pending Incomes)</span>
-                                        <span>PKR {(stats?.totalReceivable || stats?.pendingIncome || 0).toLocaleString()}</span>
+                                        <span>€{(stats?.totalReceivable || stats?.pendingIncome || 0).toLocaleString()}</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between border-t border-b border-emerald-500/30 py-3 font-black text-emerald-500 text-sm tracking-wider">
                                     <span>TOTAL ASSETS</span>
-                                    <span>PKR {((stats?.netProfit || Math.max(0, netProfit)) + (stats?.totalReceivable || 0)).toLocaleString()}</span>
+                                    <span>€{((stats?.netProfit || Math.max(0, netProfit)) + (stats?.totalReceivable || 0)).toLocaleString()}</span>
                                 </div>
                             </div>
 
@@ -459,17 +459,17 @@ export default function FinanceLedger() {
                             <div className="space-y-3">
                                 <div className="flex justify-between border-b border-rose-500/30 pb-2 font-black text-rose-500 text-sm tracking-widest">
                                     <span>II. LIABILITIES</span>
-                                    <span>AMOUNT (PKR)</span>
+                                    <span>AMOUNT (EUR)</span>
                                 </div>
                                 <div className="space-y-2 pl-4 text-xs font-bold text-[var(--text-secondary)]">
                                     <div className="flex justify-between">
                                         <span>Accounts Payable (AP - Unpaid Expenses & Bills)</span>
-                                        <span>PKR {(stats?.totalPayable || stats?.unpaidExpense || 0).toLocaleString()}</span>
+                                        <span>€{(stats?.totalPayable || stats?.unpaidExpense || 0).toLocaleString()}</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between border-t border-rose-500/30 py-2 font-black text-rose-500 text-xs tracking-wider">
                                     <span>TOTAL LIABILITIES</span>
-                                    <span>PKR {(stats?.totalPayable || stats?.unpaidExpense || 0).toLocaleString()}</span>
+                                    <span>€{(stats?.totalPayable || stats?.unpaidExpense || 0).toLocaleString()}</span>
                                 </div>
                             </div>
 
@@ -477,28 +477,28 @@ export default function FinanceLedger() {
                             <div className="space-y-3">
                                 <div className="flex justify-between border-b border-sky-500/30 pb-2 font-black text-sky-500 text-sm tracking-widest">
                                     <span>III. OWNER'S EQUITY & RETAINED EARNINGS</span>
-                                    <span>AMOUNT (PKR)</span>
+                                    <span>AMOUNT (EUR)</span>
                                 </div>
                                 <div className="space-y-2 pl-4 text-xs font-bold text-[var(--text-secondary)]">
                                     <div className="flex justify-between">
                                         <span>Retained Net Earnings (Accumulated Net Profit)</span>
-                                        <span className="text-emerald-400 font-mono font-black">PKR {Math.max(0, netProfit).toLocaleString()}</span>
+                                        <span className="text-emerald-400 font-mono font-black">€{Math.max(0, netProfit).toLocaleString()}</span>
                                     </div>
                                     <div className="flex justify-between">
                                         <span>Equity Distribution (Partner / Disbursed Draw)</span>
-                                        <span className="text-rose-400 font-mono font-black">- PKR {equityDistributed.toLocaleString()}</span>
+                                        <span className="text-rose-400 font-mono font-black">- €{equityDistributed.toLocaleString()}</span>
                                     </div>
                                 </div>
                                 <div className="flex justify-between border-t border-sky-500/30 py-3 font-black text-sky-500 text-sm tracking-wider">
                                     <span>TOTAL OWNER'S EQUITY</span>
-                                    <span className="font-mono">PKR {(Math.max(0, netProfit) - equityDistributed).toLocaleString()}</span>
+                                    <span className="font-mono">€{(Math.max(0, netProfit) - equityDistributed).toLocaleString()}</span>
                                 </div>
                             </div>
 
                             {/* TOTAL LIABILITIES AND EQUITY STATEMENT LINE */}
                             <div className="flex justify-between border-t-2 border-b-2 border-white/20 py-4 font-black text-white text-base tracking-wider bg-[#15102a] px-6 rounded-2xl">
                                 <span>TOTAL LIABILITIES & EQUITY</span>
-                                <span className="text-emerald-400 font-mono">PKR {((stats?.totalPayable || stats?.unpaidExpense || 0) + Math.max(0, netProfit) - equityDistributed).toLocaleString()}</span>
+                                <span className="text-emerald-400 font-mono">€{((stats?.totalPayable || stats?.unpaidExpense || 0) + Math.max(0, netProfit) - equityDistributed).toLocaleString()}</span>
                             </div>
                         </div>
 

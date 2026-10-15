@@ -22,7 +22,7 @@ export default function FinanceQuickActions() {
     const [modalType, setModalType] = useState('Income'); // 'Income', 'Expense', 'AP', 'AR', 'Charity'
     const [saving, setSaving] = useState(false);
 
-    const [currency, setCurrency] = useState("PKR");
+    const [currency, setCurrency] = useState("EUR");
     const [enteredAmount, setEnteredAmount] = useState("");
     const [usdRate, setUsdRate] = useState(278);
 
@@ -34,9 +34,9 @@ export default function FinanceQuickActions() {
             fetch('https://open.er-api.com/v6/latest/USD')
                 .then(res => res.json())
                 .then(data => {
-                    if (data && data.rates && data.rates.PKR) {
-                        sessionStorage.setItem('cached_usd_rate', data.rates.PKR);
-                        setUsdRate(data.rates.PKR);
+                    if (data && data.rates && 1.08) {
+                        sessionStorage.setItem('cached_usd_rate', 1.08);
+                        setUsdRate(1.08);
                     }
                 })
                 .catch(err => console.error("Failed to fetch USD rate", err));
@@ -58,10 +58,10 @@ export default function FinanceQuickActions() {
     });
 
     const menuItems = [
-        { label: 'Income', icon: <FiTrendingUp className="text-emerald-500" />, action: () => { setModalType('Income'); setFormData(f => ({ ...f, status: 'Received', category: 'Onetime Service' })); setCurrency('PKR'); setEnteredAmount(''); setShowModal(true); } },
+        { label: 'Income', icon: <FiTrendingUp className="text-emerald-500" />, action: () => { setModalType('Income'); setFormData(f => ({ ...f, status: 'Received', category: 'Onetime Service' })); setCurrency('EUR'); setEnteredAmount(''); setShowModal(true); } },
         { label: 'Expense', icon: <FiTrendingDown className="text-rose-500" />, action: () => { setModalType('Expense'); setFormData(f => ({ ...f, status: 'Paid', category: 'Other' })); setEnteredAmount(''); setShowModal(true); } },
         { label: 'AP (Payable)', icon: <FiArrowDownRight className="text-red-400" />, action: () => { setModalType('AP'); setFormData(f => ({ ...f, status: 'Unpaid', category: 'Other' })); setEnteredAmount(''); setShowModal(true); } },
-        { label: 'AR (Receivable)', icon: <FiArrowUpRight className="text-blue-400" />, action: () => { setModalType('AR'); setFormData(f => ({ ...f, status: 'Pending', category: 'Onetime Service' })); setCurrency('PKR'); setEnteredAmount(''); setShowModal(true); } },
+        { label: 'AR (Receivable)', icon: <FiArrowUpRight className="text-blue-400" />, action: () => { setModalType('AR'); setFormData(f => ({ ...f, status: 'Pending', category: 'Onetime Service' })); setCurrency('EUR'); setEnteredAmount(''); setShowModal(true); } },
         { label: 'Charity', icon: <FiHeart className="text-pink-500" />, action: () => { setModalType('Charity'); setFormData(f => ({ ...f, status: 'Paid', category: 'Charity' })); setEnteredAmount(''); setShowModal(true); } }
     ];
 
@@ -84,8 +84,8 @@ export default function FinanceQuickActions() {
             const endpoint = isInc ? '/finance/income' : '/finance/expense';
             
             const rawAmount = parseFloat(enteredAmount) || 0;
-            const rate = currency === "PKR" ? 1 : getRate(currency);
-            const finalAmount = currency === "PKR" ? rawAmount : Math.round(rawAmount * rate);
+            const rate = currency === "EUR" ? 1 : getRate(currency);
+            const finalAmount = currency === "EUR" ? rawAmount : Math.round(rawAmount * rate);
 
             const payload = isInc ? {
                 source: formData.source || (modalType === 'AR' ? 'Accounts Receivable' : 'Direct Income'),
@@ -99,7 +99,7 @@ export default function FinanceQuickActions() {
                 receiverAccTitle: formData.receiverAccTitle || 'Meezan Bank (Main)',
                 receiverAccNo: formData.receiverAccNo || '010203040506',
                 paymentMethod: formData.paymentMethod || 'Transfer',
-                description: currency !== "PKR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
+                description: currency !== "EUR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
             } : {
                 item: formData.source || (modalType === 'AP' ? 'Accounts Payable' : (modalType === 'Charity' ? 'Charity Payment' : 'Business Expense')),
                 amount: finalAmount,
@@ -110,7 +110,7 @@ export default function FinanceQuickActions() {
                 recipient: formData.recipient || '',
                 performedBy: formData.performedBy || 'Meezan Bank (Main)',
                 debtorName: formData.debtorName || '',
-                description: currency !== "PKR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
+                description: currency !== "EUR" ? `${formData.description || ''}\n[Converted from ${enteredAmount} ${currency}]`.trim() : formData.description
             };
 
             const res = await api.post(endpoint, payload);
@@ -198,7 +198,7 @@ export default function FinanceQuickActions() {
                                         {modalType === 'Charity' && 'REGISTER CHARITY DISBURSEMENT'}
                                     </h3>
                                     <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-[0.2em] mt-2 opacity-60">
-                                        {modalType === 'Income' && 'INITIALIZE OFFICIAL PKR REVENUE FLOW'}
+                                        {modalType === 'Income' && 'INITIALIZE OFFICIAL EUR REVENUE FLOW'}
                                         {modalType === 'Expense' && 'RECORD OFFICIAL OUTFLOW & DISBURSEMENT'}
                                         {modalType === 'AR' && 'LOG PENDING CLIENT INVOICE TO RECEIVE IN FUTURE'}
                                         {modalType === 'AP' && 'LOG OUTSTANDING UNPAID VENDOR BILL / LIABILITY'}
@@ -273,7 +273,7 @@ export default function FinanceQuickActions() {
                                             <div className="space-y-2">
                                                 <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">CURRENCY</label>
                                                 <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black transition-all cursor-pointer shadow-inner uppercase">
-                                                    <option value="PKR">PKR</option>
+                                                    <option value="EUR">EUR (€)</option>
                                                     <option value="USD">USD ($)</option>
                                                     <option value="EUR">EUR (€)</option>
                                                     <option value="GBP">GBP (£)</option>
@@ -284,7 +284,7 @@ export default function FinanceQuickActions() {
 
                                             <div className="space-y-2 text-rose-500">
                                                 <label className="text-[10px] font-black uppercase text-rose-500 ml-1 tracking-[0.1em]">
-                                                    {currency === 'PKR' ? 'AMOUNT PAYABLE (PKR)' : `AMOUNT IN ${currency}`}
+                                                    {currency === 'EUR' ? 'AMOUNT PAYABLE (EUR)' : `AMOUNT IN ${currency}`}
                                                 </label>
                                                 <input required value={enteredAmount} onChange={e => setEnteredAmount(e.target.value)} type="number" step="0.01" placeholder="0.00" className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-rose-500 font-black transition-all shadow-inner" />
                                             </div>
@@ -331,7 +331,7 @@ export default function FinanceQuickActions() {
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">CURRENCY</label>
                                                     <select value={currency} onChange={e => setCurrency(e.target.value)} className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black transition-all cursor-pointer shadow-inner uppercase">
-                                                        <option value="PKR">PKR</option>
+                                                        <option value="EUR">EUR (€)</option>
                                                         <option value="USD">USD ($)</option>
                                                         <option value="EUR">EUR (€)</option>
                                                         <option value="GBP">GBP (£)</option>
@@ -342,14 +342,14 @@ export default function FinanceQuickActions() {
 
                                                 <div className="space-y-2 text-emerald-500">
                                                     <label className="text-[10px] font-black uppercase text-[var(--text-secondary)] ml-1 tracking-[0.1em]">
-                                                        {currency === 'PKR' ? 'AMOUNT (PKR)' : `AMOUNT IN ${currency}`}
+                                                        {currency === 'EUR' ? 'AMOUNT (EUR)' : `AMOUNT IN ${currency}`}
                                                     </label>
                                                     <input required value={enteredAmount} onChange={e => setEnteredAmount(e.target.value)} type="number" step="0.01" placeholder="0.00" className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-emerald-500 font-black transition-all shadow-inner" />
                                                     <p className="text-[10px] text-emerald-400 mt-1 font-bold">
                                                         {enteredAmount
-                                                            ? (currency === 'PKR'
-                                                                ? `Direct PKR Amount`
-                                                                : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} PKR (Live Rate: 1 ${currency} = ${getRate(currency)} PKR)`)
+                                                            ? (currency === 'EUR'
+                                                                ? `Direct EUR Amount`
+                                                                : `≈ ${(parseFloat(enteredAmount) * getRate(currency)).toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})} EUR (Rate: 1 ${currency} = ${getRate(currency)} EUR)`)
                                                             : '\u00A0'}
                                                     </p>
                                                 </div>

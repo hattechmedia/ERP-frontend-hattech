@@ -1,73 +1,43 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import axios from "axios";
 
 const CurrencyContext = createContext();
 
 export const currencySymbols = {
-    USD: "$",
     EUR: "€",
+    USD: "$",
     GBP: "£",
-    AUD: "A$",
-    SAR: "﷼ "
+    CHF: "CHF "
 };
 
 export const CurrencyProvider = ({ children }) => {
     const [currency, setCurrency] = useState(() => {
         const stored = localStorage.getItem('finance_currency');
-        return (stored && stored !== 'PKR') ? stored : 'USD';
+        return (stored && ['EUR', 'USD', 'GBP', 'CHF'].includes(stored)) ? stored : 'EUR';
     });
     const [rates, setRates] = useState({
-        PKR: 1,
-        USD: 1 / 280,
-        EUR: 1 / 300,
-        GBP: 1 / 350,
-        AUD: 1 / 185,
-        SAR: 1 / 74
+        EUR: 1.0,
+        USD: 1.08,
+        GBP: 0.85,
+        CHF: 0.96
     });
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchRates = async () => {
-            try {
-                const res = await axios.get('https://open.er-api.com/v6/latest/PKR');
-                if (res.data && res.data.rates) {
-                    setRates({
-                        PKR: 1,
-                        USD: res.data.rates.USD || 1 / 280,
-                        EUR: res.data.rates.EUR || 1 / 300,
-                        GBP: res.data.rates.GBP || 1 / 350,
-                        AUD: res.data.rates.AUD || 1 / 185,
-                        SAR: res.data.rates.SAR || 1 / 74
-                    });
-                }
-            } catch (err) {
-                console.error("Failed to fetch exchange rates, using fallbacks.", err);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchRates();
-        const interval = setInterval(fetchRates, 3600000);
-        return () => clearInterval(interval);
-    }, []);
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         localStorage.setItem('finance_currency', currency);
     }, [currency]);
 
-    const exchangeRate = rates[currency] || (1 / 280);
+    const exchangeRate = rates[currency] || 1.0;
 
-    const formatAmount = (pkrAmount) => {
-        const num = Number(pkrAmount) || 0;
-        const symbol = currencySymbols[currency] || "$";
-        const converted = num * (rates[currency] || (1 / 280));
-        return `PKR ${num.toLocaleString()} (${symbol}${converted.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })})`;
+    const formatAmount = (eurAmount) => {
+        const num = Number(eurAmount) || 0;
+        const symbol = currencySymbols[currency] || "€";
+        const converted = num * (rates[currency] || 1.0);
+        return `${symbol}${converted.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
     };
 
-    const convertAmount = (pkrAmount) => {
-        const num = Number(pkrAmount) || 0;
-        return num * (rates[currency] || (1 / 280));
+    const convertAmount = (eurAmount) => {
+        const num = Number(eurAmount) || 0;
+        return num * (rates[currency] || 1.0);
     };
 
     const toggleCurrency = () => {
@@ -85,17 +55,14 @@ export const CurrencyProvider = ({ children }) => {
             rates,
             formatAmount, 
             convertAmount, 
-            toggleCurrency, 
+            toggleCurrency,
             loading,
-            currencySymbols
+            currencySymbol: currencySymbols[currency] || "€"
         }}>
             {children}
         </CurrencyContext.Provider>
     );
 };
 
-export const useCurrency = () => {
-    const context = useContext(CurrencyContext);
-    if (!context) throw new Error("useCurrency must be used within a CurrencyProvider");
-    return context;
-};
+export const useCurrency = () => useContext(CurrencyContext);
+export default CurrencyContext;

@@ -31,7 +31,7 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
 
   const [formData, setFormData] = useState({
     clearingEntity: '',
-    currency: selectedCurrency || 'PKR',
+    currency: selectedCurrency || 'EUR',
     amount: '',
     settlementDate: new Date().toISOString().slice(0, 10),
     projectPayment: 'ONETIME SERVICE',
@@ -43,9 +43,9 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
 
   useEffect(() => {
     if (initialData && isOpen) {
-      const activeCurr = initialData.currency || selectedCurrency || 'PKR';
+      const activeCurr = initialData.currency || selectedCurrency || 'EUR';
       const amountInActiveCurr = initialData.amount
-        ? Math.round(convertCurrency(initialData.amount, 'PKR', activeCurr))
+        ? Math.round(convertCurrency(initialData.amount, 'EUR', activeCurr))
         : '';
 
       setFormData({
@@ -62,7 +62,7 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
     } else if (!initialData && isOpen) {
       setFormData({
         clearingEntity: '',
-        currency: selectedCurrency || 'PKR',
+        currency: selectedCurrency || 'EUR',
         amount: '',
         settlementDate: new Date().toISOString().slice(0, 10),
         projectPayment: 'ONETIME SERVICE',
@@ -82,7 +82,7 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
   const handleCurrencyChange = (newCurrency) => {
     if (formData.amount && !isNaN(formData.amount)) {
       const converted = convertCurrency(formData.amount, formData.currency, newCurrency);
-      const formattedAmount = newCurrency === 'PKR' ? Math.round(converted) : Number(converted.toFixed(2));
+      const formattedAmount = newCurrency === 'EUR' ? Math.round(converted) : Number(converted.toFixed(2));
       setFormData({
         ...formData,
         currency: newCurrency,
@@ -126,9 +126,9 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
     onClose();
   };
 
-  // Live Equivalent in Base PKR
+  // Live Equivalent in Base EUR
   const basePkrEquivalent = formData.amount && !isNaN(formData.amount)
-    ? convertCurrency(formData.amount, formData.currency, 'PKR')
+    ? convertCurrency(formData.amount, formData.currency, 'EUR')
     : 0;
 
   return (
@@ -207,10 +207,10 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
               />
-              {formData.currency !== 'PKR' && formData.amount > 0 && (
+              {formData.currency !== 'EUR' && formData.amount > 0 && (
                 <div className="text-[11px] font-bold text-blue-600 mt-1 flex items-center justify-between">
                   <span>Base Equivalent:</span>
-                  <span>{formatCurrency(basePkrEquivalent, 'PKR')}</span>
+                  <span>{formatCurrency(basePkrEquivalent, 'EUR')}</span>
                 </div>
               )}
             </div>
@@ -228,20 +228,20 @@ export const AddIncomeModal = ({ isOpen, onClose, initialData = null }) => {
               <div className="grid grid-cols-3 gap-2 text-[11px] font-medium pt-1">
                 <div className="bg-blue-50/80 p-2 rounded-lg border border-blue-200 text-blue-900">
                   <span className="block text-[10px] font-bold text-blue-700">BUS. EXPENSE ({distributionSplits?.businessExpenses ?? 35}%)</span>
-                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.businessExpenses ?? 35) / 100), 'PKR')}</span>
+                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.businessExpenses ?? 35) / 100), 'EUR')}</span>
                 </div>
                 <div className="bg-amber-50/80 p-2 rounded-lg border border-amber-200 text-amber-900">
                   <span className="block text-[10px] font-bold text-amber-700">RESERVE ({distributionSplits?.companyReserve ?? 15}%)</span>
-                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.companyReserve ?? 15) / 100), 'PKR')}</span>
+                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.companyReserve ?? 15) / 100), 'EUR')}</span>
                 </div>
                 <div className="bg-pink-50/80 p-2 rounded-lg border border-pink-200 text-pink-900">
                   <span className="block text-[10px] font-bold text-pink-700">CHARITY ({distributionSplits?.charityPool ?? 4}%)</span>
-                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.charityPool ?? 4) / 100), 'PKR')}</span>
+                  <span className="font-extrabold">{formatCurrency((basePkrEquivalent || formData.amount) * ((distributionSplits?.charityPool ?? 4) / 100), 'EUR')}</span>
                 </div>
               </div>
               <div className="flex items-center justify-between text-xs font-black text-emerald-700 pt-1 border-t border-slate-200">
                 <span>NET REMAINING INFLOW AFTER CUTS:</span>
-                <span>{formatCurrency((basePkrEquivalent || formData.amount) * (1 - ((distributionSplits?.businessExpenses ?? 35) + (distributionSplits?.companyReserve ?? 15) + (distributionSplits?.charityPool ?? 4)) / 100), 'PKR')}</span>
+                <span>{formatCurrency((basePkrEquivalent || formData.amount) * (1 - ((distributionSplits?.businessExpenses ?? 35) + (distributionSplits?.companyReserve ?? 15) + (distributionSplits?.charityPool ?? 4)) / 100), 'EUR')}</span>
               </div>
             </div>
           )}

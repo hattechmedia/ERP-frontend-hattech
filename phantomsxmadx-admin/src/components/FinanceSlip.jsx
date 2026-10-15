@@ -42,8 +42,8 @@ const FinanceSlip = React.forwardRef(({ data, type = 'Income' }, ref) => {
                     <div className="text-left md:text-right space-y-6">
                         <div>
                             <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1.5">Net Settlement Amount</p>
-                            <p className="text-4xl font-black tracking-tighter" style={{ color: accentColor }}>PKR {data.amount.toLocaleString()}</p>
-                            <p className="text-[9px] font-bold text-slate-500 mt-1 uppercase tracking-[0.2em]">Currency: Pakistan Rupee</p>
+                            <p className="text-4xl font-black tracking-tighter" style={{ color: accentColor }}>€ {Number(data.amount || 0).toLocaleString('de-DE')}</p>
+                            <p className="text-[9px] font-bold text-slate-500 mt-1 uppercase tracking-[0.2em]">Currency: Euro (EUR)</p>
                         </div>
                         <div>
                             <p className="text-[10px] font-black uppercase text-slate-400 tracking-widest mb-1.5">Verification Status</p>

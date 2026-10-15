@@ -11,15 +11,15 @@ export const AddAccountModal = ({ isOpen, onClose, initialData = null }) => {
     accountTitle: '',
     accountNumber: '',
     iban: '',
-    currency: selectedCurrency || 'PKR',
+    currency: selectedCurrency || 'EUR',
     balance: '',
   });
 
   useEffect(() => {
     if (initialData && isOpen) {
-      const activeCurr = initialData.currency || selectedCurrency || 'PKR';
+      const activeCurr = initialData.currency || selectedCurrency || 'EUR';
       const balanceInActiveCurr = initialData.balance
-        ? Math.round(convertCurrency(initialData.balance, 'PKR', activeCurr))
+        ? Math.round(convertCurrency(initialData.balance, 'EUR', activeCurr))
         : '';
 
       setFormData({
@@ -36,7 +36,7 @@ export const AddAccountModal = ({ isOpen, onClose, initialData = null }) => {
         accountTitle: '',
         accountNumber: '',
         iban: '',
-        currency: selectedCurrency || 'PKR',
+        currency: selectedCurrency || 'EUR',
         balance: '',
       });
     }
@@ -48,7 +48,7 @@ export const AddAccountModal = ({ isOpen, onClose, initialData = null }) => {
   const handleCurrencyChange = (newCurrency) => {
     if (formData.balance && !isNaN(formData.balance)) {
       const converted = convertCurrency(formData.balance, formData.currency, newCurrency);
-      const formattedBalance = newCurrency === 'PKR' ? Math.round(converted) : Number(converted.toFixed(2));
+      const formattedBalance = newCurrency === 'EUR' ? Math.round(converted) : Number(converted.toFixed(2));
       setFormData({
         ...formData,
         currency: newCurrency,
@@ -86,9 +86,9 @@ export const AddAccountModal = ({ isOpen, onClose, initialData = null }) => {
     onClose();
   };
 
-  // Live Equivalent in Base PKR
+  // Live Equivalent in Base EUR
   const basePkrEquivalent = formData.balance && !isNaN(formData.balance)
-    ? convertCurrency(formData.balance, formData.currency, 'PKR')
+    ? convertCurrency(formData.balance, formData.currency, 'EUR')
     : 0;
 
   return (
@@ -210,10 +210,10 @@ export const AddAccountModal = ({ isOpen, onClose, initialData = null }) => {
                 value={formData.balance}
                 onChange={(e) => setFormData({ ...formData, balance: e.target.value })}
               />
-              {formData.currency !== 'PKR' && formData.balance > 0 && (
+              {formData.currency !== 'EUR' && formData.balance > 0 && (
                 <div className="text-[11px] font-bold text-blue-600 mt-1 flex items-center justify-between">
                   <span>Base Equivalent:</span>
-                  <span>{formatCurrency(basePkrEquivalent, 'PKR')}</span>
+                  <span>{formatCurrency(basePkrEquivalent, 'EUR')}</span>
                 </div>
               )}
             </div>

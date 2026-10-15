@@ -43,7 +43,7 @@ export default function Clients() {
         password: "",
         role: "client",
         clientType: "monthly",
-        currency: "PKR",
+        currency: "EUR",
         subscriptionAmount: 0,
         subscriptionStartDate: "",
         milestones: [
@@ -58,32 +58,17 @@ export default function Clients() {
     const [formData, setFormData] = useState(initialFormState);
     const [isEditing, setIsEditing] = useState(false);
     const [saving, setSaving] = useState(false);
-    const [usdRate, setUsdRate] = useState(278.50);
 
     const [projects, setProjects] = useState([]);
     const [selectedProjectIds, setSelectedProjectIds] = useState([]); // Array of IDs
 
-    useEffect(() => {
-        fetch('https://open.er-api.com/v6/latest/USD')
-            .then(res => res.json())
-            .then(data => {
-                if (data && data.rates && data.rates.PKR) {
-                    setUsdRate(data.rates.PKR);
-                }
-            })
-            .catch(err => console.error("Failed to fetch USD rate", err));
-    }, []);
-
     const getRate = (code) => {
         switch (code) {
-            case 'USD': return usdRate || 278.50;
-            case 'SAR': return 74.20;
-            case 'AED': return 75.80;
-            case 'EUR': return 303.50;
-            case 'GBP': return 355.20;
-            case 'AUD': return 183.40;
-            case 'CAD': return 202.30;
-            default: return 1;
+            case 'USD': return 1.08;
+            case 'GBP': return 0.85;
+            case 'CHF': return 0.96;
+            case 'EUR': return 1.0;
+            default: return 1.0;
         }
     };
 
@@ -142,7 +127,7 @@ export default function Clients() {
                 phone: formData.phone,
                 role: 'client',
                 clientType: formData.clientType,
-                currency: formData.currency || "PKR",
+                currency: formData.currency || "EUR",
                 subscriptionAmount: Number(formData.subscriptionAmount || 0),
                 subscriptionStartDate: formData.subscriptionStartDate || null,
                 subscriptionRenewalDate: formData.subscriptionRenewalDate || null,
@@ -212,7 +197,7 @@ export default function Clients() {
             ...client, 
             password: "",
             clientType: client.clientType || "monthly",
-            currency: client.currency || "PKR",
+            currency: client.currency || "EUR",
             subscriptionAmount: client.subscriptionAmount || 0,
             subscriptionStartDate: client.subscriptionStartDate ? new Date(client.subscriptionStartDate).toISOString().split('T')[0] : "",
             subscriptionRenewalDate: client.subscriptionRenewalDate ? new Date(client.subscriptionRenewalDate).toISOString().split('T')[0] : "",
@@ -325,8 +310,8 @@ export default function Clients() {
                                 </span>
                                 <span className={`text-xs font-black ${isLight ? 'text-gray-900' : 'text-white'}`}>
                                     {client.clientType === 'service'
-                                        ? `${client.currency || 'PKR'} ${(client.milestones || []).reduce((acc, m) => acc + (Number(m.price) || 0), 0)}`
-                                        : `${client.currency || 'PKR'} ${client.subscriptionAmount || 0}/mo`
+                                        ? `${client.currency || 'EUR'} ${(client.milestones || []).reduce((acc, m) => acc + (Number(m.price) || 0), 0)}`
+                                        : `${client.currency || 'EUR'} ${client.subscriptionAmount || 0}/mo`
                                     }
                                 </span>
                             </div>
@@ -397,24 +382,20 @@ export default function Clients() {
                                     <label className="text-sm text-gray-400 mb-1 block">Currency</label>
                                     <select
                                         className={`w-full p-3 rounded-lg border focus:ring-2 focus:ring-[#004AAD] outline-none font-bold ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-[#0f0b1f] border-gray-700 text-white'}`}
-                                        value={formData.currency || "PKR"}
+                                        value={formData.currency || "EUR"}
                                         onChange={e => setFormData({ ...formData, currency: e.target.value })}
                                     >
-                                        <option value="PKR">PKR (Pakistani Rupee)</option>
-                                        <option value="USD">USD ($ - United States Dollar)</option>
                                         <option value="EUR">EUR (€ - Euro)</option>
+                                        <option value="USD">USD ($ - US Dollar)</option>
                                         <option value="GBP">GBP (£ - British Pound)</option>
-                                        <option value="AUD">AUD (A$ - Australian Dollar)</option>
-                                        <option value="SAR">SAR (﷼ - Saudi Riyal)</option>
-                                        <option value="AED">AED (د.إ - UAE Dirham)</option>
-                                        <option value="CAD">CAD (C$ - Canadian Dollar)</option>
+                                        <option value="CHF">CHF (Swiss Franc)</option>
                                     </select>
                                 </div>
 
                                 {formData.clientType === 'monthly' && (
                                     <>
                                         <div>
-                                            <label className="text-sm text-gray-400 mb-1 block">Monthly Subscription Amount ({formData.currency || "PKR"})</label>
+                                            <label className="text-sm text-gray-400 mb-1 block">Monthly Subscription Amount ({formData.currency || "EUR"})</label>
                                             <input
                                                 type="number"
                                                 className={`w-full p-3 rounded-lg border focus:ring-2 focus:ring-[#004AAD] outline-none font-bold ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-[#0f0b1f] border-gray-700 text-white'}`}
@@ -424,14 +405,14 @@ export default function Clients() {
                                             />
                                         </div>
 
-                                        {formData.currency !== "PKR" && (
+                                        {formData.currency !== "EUR" && (
                                             <div>
                                                 <div className="flex items-center justify-between mb-1">
-                                                    <label className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Converted Equivalent (PKR)</label>
-                                                    <span className="text-[10px] text-gray-400 font-medium">Rate: 1 {formData.currency} = {getRate(formData.currency)} PKR</span>
+                                                    <label className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Converted Equivalent (EUR)</label>
+                                                    <span className="text-[10px] text-gray-400 font-medium">Rate: 1 {formData.currency} = {getRate(formData.currency)} EUR</span>
                                                 </div>
                                                 <div className={`w-full p-3 rounded-lg border font-black text-sm flex items-center justify-between shadow-inner ${isLight ? 'bg-emerald-50/70 border-emerald-300 text-emerald-800' : 'bg-[#0a1820] border-emerald-500/40 text-emerald-400'}`}>
-                                                    <span>PKR {((parseFloat(formData.subscriptionAmount) || 0) * getRate(formData.currency)).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                                    <span>€ {((parseFloat(formData.subscriptionAmount) || 0) * getRate(formData.currency)).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                                     <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 uppercase font-bold tracking-wider">Auto Converted</span>
                                                 </div>
                                             </div>
@@ -486,7 +467,7 @@ export default function Clients() {
                                                         className={`w-28 p-2 rounded-lg border text-xs focus:ring-2 focus:ring-[#004AAD] outline-none ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-[#0f0b1f] border-gray-700 text-white'}`}
                                                         value={m.price}
                                                         onChange={e => handleMilestoneChange(idx, 'price', e.target.value)}
-                                                        placeholder={`${formData.currency || "PKR"} Amount`}
+                                                        placeholder={`${formData.currency || "EUR"} Amount`}
                                                     />
                                                     <select
                                                         className={`p-2 rounded-lg border text-xs focus:ring-2 focus:ring-[#004AAD] outline-none ${isLight ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-[#0f0b1f] border-gray-700 text-white'}`}
@@ -509,15 +490,15 @@ export default function Clients() {
                                             ))}
                                         </div>
 
-                                        {/* Total Milestones Calculation & Dedicated Converted PKR Box */}
-                                        {formData.currency !== "PKR" && (
+                                        {/* Total Milestones Calculation & Dedicated Converted EUR Box */}
+                                        {formData.currency !== "EUR" && (
                                             <div>
                                                 <div className="flex items-center justify-between mb-1">
-                                                    <label className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Total Converted (PKR)</label>
-                                                    <span className="text-[10px] text-gray-400 font-medium">Rate: 1 {formData.currency} = {getRate(formData.currency)} PKR</span>
+                                                    <label className="text-xs font-bold text-emerald-400 uppercase tracking-wider">Total Converted (EUR)</label>
+                                                    <span className="text-[10px] text-gray-400 font-medium">Rate: 1 {formData.currency} = {getRate(formData.currency)} EUR</span>
                                                 </div>
                                                 <div className={`w-full p-3 rounded-lg border font-black text-sm flex items-center justify-between shadow-inner ${isLight ? 'bg-emerald-50/70 border-emerald-300 text-emerald-800' : 'bg-[#0a1820] border-emerald-500/40 text-emerald-400'}`}>
-                                                    <span>PKR {( (formData.milestones.reduce((acc, curr) => acc + (parseFloat(curr.price) || 0), 0)) * getRate(formData.currency) ).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
+                                                    <span>€ {( (formData.milestones.reduce((acc, curr) => acc + (parseFloat(curr.price) || 0), 0)) * getRate(formData.currency) ).toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</span>
                                                     <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 uppercase font-bold tracking-wider">Auto Converted</span>
                                                 </div>
                                             </div>

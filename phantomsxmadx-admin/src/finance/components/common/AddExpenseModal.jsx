@@ -35,7 +35,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
 
   const [formData, setFormData] = useState({
     expenseReason: '',
-    currency: selectedCurrency || 'PKR',
+    currency: selectedCurrency || 'EUR',
     amount: '',
     paymentDate: new Date().toISOString().slice(0, 10),
     expenseCategory: 'OFFICE UTILITIES',
@@ -45,9 +45,9 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
 
   useEffect(() => {
     if (initialData && isOpen) {
-      const activeCurr = initialData.currency || selectedCurrency || 'PKR';
+      const activeCurr = initialData.currency || selectedCurrency || 'EUR';
       const amountInActiveCurr = initialData.amount
-        ? Math.round(convertCurrency(initialData.amount, 'PKR', activeCurr))
+        ? Math.round(convertCurrency(initialData.amount, 'EUR', activeCurr))
         : '';
 
       setFormData({
@@ -62,7 +62,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
     } else if (!initialData && isOpen) {
       setFormData({
         expenseReason: '',
-        currency: selectedCurrency || 'PKR',
+        currency: selectedCurrency || 'EUR',
         amount: '',
         paymentDate: new Date().toISOString().slice(0, 10),
         expenseCategory: 'OFFICE UTILITIES',
@@ -78,7 +78,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
   const handleCurrencyChange = (newCurrency) => {
     if (formData.amount && !isNaN(formData.amount)) {
       const converted = convertCurrency(formData.amount, formData.currency, newCurrency);
-      const formattedAmount = newCurrency === 'PKR' ? Math.round(converted) : Number(converted.toFixed(2));
+      const formattedAmount = newCurrency === 'EUR' ? Math.round(converted) : Number(converted.toFixed(2));
       setFormData({
         ...formData,
         currency: newCurrency,
@@ -118,9 +118,9 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
     onClose();
   };
 
-  // Live Equivalent in Base PKR
+  // Live Equivalent in Base EUR
   const basePkrEquivalent = formData.amount && !isNaN(formData.amount)
-    ? convertCurrency(formData.amount, formData.currency, 'PKR')
+    ? convertCurrency(formData.amount, formData.currency, 'EUR')
     : 0;
 
   return (
@@ -159,8 +159,8 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 onClick={() =>
                   setFormData({
                     ...formData,
-                    expenseReason: 'Daily Chai & Tea Refreshments',
-                    amount: 300,
+                    expenseReason: 'Daily Coffee & Tea Refreshments',
+                    amount: 15,
                     expenseCategory: 'TEA & REFRESHMENTS',
                     bankAccountId: 'ACC-PETTY',
                     vendor: 'Office Petty Cash Drawer',
@@ -168,7 +168,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 }
                 className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-bold hover:bg-amber-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
               >
-                <span>☕ Chai & Tea (Rs 300)</span>
+                <span>☕ Coffee & Tea (€15)</span>
               </button>
 
               <button
@@ -177,7 +177,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                   setFormData({
                     ...formData,
                     expenseReason: 'Daily Office Snacks & Refreshments',
-                    amount: 500,
+                    amount: 25,
                     expenseCategory: 'TEA & REFRESHMENTS',
                     bankAccountId: 'ACC-PETTY',
                     vendor: 'Office Petty Cash Drawer',
@@ -185,7 +185,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 }
                 className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-bold hover:bg-amber-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
               >
-                <span>🥪 Office Snacks (Rs 500)</span>
+                <span>🥪 Team Snacks (€25)</span>
               </button>
 
               <button
@@ -194,7 +194,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                   setFormData({
                     ...formData,
                     expenseReason: 'Daily Vehicle Fuel & Conveyance',
-                    amount: 800,
+                    amount: 40,
                     expenseCategory: 'VEHICLE & FUEL',
                     bankAccountId: 'ACC-PETTY',
                     vendor: 'Office Petty Cash Drawer',
@@ -202,7 +202,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 }
                 className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-bold hover:bg-amber-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
               >
-                <span>⛽ Fuel / Transport (Rs 800)</span>
+                <span>⛽ Fuel / Transport (€40)</span>
               </button>
 
               <button
@@ -211,7 +211,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                   setFormData({
                     ...formData,
                     expenseReason: 'Office Cleaning & Kitchen Supplies',
-                    amount: 400,
+                    amount: 20,
                     expenseCategory: 'MAINTENANCE & REPAIRS',
                     bankAccountId: 'ACC-PETTY',
                     vendor: 'Office Petty Cash Drawer',
@@ -219,7 +219,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 }
                 className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-bold hover:bg-amber-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
               >
-                <span>🧹 Cleaning Supplies (Rs 400)</span>
+                <span>🧹 Cleaning Supplies (€20)</span>
               </button>
 
               <button
@@ -228,7 +228,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                   setFormData({
                     ...formData,
                     expenseReason: 'Stationery & Photostat Copies',
-                    amount: 200,
+                    amount: 10,
                     expenseCategory: 'OFFICE SUPPLIES & STATIONERY',
                     bankAccountId: 'ACC-PETTY',
                     vendor: 'Office Petty Cash Drawer',
@@ -236,7 +236,7 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 }
                 className="px-2.5 py-1.5 rounded-lg bg-white border border-amber-300 text-amber-900 font-bold hover:bg-amber-100 transition-colors shadow-2xs flex items-center gap-1 cursor-pointer"
               >
-                <span>📄 Stationery (Rs 200)</span>
+                <span>📄 Stationery (€10)</span>
               </button>
             </div>
           </div>
@@ -292,10 +292,10 @@ export const AddExpenseModal = ({ isOpen, onClose, initialData = null }) => {
                 value={formData.amount}
                 onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
               />
-              {formData.currency !== 'PKR' && formData.amount > 0 && (
+              {formData.currency !== 'EUR' && formData.amount > 0 && (
                 <div className="text-[11px] font-bold text-rose-600 mt-1 flex items-center justify-between">
                   <span>Base Equivalent:</span>
-                  <span>{formatCurrency(basePkrEquivalent, 'PKR')}</span>
+                  <span>{formatCurrency(basePkrEquivalent, 'EUR')}</span>
                 </div>
               )}
             </div>

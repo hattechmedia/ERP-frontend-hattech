@@ -414,7 +414,7 @@ export const PayrollPage = () => {
               <table style="width: 100%; border-collapse: collapse;">
                   <tr style="background: #f1f5f9;">
                       <th style="padding: 15px 20px; text-align: left; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Description</th>
-                      <th style="padding: 15px 20px; text-align: right; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Amount (PKR)</th>
+                      <th style="padding: 15px 20px; text-align: right; font-size: 12px; color: #475569; text-transform: uppercase; letter-spacing: 0.5px;">Amount (EUR)</th>
                   </tr>
                   <tr>
                       <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #334155;">Basic Salary</td>
@@ -448,7 +448,7 @@ export const PayrollPage = () => {
                       ? `
                   <tr>
                       <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; color: #dc2626;">
-                          Missing Daily Reports Penalty (${record.missingReports || 0} missing @ PKR 200)
+                          Missing Daily Reports Penalty (${record.missingReports || 0} missing @ €15)
                       </td>
                       <td style="padding: 15px 20px; border-bottom: 1px solid #e2e8f0; text-align: right; font-weight: 600; color: #dc2626;">- ${(record.missingReportDeduction !== undefined ? record.missingReportDeduction : (record.missingReports || 0) * 200).toLocaleString()}</td>
                   </tr>`
@@ -485,7 +485,7 @@ export const PayrollPage = () => {
                   }
                   <tr style="background: #eff6ff;">
                       <td style="padding: 20px; font-weight: 700; font-size: 16px; color: #1e3a8a;">NET PAYABLE</td>
-                      <td style="padding: 20px; text-align: right; font-weight: 800; font-size: 24px; color: #2563eb;">PKR ${(record.netSalary || 0).toLocaleString()}</td>
+                      <td style="padding: 20px; text-align: right; font-weight: 800; font-size: 24px; color: #2563eb;">€${(record.netSalary || 0).toLocaleString()}</td>
                   </tr>
               </table>
           </div>
@@ -699,7 +699,7 @@ export const PayrollPage = () => {
                           {typeof emp.position === 'string' ? emp.position : (emp.position?.title || "Staff")}
                         </td>
                         <td className="px-6 py-4 font-bold text-slate-900">
-                          PKR {(emp.salary || 0).toLocaleString()}
+                          €{(emp.salary || 0).toLocaleString()}
                         </td>
                         <td className="px-6 py-4 text-[11px] text-slate-600">
                           {emp.bankDetails?.bankName ? (
@@ -754,7 +754,7 @@ export const PayrollPage = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 text-slate-700 font-medium">
-                          PKR {(record.basicSalary || 0).toLocaleString()}
+                          €{(record.basicSalary || 0).toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
                           <div className="space-y-0.5 text-[11px]">
@@ -771,7 +771,7 @@ export const PayrollPage = () => {
                             )}
                             {record.missingReports > 0 && (
                               <div className="text-amber-600 font-medium text-[10px]">
-                                {record.missingReports} missed rpt (-PKR{" "}
+                                {record.missingReports} missed rpt (-€{" "}
                                 {(record.missingReportDeduction !== undefined
                                   ? record.missingReportDeduction
                                   : record.missingReports * 200
@@ -787,7 +787,7 @@ export const PayrollPage = () => {
                           </div>
                         </td>
                         <td className="px-6 py-4 font-black text-slate-900 text-sm">
-                          PKR {(record.netSalary || 0).toLocaleString()}
+                          €{(record.netSalary || 0).toLocaleString()}
                         </td>
                         <td className="px-6 py-4">
                           <span
@@ -911,13 +911,13 @@ export const PayrollPage = () => {
                     <div>
                       <span className="font-semibold text-slate-500">Base Salary:</span>{" "}
                       <span className="font-bold text-slate-800">
-                        PKR {(Number(manageValues.basicSalary) || 0).toLocaleString()}
+                        €{(Number(manageValues.basicSalary) || 0).toLocaleString()}
                       </span>
                     </div>
                     <div>
                       <span className="font-semibold text-slate-500">Daily Salary (30d):</span>{" "}
                       <span className="font-bold text-slate-800">
-                        PKR {Math.round((Number(manageValues.basicSalary) || 0) / 30).toLocaleString()}
+                        €{Math.round((Number(manageValues.basicSalary) || 0) / 30).toLocaleString()}
                       </span>
                     </div>
                     <div>
@@ -938,7 +938,7 @@ export const PayrollPage = () => {
                   <div className="border-t border-blue-200/60 pt-2 flex justify-between items-center text-[11px] font-bold">
                     <span className="text-rose-700">Absent Deduction:</span>
                     <span className="text-rose-700">
-                      - PKR{" "}
+                      - €{" "}
                       {Math.round(
                         (manageModal.record.absentDays || 0) *
                           ((Number(manageValues.basicSalary) || 0) / 30)
@@ -949,10 +949,10 @@ export const PayrollPage = () => {
                     manageModal.record.missingReportDeduction > 0) && (
                     <div className="border-t border-blue-200/60 pt-2 flex justify-between items-center text-[11px] font-bold">
                       <span className="text-amber-800">
-                        Missing Daily Reports Penalty ({manageModal.record.missingReports || 0} @ PKR 200):
+                        Missing Daily Reports Penalty ({manageModal.record.missingReports || 0} @ €15):
                       </span>
                       <span className="text-amber-800">
-                        - PKR{" "}
+                        - €{" "}
                         {(manageModal.record.missingReportDeduction !== undefined
                           ? manageModal.record.missingReportDeduction
                           : (manageModal.record.missingReports || 0) * 200
@@ -963,19 +963,19 @@ export const PayrollPage = () => {
                   {Number(manageValues.otherDeductions) > 0 && (
                     <div className="flex justify-between items-center text-[11px] font-bold text-rose-600">
                       <span>{manageValues.deductionReason || "Other Deduction"}:</span>
-                      <span>- PKR {Number(manageValues.otherDeductions).toLocaleString()}</span>
+                      <span>- €{Number(manageValues.otherDeductions).toLocaleString()}</span>
                     </div>
                   )}
                   {Number(manageValues.bonus) > 0 && (
                     <div className="flex justify-between items-center text-[11px] font-bold text-emerald-600">
                       <span>Bonus Incentive ({manageValues.bonusReason || "Bonus"}):</span>
-                      <span>+ PKR {Number(manageValues.bonus).toLocaleString()}</span>
+                      <span>+ €{Number(manageValues.bonus).toLocaleString()}</span>
                     </div>
                   )}
                   <div className="flex justify-between items-center text-xs font-black border-t border-blue-200 pt-2 text-blue-950">
                     <span>Calculated Net Pay:</span>
                     <span>
-                      PKR{" "}
+                      €{" "}
                       {Math.max(
                         0,
                         (Number(manageValues.basicSalary) || 0) -
@@ -1166,7 +1166,7 @@ export const PayrollPage = () => {
               <div className="space-y-3.5">
                 <div>
                   <label className="block text-xs font-semibold text-slate-600 mb-1">
-                    Base Monthly Salary (PKR)
+                    Base Monthly Salary (EUR)
                   </label>
                   <input
                     type="number"
@@ -1290,13 +1290,13 @@ export const PayrollPage = () => {
                           <tr key={record._id} className="hover:bg-slate-50/70 transition-colors">
                             <td className="px-6 py-3.5 font-bold text-slate-900">{record.month}</td>
                             <td className="px-6 py-3.5 text-slate-600">
-                              PKR {(record.basicSalary || 0).toLocaleString()}
+                              €{(record.basicSalary || 0).toLocaleString()}
                             </td>
                             <td className="px-6 py-3.5 font-black text-slate-900">
-                              PKR {(record.netSalary || 0).toLocaleString()}
+                              €{(record.netSalary || 0).toLocaleString()}
                             </td>
                             <td className="px-6 py-3.5 text-slate-600">
-                              PKR {(record.paidAmount || 0).toLocaleString()}
+                              €{(record.paidAmount || 0).toLocaleString()}
                               {record.paymentDate && (
                                 <div className="text-[10px] text-slate-400">
                                   {new Date(record.paymentDate).toLocaleDateString()}
@@ -1386,13 +1386,13 @@ export const PayrollPage = () => {
                   <div>
                     <p className="text-[10px] text-slate-500 uppercase font-bold">Basic Salary</p>
                     <p className="font-bold text-slate-900">
-                      PKR {(payslipModal.record.basicSalary || 0).toLocaleString()}
+                      €{(payslipModal.record.basicSalary || 0).toLocaleString()}
                     </p>
                   </div>
                   <div>
                     <p className="text-[10px] text-slate-500 uppercase font-bold">Net Salary</p>
                     <p className="font-black text-blue-700">
-                      PKR {(payslipModal.record.netSalary || 0).toLocaleString()}
+                      €{(payslipModal.record.netSalary || 0).toLocaleString()}
                     </p>
                   </div>
                   <div>

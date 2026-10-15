@@ -136,7 +136,7 @@ export default function FinanceReceivable() {
                                         </div>
                                     </div>
                                     <div className="text-right">
-                                        <p className="text-3xl font-black text-[var(--text-primary)] leading-none tracking-tighter">PKR {rec.amount.toLocaleString()}</p>
+                                        <p className="text-3xl font-black text-[var(--text-primary)] leading-none tracking-tighter">€{rec.amount.toLocaleString()}</p>
                                         <p className={`text-[10px] font-black uppercase mt-2 tracking-[0.2em] flex items-center justify-end gap-1.5 ${rec.status === 'Received' ? 'text-emerald-500' : 'text-amber-500'}`}>
                                             <span className={`w-1.5 h-1.5 rounded-full ${rec.status === 'Received' ? 'bg-emerald-500' : 'bg-amber-500'} animate-pulse`} />
                                             {rec.status}
@@ -206,7 +206,7 @@ export default function FinanceReceivable() {
                                         <input required value={formData.projectName} onChange={e => setFormData({...formData, projectName: e.target.value})} type="text" placeholder="e.g. Platform Migration" className="w-full px-6 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black focus:ring-4 focus:ring-[#004AAD]/10 transition-all shadow-inner" />
                                     </div>
                                     <div className="space-y-2.5">
-                                        <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase ml-1 tracking-widest">Expected Capital (PKR)</label>
+                                        <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase ml-1 tracking-widest">Expected Capital (EUR)</label>
                                         <input required value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} type="number" step="0.01" className="w-full px-6 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[#004AAD] font-black focus:ring-4 focus:ring-[#004AAD]/10 transition-all shadow-inner" />
                                     </div>
                                     <div className="space-y-2.5">

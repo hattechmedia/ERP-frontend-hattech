@@ -192,7 +192,7 @@ export default function FinanceExpenses() {
                                             <p className="font-black text-[var(--text-primary)] uppercase text-[10px] tracking-widest">{rec.recipient || 'N/A'}</p>
                                         </td>
                                         <td className="px-8 py-6 font-black text-rose-500 text-lg">
-                                            PKR {rec.amount.toLocaleString()}
+                                            €{rec.amount.toLocaleString()}
                                         </td>
                                         <td className="px-8 py-6">
                                             <div className="flex justify-center">
@@ -233,7 +233,7 @@ export default function FinanceExpenses() {
                             <div className="flex justify-between items-center mb-10">
                                 <div>
                                     <h3 className="text-3xl font-black text-[var(--text-primary)] uppercase tracking-tighter leading-none">{editingId ? 'Modify Ledger' : 'Log Disbursement'}</h3>
-                                    <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-[0.2em] mt-2 opacity-60">Log Official Pkr Capital Outflow</p>
+                                    <p className="text-[10px] font-black text-[var(--text-secondary)] uppercase tracking-[0.2em] mt-2 opacity-60">Log Official Capital Outflow</p>
                                 </div>
                                 <button onClick={() => setShowModal(false)} className="p-3 text-[var(--text-secondary)] bg-[var(--bg-inner)] hover:bg-rose-500/10 hover:text-red-500 rounded-2xl transition-all"><FiX size={20} /></button>
                             </div>
@@ -245,7 +245,7 @@ export default function FinanceExpenses() {
                                         <input required value={formData.item} onChange={e => setFormData({...formData, item: e.target.value})} type="text" placeholder="e.g. AWS Cloud Infrastructure" className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-[var(--text-primary)] font-black transition-all focus:ring-4 focus:ring-rose-500/20 shadow-inner" />
                                     </div>
                                     <div className="space-y-2">
-                                        <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase ml-1 tracking-widest">Amount (PKR)</label>
+                                        <label className="text-[10px] font-black text-[var(--text-secondary)] uppercase ml-1 tracking-widest">Amount (EUR)</label>
                                         <input required value={formData.amount} onChange={e => setFormData({...formData, amount: e.target.value})} type="number" step="0.01" className="w-full px-5 py-4 rounded-2xl bg-[var(--bg-inner)] border-none outline-none text-rose-500 font-black transition-all focus:ring-4 focus:ring-rose-500/10 shadow-inner" />
                                     </div>
                                     <div className="space-y-2">
