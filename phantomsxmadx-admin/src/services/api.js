@@ -440,13 +440,37 @@ async function handle(method, url, body = {}) {
       return ok({ data: db.scoring.get(month) });
     }
     if (parts[1] === 'employees') {
-      if (method === 'GET') return ok({ data: db.employees.getAll() });
+      if (method === 'GET') return ok({ data: db.employees.getAll(), employees: db.employees.getAll() });
+      if (method === 'POST') {
+        const newUser = db.users.create({
+          username: body.username || body.email?.split('@')[0] || 'emp_' + uid(),
+          email: body.email,
+          password: body.password || 'hattech123',
+          role: body.role?.toLowerCase() || 'employee',
+          name: body.name,
+        });
+        const emp = db.employees.create({ ...body, userId: { _id: newUser._id, role: newUser.role }, documents: [] });
+        return ok({ data: emp, message: 'Employee created successfully' });
+      }
     }
     if (parts[1] === 'attendance') {
+      if (parts[2] === 'day' && method === 'DELETE') {
+        return ok({ message: 'Day attendance cleared' });
+      }
+      if (parts[2] === 'upload' || parts[2] === 'verify') {
+        return ok({ success: true, message: 'Attendance processed' });
+      }
       if (method === 'GET') return ok({ data: db.attendance.getAll() });
+      if (method === 'POST') { const a = db.attendance.create(body); return ok({ data: a, message: 'Attendance recorded' }); }
     }
     if (parts[1] === 'payroll') {
-      if (method === 'GET') return ok({ data: db.payroll.getAll() });
+      if (!parts[2]) {
+        if (method === 'GET') return ok({ data: db.payroll.getAll(), payroll: db.payroll.getAll() });
+        if (method === 'POST') { const p = db.payroll.create(body); return ok({ data: p, message: 'Payroll recorded' }); }
+      } else {
+        if (method === 'PUT' || method === 'PATCH') { const p = db.payroll.update(parts[2], body); return ok({ data: p }); }
+        if (method === 'DELETE') { db.payroll.remove(parts[2]); return ok({ message: 'Payroll deleted' }); }
+      }
     }
     if (parts[1] === 'documents') {
       if (method === 'GET') return ok({ data: db.hrDocs.getAll() });
