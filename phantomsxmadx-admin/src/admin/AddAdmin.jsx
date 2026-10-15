@@ -28,10 +28,11 @@ export default function AddAdmin() {
         try {
             const res = await api.get('/auth/admins');
             if (res.data.success) {
-                setAdminsList(res.data.admins);
+                setAdminsList(Array.isArray(res.data.admins) ? res.data.admins : Array.isArray(res.data.data) ? res.data.data : []);
             }
         } catch (error) {
             console.error("Failed to fetch admins", error);
+            setAdminsList([]);
         }
     };
 
@@ -216,7 +217,7 @@ export default function AddAdmin() {
     const removeAdmin = async (e, id, name) => {
         e.stopPropagation(); // Prevent opening the profile modal
 
-        if (adminsList.length <= 1) {
+        if ((adminsList || []).length <= 1) {
             toast.error("Cannot delete the last Admin.");
             return;
         }
@@ -444,13 +445,13 @@ export default function AddAdmin() {
 
             {/* LIST SECTION - SQUARE CARDS GRID */}
             <div>
-                {adminsList.length === 0 ? (
+                {(adminsList || []).length === 0 ? (
                     <div className="text-center p-12 bg-[var(--bg-card)] rounded-3xl border border-dashed border-[var(--border-color)]">
                         <p className="text-theme-secondary">No admins found.</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                        {adminsList.map((adm) => {
+                        {(adminsList || []).map((adm) => {
                             const adminId = adm._id || adm.id;
                             const currentRoleTitle = getAdminRoleTitle(adm);
                             const isEditingThisRole = editingRoleAdminId === adminId;

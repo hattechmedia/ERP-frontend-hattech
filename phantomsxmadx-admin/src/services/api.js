@@ -58,11 +58,46 @@ async function handle(method, url, body = {}) {
       db.users.update(currentUser._id || currentUser.id, { password: body.newPassword, mustChangePassword: false });
       return ok({ message: 'Password changed successfully' });
     }
+    if (parts[1] === 'admins') {
+      if (!parts[2]) {
+        if (method === 'GET') {
+          const admins = db.users.getAll().filter(u => u.role === 'admin').map(u => ({ ...u, password: undefined }));
+          return ok({ admins, data: admins });
+        }
+      } else {
+        const adminId = parts[2];
+        if (method === 'PUT') {
+          const updated = db.users.update(adminId, body);
+          return ok({ message: 'Admin updated successfully', admin: updated, data: updated });
+        }
+        if (method === 'DELETE') {
+          db.users.remove(adminId);
+          return ok({ message: 'Admin deleted successfully' });
+        }
+      }
+    }
+    if (parts[1] === 'team-leads' && method === 'GET') {
+      const leads = db.users.getAll().filter(u => u.role === 'teamlead' || u.role === 'manager' || u.role === 'projecthead').map(u => ({ ...u, password: undefined }));
+      return ok({ teamLeads: leads, data: leads });
+    }
+    if (parts[1] === 'accept-policy' && method === 'POST') {
+      const currentUser = getCurrentUser();
+      if (currentUser) db.users.update(currentUser._id || currentUser.id, { policyAccepted: true });
+      return ok({ message: 'Policy accepted' });
+    }
+    if (parts[1] === 'partner-account' && method === 'POST') {
+      const newUser = db.users.create({ ...body, role: 'partner', policyAccepted: true });
+      return ok({ message: 'Partner account created', user: newUser });
+    }
     if (parts[1] === 'project-heads') {
       return ok({ data: db.projectHeads.getAll() });
     }
     if (parts[1] === 'users') {
       return ok({ data: db.users.getAll().map(u => ({...u, password: undefined})) });
+    }
+    if (parts[1] === 'me') {
+      const current = getCurrentUser();
+      return ok({ user: current, data: current });
     }
   }
 
@@ -348,6 +383,14 @@ async function handle(method, url, body = {}) {
 
   // ── PROFILE ────────────────────────────────────────────────
   if (parts[0] === 'profile') {
+    if (parts[1] === 'employee' && parts[2]) {
+      const targetId = parts[2];
+      const user = db.users.findById(targetId) || db.users.getAll().find(u => u._id === targetId || u.id === targetId) || {};
+      const emp = db.employees.findById(targetId) || db.employees.findByUserId(targetId) || {};
+      const combined = { ...user, ...emp, password: undefined };
+      return ok({ profile: combined, data: combined });
+    }
+
     const user = getCurrentUser();
     if (!user) fail('Not authenticated');
     const role = (user.role || '').toLowerCase();

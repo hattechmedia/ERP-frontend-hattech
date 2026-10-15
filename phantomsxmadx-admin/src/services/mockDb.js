@@ -32,7 +32,7 @@ const KEYS = {
   HR_DOCS: 'ht_hr_docs',
   CHATS: 'ht_chats',
   MESSAGES: 'ht_messages',
-  INITIALIZED: 'ht_initialized_v6',
+  INITIALIZED: 'ht_initialized_v7',
 };
 
 // ─── Helpers ────────────────────────────────────────────────
@@ -60,7 +60,8 @@ const AVATARS = {
 
 // ─── Seed Data (European / German Market) ─────────────────────
 const SEED_USERS = [
-  { _id: 'u_admin', id: 'u_admin', username: 'admin', email: 'admin@hattech.de', password: 'admin123', role: 'admin', name: 'Lukas Weber', avatar: AVATARS.lukas, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_admin', id: 'u_admin', username: 'admin', email: 'admin@hattech.de', password: 'admin123', role: 'admin', name: 'Lukas Weber', designation: 'Managing Director & CEO', avatar: AVATARS.lukas, mustChangePassword: false, policyAccepted: true },
+  { _id: 'u_admin2', id: 'u_admin2', username: 'admin2', email: 'c.schneider@hattech.de', password: 'admin123', role: 'admin', name: 'Claudia Schneider', designation: 'Chief Technology Officer (CTO)', avatar: AVATARS.katharina, mustChangePassword: false, policyAccepted: true },
   { _id: 'u_hr1', id: 'u_hr1', username: 'hr1', email: 'hr@hattech.de', password: 'hr123', role: 'hr', name: 'Sarah Lindemann', avatar: AVATARS.sarah, mustChangePassword: false, policyAccepted: true },
   { _id: 'u_ph1', id: 'u_ph1', username: 'ph1', email: 'ph@hattech.de', password: 'ph123', role: 'projecthead', name: 'Maximilian Richter', avatar: AVATARS.maximilian, mustChangePassword: false, policyAccepted: true },
   { _id: 'u_emp1', id: 'u_emp1', username: 'emp1', email: 'emp1@hattech.de', password: 'emp123', role: 'employee', name: 'Hanna Schmidt', avatar: AVATARS.hanna, mustChangePassword: false, policyAccepted: true },
