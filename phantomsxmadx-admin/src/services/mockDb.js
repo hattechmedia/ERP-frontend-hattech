@@ -32,7 +32,7 @@ const KEYS = {
   HR_DOCS: 'ht_hr_docs',
   CHATS: 'ht_chats',
   MESSAGES: 'ht_messages',
-  INITIALIZED: 'ht_initialized_v11_real_team',
+  INITIALIZED: 'ht_initialized_v12_clamped_projects',
 };
 
 // ─── Helpers ────────────────────────────────────────────────
@@ -329,30 +329,104 @@ const SEED_CLIENTS = [
     "_id": "cl_1",
     "id": "cl_1",
     "name": "Dr. Christian Wolf",
-    "email": "contact@novarch.de",
     "company": "Novarch Tech Systems (Munich)",
+    "email": "contact@novarch.de",
     "phone": "+49 89 2100 450",
     "country": "Germany",
     "status": "active",
     "image": "https://images.unsplash.com/photo-1492562080023-ab3db95bfbce?auto=format&fit=crop&w=400&q=80",
     "projects": [
       "proj_1",
-      "proj_2",
       "proj_3",
-      "proj_4"
+      "proj_8"
     ],
     "createdAt": "2026-06-01T09:00:00.000Z"
+  },
+  {
+    "_id": "cl_2",
+    "id": "cl_2",
+    "name": "Klaus Fischer",
+    "company": "Fixture King Global (Frankfurt)",
+    "email": "info@fixtureking.eu",
+    "phone": "+49 69 4200 110",
+    "country": "Germany",
+    "status": "active",
+    "image": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
+    "projects": [
+      "proj_2"
+    ],
+    "createdAt": "2026-06-15T09:00:00.000Z"
+  },
+  {
+    "_id": "cl_3",
+    "id": "cl_3",
+    "name": "Sophie Laurent",
+    "company": "MissNuos Brand Studio (Berlin)",
+    "email": "support@missnuos.com",
+    "phone": "+49 30 5200 990",
+    "country": "Germany",
+    "status": "active",
+    "image": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80",
+    "projects": [
+      "proj_4"
+    ],
+    "createdAt": "2026-07-01T09:00:00.000Z"
+  },
+  {
+    "_id": "cl_4",
+    "id": "cl_4",
+    "name": "Henrik Bauer",
+    "company": "AgriTech Solutions Berlin",
+    "email": "contact@agritech-berlin.de",
+    "phone": "+49 30 7800 230",
+    "country": "Germany",
+    "status": "active",
+    "image": "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=400&q=80",
+    "projects": [
+      "proj_5"
+    ],
+    "createdAt": "2026-07-15T09:00:00.000Z"
+  },
+  {
+    "_id": "cl_5",
+    "id": "cl_5",
+    "name": "Elena Weber",
+    "company": "Empowering Education Group",
+    "email": "admin@empowering-lms.org",
+    "phone": "+49 89 6500 880",
+    "country": "Germany",
+    "status": "active",
+    "image": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=400&q=80",
+    "projects": [
+      "proj_6"
+    ],
+    "createdAt": "2026-05-10T09:00:00.000Z"
+  },
+  {
+    "_id": "cl_6",
+    "id": "cl_6",
+    "name": "Markus Zimmerman",
+    "company": "Optimizers LLC (Hamburg)",
+    "email": "hello@optimizers.de",
+    "phone": "+49 40 3300 770",
+    "country": "Germany",
+    "status": "active",
+    "image": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=400&q=80",
+    "projects": [
+      "proj_7"
+    ],
+    "createdAt": "2026-08-01T09:00:00.000Z"
   }
 ];
 const SEED_PROJECTS = [
   {
     "_id": "proj_1",
     "id": "proj_1",
-    "title": "HAT TECH ERP Platform",
-    "name": "HAT TECH ERP Platform",
+    "title": "HAT TECH ERP Enterprise Platform",
+    "name": "HAT TECH ERP Enterprise Platform",
     "clientId": {
       "_id": "cl_1",
-      "name": "Novarch Tech Enterprise",
+      "name": "Novarch Tech Systems (Munich)",
       "email": "contact@novarch.de"
     },
     "status": "In Progress",
@@ -364,8 +438,10 @@ const SEED_PROJECTS = [
     "currency": "EUR",
     "assignedEmployees": [
       "emp_salman",
-      "emp_huzaifa"
+      "emp_huzaifa",
+      "emp_aliraza"
     ],
+    "assignedLead": "Muhammad Salman",
     "technologies": [
       "React",
       "Node.js",
@@ -378,12 +454,12 @@ const SEED_PROJECTS = [
   {
     "_id": "proj_2",
     "id": "proj_2",
-    "title": "Fixture King E-Commerce Suite",
-    "name": "Fixture King E-Commerce Suite",
+    "title": "Fixture King E-Commerce Suite & Catalog",
+    "name": "Fixture King E-Commerce Suite & Catalog",
     "clientId": {
-      "_id": "cl_1",
-      "name": "Novarch Tech Enterprise",
-      "email": "contact@novarch.de"
+      "_id": "cl_2",
+      "name": "Fixture King Global (Frankfurt)",
+      "email": "info@fixtureking.eu"
     },
     "status": "In Progress",
     "priority": "High",
@@ -396,13 +472,14 @@ const SEED_PROJECTS = [
       "emp_huzaifa",
       "emp_musa"
     ],
+    "assignedLead": "Ali musa",
     "technologies": [
       "MERN Stack",
       "Python Automation",
       "Docker",
       "PostgreSQL"
     ],
-    "progress": 65,
+    "progress": 68,
     "createdAt": "2026-08-15T09:00:00.000Z"
   },
   {
@@ -412,7 +489,8 @@ const SEED_PROJECTS = [
     "name": "Novarch Automated Intelligence Agent",
     "clientId": {
       "_id": "cl_1",
-      "name": "Novarch Tech Enterprise"
+      "name": "Novarch Tech Systems (Munich)",
+      "email": "contact@novarch.de"
     },
     "status": "In Progress",
     "priority": "High",
@@ -424,6 +502,7 @@ const SEED_PROJECTS = [
     "assignedEmployees": [
       "emp_musa"
     ],
+    "assignedLead": "Ali musa",
     "technologies": [
       "Python",
       "Streamlit",
@@ -440,8 +519,9 @@ const SEED_PROJECTS = [
     "title": "MissNuos Portal & Stripe Gateway",
     "name": "MissNuos Portal & Stripe Gateway",
     "clientId": {
-      "_id": "cl_1",
-      "name": "Novarch Tech Enterprise"
+      "_id": "cl_3",
+      "name": "MissNuos Brand Studio (Berlin)",
+      "email": "support@missnuos.com"
     },
     "status": "In Progress",
     "priority": "Medium",
@@ -454,6 +534,7 @@ const SEED_PROJECTS = [
       "emp_salman",
       "emp_aliraza"
     ],
+    "assignedLead": "Muhammad Salman",
     "technologies": [
       "React",
       "PHP",
@@ -462,14 +543,138 @@ const SEED_PROJECTS = [
     ],
     "progress": 88,
     "createdAt": "2026-09-10T09:00:00.000Z"
+  },
+  {
+    "_id": "proj_5",
+    "id": "proj_5",
+    "title": "Cattle Farm Cloud ERP & Live Monitoring",
+    "name": "Cattle Farm Cloud ERP & Live Monitoring",
+    "clientId": {
+      "_id": "cl_4",
+      "name": "AgriTech Solutions Berlin",
+      "email": "contact@agritech-berlin.de"
+    },
+    "status": "Completed",
+    "priority": "High",
+    "deadline": "2026-10-14",
+    "startDate": "2026-08-01",
+    "description": "Livestock health telemetry, feed calculation, and full operational production release.",
+    "budget": 48000,
+    "currency": "EUR",
+    "assignedEmployees": [
+      "emp_huzaifa",
+      "emp_salman"
+    ],
+    "assignedLead": "Muhammad Salman",
+    "technologies": [
+      "Next.js",
+      "Node.js",
+      "MongoDB",
+      "Vercel"
+    ],
+    "progress": 100,
+    "createdAt": "2026-08-01T09:00:00.000Z"
+  },
+  {
+    "_id": "proj_6",
+    "id": "proj_6",
+    "title": "LMS Empowering Learning Platform",
+    "name": "LMS Empowering Learning Platform",
+    "clientId": {
+      "_id": "cl_5",
+      "name": "Empowering Education Group",
+      "email": "admin@empowering-lms.org"
+    },
+    "status": "Completed",
+    "priority": "Medium",
+    "deadline": "2026-09-25",
+    "startDate": "2026-07-01",
+    "description": "Multi-tier course streaming, quiz evaluation, and certificate generation engine.",
+    "budget": 58000,
+    "currency": "EUR",
+    "assignedEmployees": [
+      "emp_huzaifa",
+      "emp_musa"
+    ],
+    "assignedLead": "Ali musa",
+    "technologies": [
+      "React",
+      "Express",
+      "MongoDB",
+      "AWS S3"
+    ],
+    "progress": 100,
+    "createdAt": "2026-07-01T09:00:00.000Z"
+  },
+  {
+    "_id": "proj_7",
+    "id": "proj_7",
+    "title": "Optimizers Performance & SEO Engine",
+    "name": "Optimizers Performance & SEO Engine",
+    "clientId": {
+      "_id": "cl_6",
+      "name": "Optimizers LLC (Hamburg)",
+      "email": "hello@optimizers.de"
+    },
+    "status": "In Progress",
+    "priority": "Medium",
+    "deadline": "2026-11-20",
+    "startDate": "2026-09-15",
+    "description": "Search engine optimization audit, dynamic lead funnels, and performance monitoring dashboard.",
+    "budget": 42000,
+    "currency": "EUR",
+    "assignedEmployees": [
+      "emp_aliraza",
+      "emp_salman"
+    ],
+    "assignedLead": "Muhammad Salman",
+    "technologies": [
+      "PHP",
+      "WordPress",
+      "TailwindCSS",
+      "Google Analytics"
+    ],
+    "progress": 45,
+    "createdAt": "2026-09-15T09:00:00.000Z"
+  },
+  {
+    "_id": "proj_8",
+    "id": "proj_8",
+    "title": "Heatmap & User Behavior Analytics",
+    "name": "Heatmap & User Behavior Analytics",
+    "clientId": {
+      "_id": "cl_1",
+      "name": "Novarch Tech Systems (Munich)",
+      "email": "contact@novarch.de"
+    },
+    "status": "In Progress",
+    "priority": "Low",
+    "deadline": "2026-12-20",
+    "startDate": "2026-10-01",
+    "description": "Live clickstream heatmap tracker, scroll depth telemetry, and session replays for client stores.",
+    "budget": 36000,
+    "currency": "EUR",
+    "assignedEmployees": [
+      "emp_huzaifa",
+      "emp_musa"
+    ],
+    "assignedLead": "Ali musa",
+    "technologies": [
+      "Canvas API",
+      "WebSockets",
+      "Node.js",
+      "Redis"
+    ],
+    "progress": 30,
+    "createdAt": "2026-10-01T09:00:00.000Z"
   }
 ];
 const SEED_TASKS = [
   {
     "_id": "task_1",
     "id": "task_1",
-    "title": "Novarch Stripe Payment Integration & Admin Hardening",
-    "description": "Integrate Stripe webhooks, optimize security headers, and resolve checkout exception flows.",
+    "title": "Stripe Webhook Verification & Security Headers",
+    "description": "Implement Stripe webhooks, rate limiting, and security compliance audit.",
     "projectId": "proj_4",
     "assignedTo": {
       "_id": "emp_salman",
@@ -479,17 +684,18 @@ const SEED_TASKS = [
       "_id": "u_admin",
       "name": "Lukas Weber"
     },
-    "status": "In Progress",
+    "status": "Completed",
+    "progress": 100,
     "priority": "High",
-    "deadline": "2026-10-20",
-    "createdAt": "2026-10-12T09:00:00.000Z"
+    "deadline": "2026-10-14",
+    "createdAt": "2026-10-10T09:00:00.000Z"
   },
   {
     "_id": "task_2",
     "id": "task_2",
-    "title": "Cattle Farm ERP Deployment & SAAS Module Updates",
+    "title": "Cattle Farm ERP Vercel Production Deployment",
     "description": "Deploy bug fixes and verified releases to Hattech Media GitHub and Vercel production edge.",
-    "projectId": "proj_1",
+    "projectId": "proj_5",
     "assignedTo": {
       "_id": "emp_huzaifa",
       "name": "Muhammad Huzaifa"
@@ -499,6 +705,7 @@ const SEED_TASKS = [
       "name": "Muhammad Salman"
     },
     "status": "Completed",
+    "progress": 100,
     "priority": "High",
     "deadline": "2026-10-14",
     "createdAt": "2026-10-10T09:00:00.000Z"
@@ -506,7 +713,7 @@ const SEED_TASKS = [
   {
     "_id": "task_3",
     "id": "task_3",
-    "title": "Fixture King Categories & Product Upload Pipeline",
+    "title": "Fixture King Product Categories & Ingestion",
     "description": "Configure category hierarchies and align product upload schemas with web dev team.",
     "projectId": "proj_2",
     "assignedTo": {
@@ -518,6 +725,7 @@ const SEED_TASKS = [
       "name": "Ali musa"
     },
     "status": "In Progress",
+    "progress": 70,
     "priority": "Medium",
     "deadline": "2026-10-22",
     "createdAt": "2026-10-13T09:00:00.000Z"
@@ -537,6 +745,7 @@ const SEED_TASKS = [
       "name": "Lukas Weber"
     },
     "status": "Completed",
+    "progress": 100,
     "priority": "High",
     "deadline": "2026-10-15",
     "createdAt": "2026-10-11T09:00:00.000Z"
@@ -556,9 +765,50 @@ const SEED_TASKS = [
       "name": "Muhammad Salman"
     },
     "status": "In Progress",
+    "progress": 60,
     "priority": "Medium",
     "deadline": "2026-10-25",
     "createdAt": "2026-10-13T09:00:00.000Z"
+  },
+  {
+    "_id": "task_6",
+    "id": "task_6",
+    "title": "HAT TECH ERP Multi-currency Ledger & Euro Formats",
+    "description": "Eliminate residual currency mismatches and enable live Euro exchange rate conversions.",
+    "projectId": "proj_1",
+    "assignedTo": {
+      "_id": "emp_salman",
+      "name": "Muhammad Salman"
+    },
+    "assignedBy": {
+      "_id": "u_admin",
+      "name": "Lukas Weber"
+    },
+    "status": "Completed",
+    "progress": 100,
+    "priority": "High",
+    "deadline": "2026-10-15",
+    "createdAt": "2026-10-14T09:00:00.000Z"
+  },
+  {
+    "_id": "task_7",
+    "id": "task_7",
+    "title": "Heatmap Canvas Event Telemetry Pipeline",
+    "description": "Build high-throughput click coordinate buffer and websocket event publisher.",
+    "projectId": "proj_8",
+    "assignedTo": {
+      "_id": "emp_huzaifa",
+      "name": "Muhammad Huzaifa"
+    },
+    "assignedBy": {
+      "_id": "emp_musa",
+      "name": "Ali musa"
+    },
+    "status": "In Progress",
+    "progress": 40,
+    "priority": "Low",
+    "deadline": "2026-11-10",
+    "createdAt": "2026-10-15T09:00:00.000Z"
   }
 ];
 const SEED_REPORTS = [
@@ -2816,12 +3066,12 @@ export const generateScoringData = (employees, monthQuery) => {
     const lateDays = Math.min(3, Math.max(0, rankOffset - 1));
     const reportsSubmitted = Math.max(15, presentDays - (rankOffset % 2));
 
-    // Base score calculations
-    const attendanceScore = Math.min(75, Math.round((presentDays / totalWorkingDays) * 75));
-    const punctualityScore = Math.max(10, 20 - (lateDays * 4));
-    const reportScore = Math.min(45, Math.round((reportsSubmitted / totalWorkingDays) * 45));
-    const milestoneScore = Math.max(15, 30 - (rankOffset * 3));
-    const totalScore = attendanceScore + punctualityScore + reportScore + milestoneScore;
+    // Base score calculations (Strictly out of 100% total: Att:25, Pun:25, Rep:25, Mls:25)
+    const attendanceScore = Math.min(25, Math.max(18, Math.round((presentDays / totalWorkingDays) * 25)));
+    const punctualityScore = Math.min(25, Math.max(16, 25 - (lateDays * 3)));
+    const reportScore = Math.min(25, Math.max(16, Math.round((reportsSubmitted / totalWorkingDays) * 25)));
+    const milestoneScore = Math.min(25, Math.max(18, 25 - (rankOffset * 2)));
+    const totalScore = Math.min(100, Math.max(0, attendanceScore + punctualityScore + reportScore + milestoneScore));
 
     return {
       employeeId: emp._id,

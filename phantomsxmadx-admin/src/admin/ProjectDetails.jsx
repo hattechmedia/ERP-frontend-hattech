@@ -162,7 +162,7 @@ export default function ProjectDetails() {
                                 }
                             });
 
-                            normalizedProject.progress = Math.round((completedWeight / totalWeight) * 100);
+                            normalizedProject.progress = Math.min(100, Math.max(0, Math.round((completedWeight / totalWeight) * 100)));
                         }
                     }
 

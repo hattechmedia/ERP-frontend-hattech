@@ -495,7 +495,7 @@ export default function Dashboard() {
               id: scoreEmployeeId || Math.random().toString(),
               name: item.name,
               department: item.department,
-              score: Math.round(item.scores.total),
+              score: Math.min(100, Math.max(0, Math.round(item.scores?.total || 0))),
               avatar: item.avatar || targetEmp?.image || targetEmp?.profileImage || targetEmp?.userId?.avatar || null,
               isEmployeeOfTheMonth: item.isEmployeeOfTheMonth,
               isEmployeeOf6Months: item.isEmployeeOf6Months,
@@ -1885,12 +1885,12 @@ export default function Dashboard() {
           </div>
           <div className={`p-6 rounded-2xl border ${borderCol} bg-green-500/5`}>
             <p className="text-[10px] font-black text-green-500 uppercase mb-1">Top Score</p>
-            <p className={`text-2xl font-black ${textMain}`}>{leaderboardScores[0]?.score || 0}%</p>
+            <p className={`text-2xl font-black ${textMain}`}>{Math.min(100, Math.max(0, leaderboardScores[0]?.score || 0))}%</p>
           </div>
           <div className={`p-6 rounded-2xl border ${borderCol} bg-amber-500/5`}>
             <p className="text-[10px] font-black text-amber-500 uppercase mb-1">Company Avg</p>
             <p className={`text-2xl font-black ${textMain}`}>
-              {leaderboardScores.length > 0 ? Math.round(leaderboardScores.reduce((acc, s) => acc + s.score, 0) / leaderboardScores.length) : 0}%
+              {leaderboardScores.length > 0 ? Math.min(100, Math.max(0, Math.round(leaderboardScores.reduce((acc, s) => acc + s.score, 0) / leaderboardScores.length))) : 0}%
             </p>
           </div>
           <div className={`p-6 rounded-2xl border ${borderCol} bg-primary/5`}>
@@ -2022,7 +2022,7 @@ export default function Dashboard() {
                             item.score >= 80 ? 'bg-[#004AAE]' :
                             item.score >= 60 ? 'bg-amber-500' : 'bg-red-500'
                           }`}
-                          style={{ width: `${item.score}%` }}
+                          style={{ width: `${Math.min(100, Math.max(0, item.score))}%` }}
                         ></div>
                       </div>
                     </div>

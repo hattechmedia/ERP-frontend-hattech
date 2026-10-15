@@ -929,7 +929,7 @@ function ProjectList({ projects, tasks, employees, nameMap, userRole, activeTab,
           }
         }
       });
-      progress = Math.round((completedWeight / totalWeight) * 100);
+      progress = Math.min(100, Math.max(0, Math.round((completedWeight / totalWeight) * 100)));
     }
 
     // Milestone-specific progress calculation
@@ -943,7 +943,7 @@ function ProjectList({ projects, tasks, employees, nameMap, userRole, activeTab,
 
     if (allMilestones.length > 0) {
       const msCompleted = allMilestones.filter(m => (m.status || '').toLowerCase() === 'completed').length;
-      milestoneProgress = Math.round((msCompleted / allMilestones.length) * 100);
+      milestoneProgress = Math.min(100, Math.max(0, Math.round((msCompleted / allMilestones.length) * 100)));
     }
 
     const currentStatus = (p.status || 'active').toLowerCase();
@@ -1269,7 +1269,7 @@ function ProjectCard({ project, userRole, activeTab, isLight, onStatusChange, on
           <div className="h-2 w-full bg-theme-secondary rounded-full">
             <div
               className="h-2 rounded-full bg-[#004AAD] transition-all duration-500"
-              style={{ width: `${project.progress}%` }}
+              style={{ width: `${Math.min(100, Math.max(0, project.progress))}%` }}
             />
           </div>
         </div>
@@ -1286,7 +1286,7 @@ function ProjectCard({ project, userRole, activeTab, isLight, onStatusChange, on
             <div className="h-1.5 w-full bg-theme-secondary rounded-full">
               <div
                 className="h-1.5 rounded-full bg-gradient-to-r from-purple-500 to-indigo-600 transition-all duration-700"
-                style={{ width: `${project.milestoneProgress}%` }}
+                style={{ width: `${Math.min(100, Math.max(0, project.milestoneProgress))}%` }}
               />
             </div>
           </div>
