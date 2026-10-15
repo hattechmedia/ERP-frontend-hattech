@@ -1,0 +1,631 @@
+/* Headings bold, subheadings semibold */
+h1,
+.heading-1,
+.text-4xl,
+.text-3xl,
+.text-2xl {
+  font-weight: 700 !important;
+}
+
+h2,
+.heading-2,
+.text-xl,
+.text-lg {
+  font-weight: 600 !important;
+}
+
+h3,
+.heading-3,
+.text-base {
+  font-weight: 600 !important;
+}
+
+button,
+[role="button"],
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+@import "tailwindcss";
+
+@keyframes marquee {
+  0% { transform: translateX(100%); }
+  100% { transform: translateX(-100%); }
+}
+
+.animate-marquee {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee 30s linear infinite;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* ================= DEFAULT (DARK THEME) ================= */
+:root {
+  --bg-dark: #0f0b1f;
+  --bg-card: #1a1433;
+  --bg-secondary: #2a2255;
+  --bg-tertiary: #1a1433;
+  --bg-main: #0f0b1f;
+  /* Added for consistency */
+  --bg-inner: rgba(255, 255, 255, 0.05);
+  /* Added for nested cards */
+  --border-color: #2a2255;
+  --border-secondary: #3b2d6b;
+  --primary: #004AAE;
+  --primary-hover: #003882;
+  --text-primary: #e5e7eb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --ring-color: #004AAD;
+  --ring-focus: #003882;
+}
+
+/* ================= THEME AWARE LOGO ================= */
+.logo-theme-aware {
+  content: url('/logo-light.png');
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .logo-theme-aware,
+.dark .logo-theme-aware {
+  content: url('/logo-dark.png');
+  filter: none;
+}
+
+/* ================= LIGHT THEME ================= */
+/* Light theme variables */
+.light {
+  --bg-dark: #f8fafc;
+  --bg-card: #f1f5f9;
+  --bg-secondary: #e2e8f0;
+  --bg-tertiary: #cbd5e1;
+  --bg-main: #f8fafc;
+  /* Added for consistency */
+  --bg-inner: #f1f5f9;
+  /* Match bg-card or slightly different */
+  --border-color: #cbd5e1;
+  --border-secondary: #94a3b8;
+  --primary: #004AAE;
+  --primary-hover: #003882;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --ring-color: #004AAD;
+  --ring-focus: #003882;
+}
+
+/* ================= LIGHT THEME FORM FIELDS ================= */
+.light input,
+.light textarea,
+.light select {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  border: none !important;
+  border-radius: 8px;
+  padding: 0.6em 1em;
+  font-size: 1rem;
+  transition: box-shadow 0.2s;
+  box-shadow: none !important;
+}
+
+.light input:focus,
+.light textarea:focus,
+.light select:focus {
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+}
+
+.light input[disabled],
+.light textarea[disabled],
+.light select[disabled] {
+  background: #f1f5f9;
+  color: #94a3b8;
+  cursor: not-allowed;
+}
+
+.light input::placeholder,
+.light textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
+}
+
+/* Project page admin boxes improvement */
+.light .project-card,
+.light .admin-box,
+.light .project-form-box {
+  background: var(--bg-card);
+  border: none !important;
+  border-radius: 14px;
+  box-shadow: none !important;
+  padding: 1.5em;
+  transition: box-shadow 0.2s;
+}
+
+.light .project-card:hover,
+.light .admin-box:hover,
+.light .project-form-box:hover {
+  box-shadow: none !important;
+  border: none !important;
+}
+
+
+body {
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* REMOVE FOCUS OUTLINES */
+*:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus,
+button:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+}
+
+/* CARD STYLE */
+.bg-\[var\(--bg-card\)\],
+.card,
+[class*="bg-[var(--bg-card)]"] {
+  border: none !important;
+  background-color: var(--bg-card);
+  border-radius: 12px;
+  box-shadow: none !important;
+  transition: background-color 0.3s;
+}
+
+/* SELECT FIX */
+select {
+  color-scheme: light dark;
+}
+
+select option {
+  background-color: var(--bg-card);
+  color: var(--text-primary);
+}
+
+/* task assignment modal styling in TL panel */
+.employee-panel-theme .modal-container {
+    background: linear-gradient(145deg, #1a1433, #0f0b1f) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5) !important;
+}
+
+.employee-panel-theme {
+  background-color: var(--bg-dark);
+}
+
+.bg-theme-card {
+  background-color: var(--bg-card);
+}
+
+.bg-theme-secondary {
+  background-color: var(--bg-secondary);
+}
+
+.bg-theme-tertiary {
+  background-color: var(--bg-tertiary);
+}
+
+.text-theme-primary {
+  color: var(--text-primary);
+}
+
+.text-theme-secondary {
+  color: var(--text-secondary);
+}
+
+.text-theme-muted {
+  color: var(--text-muted);
+}
+
+.border-theme {
+  border-color: var(--border-color);
+}
+
+.border-theme-secondary {
+  border-color: var(--border-secondary);
+}
+
+.ring-theme {
+  --tw-ring-color: var(--ring-color);
+}
+
+.ring-theme-focus:focus {
+  --tw-ring-color: var(--ring-focus);
+}
+
+/* ================= SCOPED EMPLOYEE PANEL THEME ================= */
+.employee-panel-theme {
+  --bg-dark: #0f0b1f;
+  /* Deep Navy Background */
+  --bg-card: #1a1433;
+  /* Card Background */
+  --bg-secondary: #2a2255;
+  --bg-tertiary: #1a1433;
+  --bg-main: #0f0b1f;
+  --bg-inner: rgba(255, 255, 255, 0.05);
+  --border-color: transparent;
+  /* No borders */
+  --border-secondary: transparent;
+  --primary: #004AAD;
+  --primary-hover: #003882;
+  --text-primary: #ffffff;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  --ring-color: #004AAD;
+  --ring-focus: #003882;
+
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+}
+
+.employee-panel-theme .card,
+.employee-panel-theme .bg-\[var\(--bg-card\)\] {
+  background-color: var(--bg-card) !important;
+  color: var(--text-primary) !important;
+  border: none !important;
+}
+
+/* Force specific overrides for inputs/buttons inside this panel */
+.employee-panel-theme input,
+.employee-panel-theme select,
+.employee-panel-theme textarea {
+  background-color: #f8fafc !important;
+  /* Light background */
+  color: black !important;
+  /* Dark text */
+  color-scheme: light !important;
+  border: none !important;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+}
+
+.employee-panel-theme input::placeholder,
+.employee-panel-theme textarea::placeholder {
+  color: #94a3b8 !important;
+}
+
+.employee-panel-theme button:not(.bg-\[\#004AAD\]):not(.bg-red-500):not(.bg-green-500) {
+  color: white;
+}
+
+/* ================= LIGHT THEME OVERRIDES FOR HARDCODED COLORS ================= */
+[data-theme="light"] .text-white {
+  color: var(--text-primary);
+}
+
+[data-theme="light"] .text-gray-400 {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .text-gray-300 {
+  color: var(--text-secondary);
+}
+
+[data-theme="light"] .text-gray-500 {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .bg-gray-700 {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="light"] .bg-gray-800 {
+  background-color: var(--bg-tertiary);
+}
+
+[data-theme="light"] .bg-gray-600 {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="light"] .border-gray-700 {
+  border-color: var(--border-color);
+}
+
+[data-theme="light"] .border-gray-600 {
+  border-color: var(--border-secondary);
+}
+
+[data-theme="light"] .ring-gray-700 {
+  --tw-ring-color: var(--border-color);
+}
+
+[data-theme="light"] .ring-gray-600 {
+  --tw-ring-color: var(--border-secondary);
+}
+
+[data-theme="light"] .placeholder-gray-400::placeholder {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .placeholder-gray-500::placeholder {
+  color: var(--text-muted);
+}
+
+[data-theme="light"] .hover\:bg-gray-600:hover {
+  background-color: var(--bg-secondary);
+}
+
+[data-theme="light"] .hover\:bg-gray-700:hover {
+  background-color: var(--bg-tertiary);
+}
+
+[data-theme="light"] .hover\:bg-gray-800:hover {
+  background-color: var(--bg-tertiary);
+}
+
+[data-theme="light"] .hover\:text-white:hover {
+  color: var(--text-primary);
+}
+
+.text-purple-400,
+.text-primary,
+.text-theme-primary {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+}
+
+/* Specific blue text class if we need to force it in light mode or other places */
+.text-brand-blue {
+  color: var(--primary) !important;
+}
+
+/* Force white text on primary buttons */
+.bg-\[\#004AAD\],
+.bg-\[\#004AAE\],
+.bg-purple-600 {
+  color: white !important;
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+*::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+* {
+  -ms-overflow-style: none;
+  /* IE and Edge */
+  scrollbar-width: none;
+  /* Firefox */
+}
+
+/* Calendar Icon Fix */
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  cursor: pointer;
+}
+
+.light ::-webkit-calendar-picker-indicator {
+  filter: invert(0);
+}
+
+/* ================= GLOBAL BORDER/OUTLINE REMOVAL ================= */
+
+/* Remove Outlines & Borders Globally */
+* {
+  outline: none !important;
+}
+
+/* Specific removal for boxes/cards/inputs as requested 
+.card,
+.box,
+.project-card,
+.admin-box,
+.project-form-box,
+input,
+select,
+textarea,
+button,
+div {
+  outline: none !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+*/
+
+/* Ensure inputs are still visible via background since borders are gone */
+input,
+select,
+textarea {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+  color: white !important;
+  border-radius: 8px;
+  color-scheme: dark !important;
+  /* Keep rounded corners for aesthetics */
+}
+
+/* Light Theme Input Backgrounds */
+.light input,
+.light select,
+.light textarea {
+  background-color: #f1f5f9 !important;
+  color: black !important;
+  color-scheme: light !important;
+}
+
+/* Fix for Select dropdowns */
+select option {
+  background-color: var(--bg-card);
+  border: none !important;
+}
+
+/* CUSTOM THEME OVERRIDES */
+.text-custom-blue {
+  color: #004AAD !important;
+}
+
+.bg-custom-blue {
+  background-color: #004AAD !important;
+  color: white !important;
+}
+
+.border-custom-blue {
+  border-color: #004AAD !important;
+}
+
+.hover\:bg-custom-blue:hover {
+  background-color: #003882 !important;
+}
+
+/* ================= FINANCE TERMINAL OVERRIDES ================= */
+/* Forced dark styling with high specificity to override .light themes */
+input.finance-terminal-input,
+textarea.finance-terminal-input {
+  background-color: #110d26 !important;
+  color: #ffffff !important;
+  padding-left: 5rem !important; /* Forces 80px space for icons */
+  border: none !important;
+  box-shadow: inset 0 2px 8px 0 rgba(0, 0, 0, 0.4) !important;
+  font-weight: 900 !important;
+}
+
+input.finance-terminal-input::placeholder,
+textarea.finance-terminal-input::placeholder {
+  color: rgba(255, 255, 255, 0.8) !important; /* High contrast placeholder */
+  opacity: 1 !important;
+}
+
+/* Force colors on dark background elements in light/dark themes */
+.force-text-white {
+  color: #ffffff !important;
+}
+
+.force-text-gray {
+  color: #d1d5db !important;
+}
+
+.hover\:force-text-white:hover {
+  color: #ffffff !important;
+}
+
+/* Fix native calendar picker icon visibility in dark theme */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1) brightness(2) !important;
+  cursor: pointer !important;
+  opacity: 1 !important;
+  display: block !important;
+}
+
+.light input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none !important;
+}
+
+/* Remove number input spinners globally */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0 !important;
+}
+input[type="number"] {
+  -moz-appearance: textfield !important;
+}
+
+/* Printable Styles for Finance Panel */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .no-print {
+    display: none !important;
+  }
+  .print-area {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    margin: 0 !important;
+    padding: 20px !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+}
+
+/* ================= FINANCE PANEL THEME INPUT/SELECT VISIBILITY FIX ================= */
+.finance-panel-theme input,
+.finance-panel-theme select,
+.finance-panel-theme textarea {
+  color: #0f172a !important;
+  color-scheme: light !important;
+  border-color: #cbd5e1;
+}
+
+.finance-panel-theme input::placeholder,
+.finance-panel-theme textarea::placeholder {
+  color: #94a3b8 !important;
+  opacity: 1 !important;
+}
+
+/* Native Date Pickers in Finance Panel */
+.finance-panel-theme input[type="date"] {
+  color: #0f172a !important;
+  color-scheme: light !important;
+}
+
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit,
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit-fields-wrapper,
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit-text,
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit-month-field,
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit-day-field,
+.finance-panel-theme input[type="date"]::-webkit-datetime-edit-year-field {
+  color: #0f172a !important;
+}
+
+.finance-panel-theme input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: none !important;
+  opacity: 0.65 !important;
+  cursor: pointer !important;
+  display: block !important;
+}
+
+/* Dropdown Selects and Options in Finance Panel */
+.finance-panel-theme select {
+  color: #0f172a !important;
+  color-scheme: light !important;
+}
+
+.finance-panel-theme select option {
+  background-color: #ffffff !important;
+  color: #0f172a !important;
+}
+
+/* Background Handling for Finance Panel Controls */
+.finance-panel-theme select,
+.finance-panel-theme input:not([type="checkbox"]):not([type="radio"]),
+.finance-panel-theme textarea {
+  background-color: #ffffff !important;
+}
+
+.finance-panel-theme input.bg-transparent,
+.finance-panel-theme .bg-transparent input {
+  background-color: transparent !important;
+}
+
+.finance-panel-theme select.bg-slate-50,
+.finance-panel-theme input.bg-slate-50,
+.finance-panel-theme .bg-slate-50 input,
+.finance-panel-theme .bg-slate-50 select {
+  background-color: #f8fafc !important;
+}
+
+.finance-panel-theme select.bg-slate-100,
+.finance-panel-theme input.bg-slate-100,
+.finance-panel-theme .bg-slate-100 select,
+.finance-panel-theme .bg-slate-100 input {
+  background-color: #f1f5f9 !important;
+}
