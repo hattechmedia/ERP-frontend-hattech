@@ -7,7 +7,7 @@ import { useModal } from "../contexts/ModalContext";
 
 export default function AddAdmin() {
     const { confirm } = useModal();
-    const [admin, setAdmin] = useState({
+    const [admin, setAdmin] = useState({ 
         name: "",
         email: "",
         password: ""
