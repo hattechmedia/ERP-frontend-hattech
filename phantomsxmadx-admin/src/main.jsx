@@ -5,6 +5,10 @@ import App from "./App";
 import "./index.css";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ModalProvider } from "./contexts/ModalContext";
+import { initDb } from "./services/mockDb";
+
+// Guarantee local database initialization on startup
+initDb();
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>

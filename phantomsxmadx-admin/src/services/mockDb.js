@@ -234,8 +234,15 @@ const generateScoringData = (employees) => {
 };
 
 // ─── Initialize ──────────────────────────────────────────────
-export const initDb = () => {
-  if (localStorage.getItem(KEYS.INITIALIZED)) return;
+export const initDb = (force = false) => {
+  if (typeof window === 'undefined' || typeof localStorage === 'undefined') return;
+  const usersExist = localStorage.getItem(KEYS.USERS);
+  if (!force && localStorage.getItem(KEYS.INITIALIZED) && usersExist) {
+    try {
+      const parsedUsers = JSON.parse(usersExist);
+      if (Array.isArray(parsedUsers) && parsedUsers.length > 0) return;
+    } catch (e) {}
+  }
   localStorage.setItem(KEYS.USERS, JSON.stringify(SEED_USERS));
   localStorage.setItem(KEYS.EMPLOYEES, JSON.stringify(SEED_EMPLOYEES));
   localStorage.setItem(KEYS.CLIENTS, JSON.stringify(SEED_CLIENTS));
@@ -250,11 +257,11 @@ export const initDb = () => {
   localStorage.setItem(KEYS.BOOKINGS, JSON.stringify(SEED_BOOKINGS));
   localStorage.setItem(KEYS.ANNOUNCEMENTS, JSON.stringify(SEED_ANNOUNCEMENTS));
   localStorage.setItem(KEYS.POLICIES, JSON.stringify(SEED_POLICIES));
-  localStorage.setItem(KEYS.NOTES, JSON.stringify([]));
+  if (!localStorage.getItem(KEYS.NOTES)) localStorage.setItem(KEYS.NOTES, JSON.stringify([]));
   localStorage.setItem(KEYS.PARTNERS, JSON.stringify(SEED_PARTNERS));
   localStorage.setItem(KEYS.FINANCE_INCOME, JSON.stringify(SEED_FINANCE_INCOME));
   localStorage.setItem(KEYS.FINANCE_EXPENSE, JSON.stringify(SEED_FINANCE_EXPENSE));
-  localStorage.setItem(KEYS.FINANCE_ACCOUNTS, JSON.stringify([]));
+  if (!localStorage.getItem(KEYS.FINANCE_ACCOUNTS)) localStorage.setItem(KEYS.FINANCE_ACCOUNTS, JSON.stringify([]));
   localStorage.setItem(KEYS.FINANCE_PAYROLL, JSON.stringify(SEED_PAYROLL));
   localStorage.setItem(KEYS.SUBSCRIPTIONS, JSON.stringify(SEED_SUBSCRIPTIONS));
   localStorage.setItem(KEYS.INTERACTIONS, JSON.stringify(SEED_INTERACTIONS));
@@ -266,8 +273,23 @@ export const initDb = () => {
   localStorage.setItem(KEYS.INITIALIZED, 'true');
 };
 
+// Auto-run on script import
+initDb();
+
 // ─── CRUD helpers ────────────────────────────────────────────
-const getAll = (key) => { try { return JSON.parse(localStorage.getItem(key)) || []; } catch { return []; } };
+const getAll = (key) => {
+  try {
+    initDb();
+    let data = JSON.parse(localStorage.getItem(key));
+    if ((!data || (Array.isArray(data) && data.length === 0)) && key === KEYS.USERS) {
+      initDb(true);
+      data = JSON.parse(localStorage.getItem(key));
+    }
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+};
 const getObj = (key) => { try { return JSON.parse(localStorage.getItem(key)) || {}; } catch { return {}; } };
 const setAll = (key, data) => localStorage.setItem(key, JSON.stringify(data));
 
@@ -296,7 +318,16 @@ export const db = {
   // Users
   users: {
     getAll: () => getAll(KEYS.USERS),
-    findByUsername: (u) => getAll(KEYS.USERS).find(x => x.username === u || x.email === u),
+    findByUsername: (u) => {
+      initDb();
+      const clean = String(u || '').trim().toLowerCase();
+      if (!clean) return null;
+      const allUsers = getAll(KEYS.USERS);
+      return allUsers.find(x =>
+        String(x.username || '').trim().toLowerCase() === clean ||
+        String(x.email || '').trim().toLowerCase() === clean
+      );
+    },
     findById: (id) => findById(KEYS.USERS, id),
     create: (data) => create(KEYS.USERS, data),
     update: (id, data) => update(KEYS.USERS, id, data),

@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useMemo, useCallback } from "react";
-import { db } from "../services/mockDb";
+import { db, initDb } from "../services/mockDb";
 
 const AuthContext = createContext();
 
@@ -10,6 +10,8 @@ export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
+        // Ensure local DB is ready
+        initDb();
         // Restore session from sessionStorage on app load
         try {
             const storedUser = JSON.parse(sessionStorage.getItem("currentUser"));
@@ -22,9 +24,13 @@ export const AuthProvider = ({ children }) => {
 
     const login = useCallback(async (username, password) => {
         try {
+            initDb();
+            const cleanUser = String(username || '').trim();
+            const cleanPass = String(password || '').trim();
+
             // Find user in local DB
-            const found = db.users.findByUsername(username);
-            if (!found || found.password !== password) {
+            const found = db.users.findByUsername(cleanUser);
+            if (!found || String(found.password || '').trim() !== cleanPass) {
                 return { success: false, message: "Invalid username or password" };
             }
 

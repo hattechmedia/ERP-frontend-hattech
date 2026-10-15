@@ -240,13 +240,50 @@ export default function Login() {
             </button>
 
             {/* Demo credentials hint */}
-            <div className={`text-xs text-center ${textSec} space-y-1 border-t border-gray-500/20 pt-4`}>
-              <p className="font-semibold">Demo Credentials:</p>
-              <p>Admin: <span className="font-mono">admin / admin123</span></p>
-              <p>Employee: <span className="font-mono">emp1 / emp123</span></p>
-              <p>HR: <span className="font-mono">hr1 / hr123</span></p>
-              <p>Client: <span className="font-mono">client1 / client123</span></p>
-              <p>Finance: <span className="font-mono">finance1 / finance123</span></p>
+            <div className={`text-xs ${textSec} space-y-2 border-t border-gray-500/20 pt-4`}>
+              <p className="font-semibold text-center">Click any role below to auto-fill:</p>
+              <div className="grid grid-cols-2 gap-2 text-left">
+                <button
+                  type="button"
+                  onClick={() => { setEmail("admin"); setPassword("admin123"); }}
+                  className="p-1.5 rounded-lg bg-[#004AAD]/10 hover:bg-[#004AAD]/20 border border-[#004AAD]/30 text-xs transition"
+                >
+                  <span className="font-bold text-[#004AAD] block">Admin</span>
+                  <span className="font-mono text-[11px] opacity-80">admin / admin123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setEmail("emp1"); setPassword("emp123"); }}
+                  className="p-1.5 rounded-lg bg-[#004AAD]/10 hover:bg-[#004AAD]/20 border border-[#004AAD]/30 text-xs transition"
+                >
+                  <span className="font-bold text-[#004AAD] block">Employee</span>
+                  <span className="font-mono text-[11px] opacity-80">emp1 / emp123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setEmail("hr1"); setPassword("hr123"); }}
+                  className="p-1.5 rounded-lg bg-[#004AAD]/10 hover:bg-[#004AAD]/20 border border-[#004AAD]/30 text-xs transition"
+                >
+                  <span className="font-bold text-[#004AAD] block">HR</span>
+                  <span className="font-mono text-[11px] opacity-80">hr1 / hr123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setEmail("finance1"); setPassword("finance123"); }}
+                  className="p-1.5 rounded-lg bg-[#004AAD]/10 hover:bg-[#004AAD]/20 border border-[#004AAD]/30 text-xs transition"
+                >
+                  <span className="font-bold text-[#004AAD] block">Finance</span>
+                  <span className="font-mono text-[11px] opacity-80">finance1 / finance123</span>
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { setEmail("client1"); setPassword("client123"); }}
+                  className="p-1.5 rounded-lg bg-[#004AAD]/10 hover:bg-[#004AAD]/20 border border-[#004AAD]/30 text-xs transition col-span-2 text-center"
+                >
+                  <span className="font-bold text-[#004AAD] inline mr-2">Client:</span>
+                  <span className="font-mono text-[11px] opacity-80">client1 / client123</span>
+                </button>
+              </div>
             </div>
           </form>
         )}
